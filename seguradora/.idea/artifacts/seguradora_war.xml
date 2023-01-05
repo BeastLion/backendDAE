@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="seguradora:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>seguradora</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="seguradora.war">
+      <element id="artifact" artifact-name="seguradora:war exploded" />
+    </root>
+  </artifact>
+</component>

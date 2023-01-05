@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "User")
+@Table(name = "users")
 @NamedQueries({
         @NamedQuery(name = "getAllUsers", query = "SELECT u FROM User u ORDER BY u.id")
 })
@@ -39,7 +39,7 @@ public class User {
     @Setter
     private String address;
     @NotNull
-    @Pattern(regexp="^[9][0-9]{8}$",message="Invalid Phone Number") //começa por nove tem oito digitos asseguir de 0 a 9
+    //@Pattern(regexp="^[9][0-9]{8}$",message="Invalid Phone Number") //começa por nove tem oito digitos asseguir de 0 a 9
     @Getter
     @Setter
     private int phoneNumber;
