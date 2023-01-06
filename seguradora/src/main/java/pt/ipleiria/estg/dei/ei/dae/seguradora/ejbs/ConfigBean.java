@@ -1,6 +1,4 @@
-package pt.ipleiria.estg.dei.ei.dae.academics.ejbs;
-
-import pt.ipleiria.estg.dei.ei.dae.academics.entities.Enum.ClientType;
+package pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -22,8 +20,5 @@ public class ConfigBean {
          clientBean.create(1L,"ola","ola",LocalDate.EPOCH,
                  "ola","910202022",5000000,
                  "ola","ola","ola@ola.pt");
-        clientBean.create(2L,"ola2","ola2",LocalDate.EPOCH,
-                "ola2","910202022",3000000,
-                "ola","ola","ola2@ola2.pt");
     }
 }

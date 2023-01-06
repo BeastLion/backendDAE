@@ -1,8 +1,8 @@
-package pt.ipleiria.estg.dei.ei.dae.academics.entities;
+package pt.ipleiria.estg.dei.ei.dae.seguradora.entities;
 
 import lombok.Getter;
 import lombok.Setter;
-import pt.ipleiria.estg.dei.ei.dae.academics.entities.Enum.ClientType;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.ClientType;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

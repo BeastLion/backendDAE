@@ -1,15 +1,9 @@
-package pt.ipleiria.estg.dei.ei.dae.academics.DTOs;
+package pt.ipleiria.estg.dei.ei.dae.seguradora.DTOs;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import pt.ipleiria.estg.dei.ei.dae.academics.entities.Enum.ClientType;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.ClientType;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 public class UserDTO {

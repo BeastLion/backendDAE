@@ -1,9 +1,11 @@
-package pt.ipleiria.estg.dei.ei.dae.academics.ejbs;
+package pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs;
 
-import pt.ipleiria.estg.dei.ei.dae.academics.entities.Client;
-import pt.ipleiria.estg.dei.ei.dae.academics.entities.Enum.ClientType;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Client;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.ClientType;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.security.Hasher;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
@@ -13,9 +15,12 @@ public class ClientBean {
     @PersistenceContext
     EntityManager em;
 
+    @Inject // import javax.inject.Inject;
+    private Hasher hasher;
+
     public void create(Long id, String name, String lastName, LocalDate birthDate, String address, String phoneNumber, int financialNumber,String username, String password, String email) {
         ClientType clientType = whatTypeOfClient(financialNumber);
-        Client client = new Client(id,name,lastName,birthDate,address,phoneNumber,financialNumber,username,password,email,clientType);
+        Client client = new Client(id,name,lastName,birthDate,address,phoneNumber,financialNumber,username, hasher.hash(password),email,clientType);
         em.persist(client);
     }
 

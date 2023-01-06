@@ -1,19 +1,17 @@
-package pt.ipleiria.estg.dei.ei.dae.academics.entities;
+package pt.ipleiria.estg.dei.ei.dae.seguradora.entities;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import pt.ipleiria.estg.dei.ei.dae.academics.entities.Enum.ClientType;
-
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
-
 import lombok.Getter;
 import lombok.Setter;
 
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "user_type")
 @Entity
-@Table(name = "users")
+@Table(name = "users",uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
 @NamedQueries({
         @NamedQuery(name = "getAllUsers", query = "SELECT u FROM User u ORDER BY u.id")
 })

@@ -10,6 +10,7 @@
             <property
                     name="javax.persistence.schema-generation.database.action"
                     value="drop-and-create" />
+            <property name="hibernate.discriminator.ignore_explicit_for_joined" value="true"/>
         </properties>
     </persistence-unit>
 </persistence>

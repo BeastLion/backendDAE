@@ -1,4 +1,4 @@
-package pt.ipleiria.estg.dei.ei.dae.academics.entities;
+package pt.ipleiria.estg.dei.ei.dae.seguradora.entities;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
