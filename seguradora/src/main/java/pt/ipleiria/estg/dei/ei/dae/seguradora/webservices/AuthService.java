@@ -29,17 +29,8 @@ public class AuthService {
     @POST
     @Path("/login")
     public Response authenticate(@Valid AuthDTO authDTO) {
-        System.out.println("----------------------------------");
-        System.out.println("--------------AQUI----------------");
-        System.out.println("----------------------------------");
         if (userBean.canLogin(authDTO.getUsername(), authDTO.getPassword())) {
-            System.out.println("----------------------------------");
-            System.out.println("--------------AQUI2----------------");
-            System.out.println("----------------------------------");
             String token = issuer.issue(authDTO.getUsername());
-            System.out.println("----------------------------------");
-            System.out.println("--------------AQUI3----------------");
-            System.out.println("----------------------------------");
             return Response.ok(token).build();
         }
 
