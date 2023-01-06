@@ -6,7 +6,6 @@ import java.io.Serializable;
 public class AuthDTO implements Serializable {
     @NotBlank
     private String username;
-
     @NotBlank
     private String password;
 

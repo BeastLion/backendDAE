@@ -4,7 +4,6 @@ import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.User;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.security.Hasher;
 
 import javax.ejb.Stateless;
-
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,6 +17,10 @@ public class UserBean {
     private Hasher hasher;
 
     public User find(String username) {
+        System.out.println("----------------------------------");
+        System.out.println("--------------AQUIBEANFIND----------------");
+        System.out.println(em.find(User.class, username));
+        System.out.println("----------------------------------");
         return em.find(User.class, username);
     }
 
@@ -28,7 +31,13 @@ public class UserBean {
     }
 
     public boolean canLogin(String username, String password) {
+        System.out.println("----------------------------------");
+        System.out.println("--------------AQUIBEAN----------------");
+        System.out.println("----------------------------------");
         var user = find(username);
+        System.out.println("----------------------------------");
+        System.out.println("--------------AQUIBEAN2----------------");
+        System.out.println("----------------------------------");
         return user != null && user.getPassword().equals(hasher.hash(password));
     }
 

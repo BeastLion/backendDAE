@@ -1,0 +1,9 @@
+### REQUEST JWT TOKEN
+POST http://localhost:8080/seguradora/api/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "ola",
+  "password": "ola"
+}
