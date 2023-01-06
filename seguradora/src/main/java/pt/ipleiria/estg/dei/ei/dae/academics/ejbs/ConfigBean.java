@@ -14,13 +14,16 @@ public class ConfigBean {
 
 
     @EJB
-    private UserBean userBean;
+    private ClientBean clientBean;
 
     @PostConstruct
     public void populateDB() {
         System.out.println("Hello Java EE!");
-
-        userBean.create(1, "tiago", "aguiar", LocalDate.EPOCH, "rua oliveira", 910005544, ClientType.CLIENT, 2123332212, "carnificin", "123456", "tiago002@gmail.com");
-
+         clientBean.create(1L,"ola","ola",LocalDate.EPOCH,
+                 "ola","910202022",5000000,
+                 "ola","ola","ola@ola.pt");
+        clientBean.create(2L,"ola2","ola2",LocalDate.EPOCH,
+                "ola2","910202022",3000000,
+                "ola","ola","ola2@ola2.pt");
     }
 }

@@ -11,13 +11,13 @@ import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity
 @Table(name = "users")
 @NamedQueries({
         @NamedQuery(name = "getAllUsers", query = "SELECT u FROM User u ORDER BY u.id")
 })
 public class User {
-
     @Id
     @Getter
     @Setter
@@ -39,19 +39,10 @@ public class User {
     @Setter
     private String address;
     @NotNull
-    //@Pattern(regexp="^[9][0-9]{8}$",message="Invalid Phone Number") //começa por nove tem oito digitos asseguir de 0 a 9
+    @Pattern(regexp="^[9][0-9]{8}$",message="Invalid Phone Number") //começa por nove tem oito digitos asseguir de 0 a 9
     @Getter
     @Setter
-    private int phoneNumber;
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Getter
-    @Setter
-    private ClientType clientType;
-    @NotNull
-    @Getter
-    @Setter
-    private int financialNumber;
+    private String phoneNumber;
     @NotNull
     @Getter
     @Setter
@@ -68,19 +59,16 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String name, String lastName, LocalDate birthDate, String address, int phoneNumber, ClientType clientType, int financialNumber, String username, String password, String email) {
+    public User(Long id, String name, String lastName, LocalDate birthDate, String address, String phoneNumber,String username, String password, String email) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.clientType = clientType;
-        this.financialNumber = financialNumber;
         this.username = username;
         this.password = password;
         this.email = email;
     }
-
 
 }
