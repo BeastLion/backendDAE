@@ -20,7 +20,7 @@ public class ConfigBean {
     @PostConstruct
     public void populateDB() {
         System.out.println("Hello Java EE!");
-        clientBean.create(1L, "ola", "ola", LocalDate.EPOCH,
+        clientBean.create("ola", "ola", LocalDate.EPOCH,
                 "ola", "910202022", 5000000,
                 "ola", "ola", "ola@ola.pt");
 

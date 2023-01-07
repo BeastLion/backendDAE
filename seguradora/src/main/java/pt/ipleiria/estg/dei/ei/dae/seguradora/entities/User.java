@@ -16,10 +16,6 @@ import lombok.Setter;
         @NamedQuery(name = "getAllUsers", query = "SELECT u FROM User u ORDER BY u.id")
 })
 public class User {
-
-    @Getter
-    @Setter
-    private Long id;
     @NotNull
     @Getter
     @Setter
@@ -57,8 +53,7 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String name, String lastName, LocalDate birthDate, String address, String phoneNumber,String username, String password, String email) {
-        this.id = id;
+    public User(String name, String lastName, LocalDate birthDate, String address, String phoneNumber,String username, String password, String email) {
         this.name = name;
         this.lastName = lastName;
         this.birthDate = birthDate;

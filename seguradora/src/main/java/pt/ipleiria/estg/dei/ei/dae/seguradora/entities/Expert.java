@@ -9,4 +9,8 @@ import javax.persistence.Table;
 @Table(name="Experts")
 public class Expert extends User {
 
+    private Insurer insurer;
+
+
+
 }

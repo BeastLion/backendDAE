@@ -29,8 +29,8 @@ public class Client extends User implements Serializable {
 
     }
 
-    public Client(Long id, String name, String lastName, LocalDate birthDate, String address, String phoneNumber, int financialNumber,String username, String password, String email, ClientType clientType) {
-        super(id, name, lastName, birthDate, address, phoneNumber,username, password, email);
+    public Client(String name, String lastName, LocalDate birthDate, String address, String phoneNumber, int financialNumber,String username, String password, String email, ClientType clientType) {
+        super(name, lastName, birthDate, address, phoneNumber,username, password, email);
         this.financialNumber = financialNumber;
         this.clientType = clientType;
     }

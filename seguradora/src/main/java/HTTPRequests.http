@@ -1,0 +1,160 @@
+                                               #####Users#####
+
+### REQUEST JWT TOKEN
+POST http://localhost:8080/seguradora
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "ola",
+  "password": "ola"
+}
+
+#####GETUsers
+GET http://localhost:8080/seguradora/api/users
+Accept: application/json
+
+
+#####GETStudents
+GET http://localhost:8080/academics/api/students
+Accept: application/json
+
+#####CreateStudent
+POST http://localhost:8080/seguradora/api/auth/login
+Content-Type: application/json
+
+{
+ "username": "john",
+ "password": "jd"
+}
+
+###GetStudentByUsername
+GET http://localhost:8080/academics/api/students/john
+Accept: application/json
+
+###UpdateStudent
+PUT http://localhost:8080/academics/api/students/john
+Content-Type: application/json
+
+{
+  "password": "123456",
+  "name": "tiago",
+  "email": "tiago479@hotmail.com",
+  "courseCode": 1
+}
+
+###DeleteStudent
+DELETE http://localhost:8080/academics/api/students/john
+Content-Type: application/json
+
+###getStudentSubject
+GET http://localhost:8080/academics/api/students/tiago/subjects
+Content-Type: application/json
+
+                                                 #####Courses#####
+
+#####getCourses
+GET http://localhost:8080/academics/api/courses
+Accept: application/json
+
+#####createCourses
+POST http://localhost:8080/academics/api/courses
+Content-Type: application/json
+
+{
+  "code": "3",
+  "name": "Maths"
+}
+
+###GetCourseByID
+GET http://localhost:8080/academics/api/courses/1
+Accept: application/json
+
+###SetCourse
+PUT http://localhost:8080/academics/api/courses/4
+Content-Type: application/json
+
+{
+"name": "Engenharia Mecanica"
+}
+
+###DeleteCourse
+DELETE http://localhost:8080/academics/api/courses/3
+Content-Type: application/json
+
+                                              #####Subject#####
+
+#####GETSubjects
+GET http://localhost:8080/academics/api/subjects
+Accept: application/json
+
+#####CreateSubject
+POST http://localhost:8080/academics/api/subjects
+Content-Type: application/json
+
+{
+  "code": 10,
+  "courseCode": 1,
+  "courseYear": "20/21",
+  "name": "Matematica Discreta",
+  "scholarYear": "2020"
+}
+
+###GetSubjectByCode
+GET http://localhost:8080/academics/api/subjects/1
+Accept: application/json
+
+###SetSubject
+PUT http://localhost:8080/academics/api/subjects/1
+Content-Type: application/json
+
+{
+  "courseCode": 2,
+  "courseYear": "21/22",
+  "name": "Motores",
+  "scholarYear": "2021"
+}
+
+###DeleteSubject
+DELETE http://localhost:8080/academics/api/subjects/1
+Content-Type: application/json
+
+###getSubjectStudents
+GET http://localhost:8080/academics/api/subjects/1/students
+Content-Type: application/json
+
+
+                                              #####Teacher#####
+
+
+
+                                              #####Administrator#####
+
+
+                                                     ###EMAIL###
+###sendEmail
+POST http://localhost:8080/academics/api/students/tiago/email/send
+Content-Type: application/json
+
+{
+"username": "tiago",
+"subject": "asdsadsad",
+"message": "vai para asdasddsad"
+}
+
+
+
+### GET ALL STUDENTS
+GET http://localhost:8080/academics/api/students
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJMdWlzIiwiaWF0IjoxNjY4Njk5NzUwLCJleHAiOjE2Njg3MDMzNTB9.D5OAn3YDqxIYzwSzB1WvsshG953q6Lyrr-p9UKhW9xI
+
+### REQUEST JWT TOKEN
+POST http://localhost:8080/academics/api/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "Luis",
+  "password": "123456"
+}
