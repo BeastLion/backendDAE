@@ -24,14 +24,7 @@ public class User {
     @Getter
     @Setter
     private String lastName;
-    @NotNull
-    @Getter
-    @Setter
-    private LocalDate birthDate;
-    @NotNull
-    @Getter
-    @Setter
-    private String address;
+
     @NotNull
     @Pattern(regexp="^[9][0-9]{8}$",message="Invalid Phone Number") //começa por nove tem oito digitos asseguir de 0 a 9
     @Getter
@@ -53,11 +46,9 @@ public class User {
     public User() {
     }
 
-    public User(String name, String lastName, LocalDate birthDate, String address, String phoneNumber,String username, String password, String email) {
+    public User(String name, String lastName, String phoneNumber,String username, String password, String email) {
         this.name = name;
         this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.address = address;
         this.phoneNumber = phoneNumber;
         this.username = username;
         this.password = password;

@@ -25,12 +25,24 @@ public class Client extends User implements Serializable {
     @Setter
     private ClientType clientType;
 
+    @NotNull
+    @Getter
+    @Setter
+    LocalDate birthDate;
+
+    @NotNull
+    @Getter
+    @Setter
+    private String address;
+
     public Client() {
 
     }
 
     public Client(String name, String lastName, LocalDate birthDate, String address, String phoneNumber, int financialNumber,String username, String password, String email, ClientType clientType) {
-        super(name, lastName, birthDate, address, phoneNumber,username, password, email);
+        super(name, lastName, phoneNumber,username, password, email);
+        this.birthDate = birthDate;
+        this.address = address;
         this.financialNumber = financialNumber;
         this.clientType = clientType;
     }
