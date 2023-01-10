@@ -22,7 +22,7 @@ public class ConfigBean {
         System.out.println("Hello Java EE!");
         clientBean.create("ola", "ola", LocalDate.EPOCH,
                 "ola", "910202022", 5000000,
-                "ola", "ola", "ola@ola.pt");
+                "ola", "ola", "ola@ola.pt", 123123123123L);
 
         testBean.getA();
     }

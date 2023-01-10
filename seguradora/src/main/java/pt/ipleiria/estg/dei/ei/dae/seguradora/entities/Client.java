@@ -35,15 +35,25 @@ public class Client extends User implements Serializable {
     @Setter
     private String address;
 
+    @Getter
+    @Setter
+    private Long insurenceNumber;
+
+    /*
+    @OneToMany(mappedBy = "client")
+    private List<Occurrence> occurrences;
+     */
+
     public Client() {
 
     }
 
-    public Client(String name, String lastName, LocalDate birthDate, String address, String phoneNumber, int financialNumber,String username, String password, String email, ClientType clientType) {
+    public Client(String name, String lastName, LocalDate birthDate, String address, String phoneNumber, int financialNumber,String username, String password, String email, ClientType clientType, Long insurenceNumber) {
         super(name, lastName, phoneNumber,username, password, email);
         this.birthDate = birthDate;
         this.address = address;
         this.financialNumber = financialNumber;
         this.clientType = clientType;
+        this.insurenceNumber = insurenceNumber;
     }
 }

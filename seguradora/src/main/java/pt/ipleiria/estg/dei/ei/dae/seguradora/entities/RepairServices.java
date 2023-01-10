@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class RepairServices implements Serializable {
 
     @Id
-    private int id;
+    private Long id;
 
     @Transient
     private String name;

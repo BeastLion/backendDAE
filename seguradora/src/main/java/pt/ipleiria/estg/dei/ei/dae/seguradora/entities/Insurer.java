@@ -11,7 +11,14 @@ public class Insurer implements Serializable {
 
     @Id
     private Long id;
+
     @Transient
-    private LinkedList<Expert> experts;
+    private LinkedList<Expert> experts; //podemos meter so experts
+
+    @Transient
+    private LinkedList<Client> clients;
+
+    @Transient
+    private LinkedList<RepairServices> repairServices;
 
 }
