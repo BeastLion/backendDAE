@@ -15,13 +15,11 @@ import java.io.Serializable;
 @Table(name="Experts")
 public class Expert extends User implements Serializable {
 
-    @Getter
-    @Setter
-    private Insurer insurer;
+    //private Insurer insurer;
 
-    public Expert(String name, String lastName, String phoneNumber, String username, String password, String email, Insurer insurer) {
+    public Expert(String name, String lastName, String phoneNumber, String username, String password, String email) {
         super(name, lastName, phoneNumber, username, password, email);
-        this.insurer = insurer;
+        //this.insurer = insurer;
     }
 
 

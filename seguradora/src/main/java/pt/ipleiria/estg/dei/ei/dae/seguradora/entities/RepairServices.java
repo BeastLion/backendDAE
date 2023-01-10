@@ -5,16 +5,12 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.io.Serializable;
 
-@Entity
 public class RepairServices implements Serializable {
 
-    @Id
     private Long id;
 
-    @Transient
     private String name;
 
-    @Transient
     private Insurer insurer;
 
 }

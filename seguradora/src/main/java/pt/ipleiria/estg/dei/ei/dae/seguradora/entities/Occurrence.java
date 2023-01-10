@@ -54,11 +54,13 @@ public class Occurrence implements Serializable {
     private Client client; //cada occurrence tem um user !!
     */
 
+    /*
     @Getter
     @Setter
     private Insurer insurer;
+*/
 
-    public Occurrence(Long id, String policyNumber, String description, LocalDate occurrenceDate, String location, OccurrenceType type, String object, Insurer insurer) {
+    public Occurrence(Long id, String policyNumber, String description, LocalDate occurrenceDate, String location, OccurrenceType type, String object) {
         this.id = id;
         this.policyNumber = policyNumber;
         this.description = description;
@@ -67,6 +69,6 @@ public class Occurrence implements Serializable {
         this.type = type;
         this.object = object;
         //this.user = user;
-        this.insurer = insurer;
+        //this.insurer = insurer;
     }
 }

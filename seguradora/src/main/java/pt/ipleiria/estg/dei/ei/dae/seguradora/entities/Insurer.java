@@ -6,19 +6,13 @@ import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-@Entity
-public class Insurer implements Serializable {
 
-    @Id
-    private Long id;
+public class Insurer {
 
-    @Transient
     private LinkedList<Expert> experts; //podemos meter so experts
 
-    @Transient
     private LinkedList<Client> clients;
 
-    @Transient
     private LinkedList<RepairServices> repairServices;
 
 }
