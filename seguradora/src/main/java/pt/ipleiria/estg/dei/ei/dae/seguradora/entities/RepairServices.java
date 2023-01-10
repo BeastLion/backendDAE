@@ -5,7 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.io.Serializable;
 
-public class RepairServices implements Serializable {
+public class RepairServices {
 
     private Long id;
 

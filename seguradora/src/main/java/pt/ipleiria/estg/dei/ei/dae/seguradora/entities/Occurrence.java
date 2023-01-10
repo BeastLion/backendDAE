@@ -2,7 +2,6 @@ package pt.ipleiria.estg.dei.ei.dae.seguradora.entities;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.james.mime4j.dom.datetime.DateTime;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
 
 import javax.persistence.DiscriminatorValue;
@@ -54,12 +53,6 @@ public class Occurrence implements Serializable {
     private Client client; //cada occurrence tem um user !!
     */
 
-    /*
-    @Getter
-    @Setter
-    private Insurer insurer;
-*/
-
     public Occurrence(Long id, String policyNumber, String description, LocalDate occurrenceDate, String location, OccurrenceType type, String object) {
         this.id = id;
         this.policyNumber = policyNumber;
@@ -69,6 +62,5 @@ public class Occurrence implements Serializable {
         this.type = type;
         this.object = object;
         //this.user = user;
-        //this.insurer = insurer;
     }
 }
