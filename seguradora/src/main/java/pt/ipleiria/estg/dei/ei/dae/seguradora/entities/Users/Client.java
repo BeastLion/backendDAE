@@ -1,8 +1,9 @@
-package pt.ipleiria.estg.dei.ei.dae.seguradora.entities;
+package pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users;
 
 import lombok.Getter;
 import lombok.Setter;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.ClientType;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.User;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 @Entity
 @DiscriminatorValue("C")
 @Table(name="Clients")
-public class Client extends User implements Serializable {
+public class Client extends User {
 
     @NotNull
     @Getter
@@ -45,7 +46,7 @@ public class Client extends User implements Serializable {
      */
 
     public Client() {
-
+        super();
     }
 
     public Client(String name, String lastName, LocalDate birthDate, String address, String phoneNumber, int financialNumber,String username, String password, String email, ClientType clientType, Long insurenceNumber) {

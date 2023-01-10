@@ -4,6 +4,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import lombok.Setter;
 @NamedQueries({
         @NamedQuery(name = "getAllUsers", query = "SELECT u FROM User u ORDER BY u.id")
 })
-public class User {
+public class User implements Serializable {
     @NotNull
     @Getter
     @Setter

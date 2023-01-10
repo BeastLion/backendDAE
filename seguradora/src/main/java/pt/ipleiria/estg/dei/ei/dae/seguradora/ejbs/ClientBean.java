@@ -1,6 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs;
 
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Client;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Client;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.ClientType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.security.Hasher;
 

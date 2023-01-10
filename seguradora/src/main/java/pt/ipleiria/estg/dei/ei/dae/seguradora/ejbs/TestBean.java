@@ -21,7 +21,7 @@ public class TestBean {
     @PersistenceContext
     private EntityManager em;
     public void getA() {
-        try {
+      /*  try {
             // Create a URL for the desired page
             URL url = new URL("https://63b88f9f3329392049dfb862.mockapi.io/seguros/seguros");
             // Create an HttpURLConnection.  This is useful for setting the request method, headers, and so on.
@@ -44,12 +44,13 @@ public class TestBean {
                 String id = object.getString("id");
                 String name = object.getString("name");
 
-                Test test = new Test(Long.parseLong(id),name);
-                em.persist(test);
+                //Test test = new Test(Long.parseLong(id),name);
+
+               // em.persist(test);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

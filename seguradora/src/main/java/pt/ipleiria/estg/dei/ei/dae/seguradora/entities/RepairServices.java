@@ -1,9 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Transient;
-import java.io.Serializable;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Insurer.Insurer;
 
 public class RepairServices {
 

@@ -14,9 +14,6 @@ public class ConfigBean {
     @EJB
     private ClientBean clientBean;
 
-    @EJB
-    private TestBean testBean;
-
     @PostConstruct
     public void populateDB() {
         System.out.println("Hello Java EE!");
@@ -24,6 +21,5 @@ public class ConfigBean {
                 "ola", "910202022", 5000000,
                 "ola", "ola", "ola@ola.pt", 123123123123L);
 
-        testBean.getA();
     }
 }

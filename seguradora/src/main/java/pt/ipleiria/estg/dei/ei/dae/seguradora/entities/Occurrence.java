@@ -12,7 +12,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-@DiscriminatorValue("O")
 @Table(name="Occurence")
 public class Occurrence implements Serializable {
 
