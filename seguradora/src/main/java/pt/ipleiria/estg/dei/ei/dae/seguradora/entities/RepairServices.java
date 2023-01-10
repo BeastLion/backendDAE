@@ -4,14 +4,17 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.io.Serializable;
-import java.util.LinkedList;
 
 @Entity
-public class Insurer implements Serializable {
+public class RepairServices implements Serializable {
 
     @Id
-    private Long id;
+    private int id;
+
     @Transient
-    private LinkedList<Expert> experts;
+    private String name;
+
+    @Transient
+    private Insurer insurer;
 
 }
