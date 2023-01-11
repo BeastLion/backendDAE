@@ -7,7 +7,6 @@ import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.io.Serializable;
 
 @Entity

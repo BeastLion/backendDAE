@@ -9,6 +9,7 @@ import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.User;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class Client extends User {
 
     public Client() {
         super();
-        this.occurrences = new LinkedList<>();
+        this.occurrences = new ArrayList<>();
     }
 
     public Client(String username,String name, String lastName, LocalDate birthDate, String address, String phoneNumber, int financialNumber,  String password, String email, ClientType clientType) {
@@ -53,6 +54,6 @@ public class Client extends User {
         this.financialNumber = financialNumber;
         this.clientType = clientType;
         this.insurenceNumber = 1L;
-        this.occurrences = new LinkedList<>();
+        this.occurrences = new ArrayList<>();
     }
 }

@@ -7,7 +7,6 @@ import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Expert;
 
 import javax.persistence.Transient;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class InsurerOwner {

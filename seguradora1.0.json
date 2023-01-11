@@ -31,7 +31,7 @@
         "specialty": "Auto",
         "technician": [
           {
-            "nif": "255705875"
+            "username": "tech1"
           }
         ]
       },
@@ -49,7 +49,7 @@
     ]
   },
   {
-    "id": "1",
+    "id": "2",
     "Insurer": "Fidelidade",
     "Expert": [
       {
