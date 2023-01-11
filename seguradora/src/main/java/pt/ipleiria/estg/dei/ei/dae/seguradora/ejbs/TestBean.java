@@ -49,9 +49,9 @@ public class TestBean {
                 JsonObject object = array.getJsonObject(i);
                 String id = object.getString("id");
                 System.out.println("                                        FOR");
-                String nif = object.getString("nif");
+                String Insurer = object.getString("Insurer");
                 System.out.println("                                        FOR");
-                Test test = new Test(Long.parseLong(id),nif);
+                Test test = new Test(Long.parseLong(id),Insurer);
 
                 em.persist(test);
             }
