@@ -3,19 +3,24 @@ import lombok.Getter;
 import lombok.Setter;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceStatus;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Client;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 @Entity
 @DiscriminatorValue("O")
-@Table(name="Occurence")
+@Table(name="Occurrence")
 @NamedQueries({
         @NamedQuery(
                 name = "getAllOccurrences",
                 query = "SELECT o FROM Occurrence o ORDER BY o.id"
         )})
 public class Occurrence implements Serializable {
+
+
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Getter
     @Setter
@@ -43,23 +48,28 @@ public class Occurrence implements Serializable {
     private OccurrenceStatus status;
     @Getter
     @Setter
-    private String object; //podiamos meter InsuredObject (ou seja mais uma class) assim podiamos ter uma lista de objetos
+    private String item; //podiamos meter InsuredObject (ou seja mais uma class) assim podiamos ter uma lista de objetos
     //que depois tinham um ID para cada user, etc... etc... etc...
-    /*
+
     @Getter
     @Setter
-    @ManyToOne(mappedBy = "occurrences")
+    @ManyToOne
+    @JoinColumn(name = "client_nif")
     private Client client; //cada occurrence tem um user !!
-    */
-    public Occurrence(Long id, String policyNumber, String description, LocalDate occurrenceDate, String location, OccurrenceType type, String object, OccurrenceStatus status) {
+
+    public Occurrence() {
+    }
+
+    public Occurrence(Long id, String policyNumber, String description, LocalDate occurrenceDate, String location, OccurrenceType type, String item, OccurrenceStatus status, Client client) {
+        this();
         this.id = id;
         this.policyNumber = policyNumber;
         this.description = description;
         this.occurrenceDate = occurrenceDate;
         this.location = location;
         this.type = type;
-        this.object = object;
-        //this.user = user;
+        this.item = item;
+        this.client = client;
         this.status = OccurrenceStatus.WAITING;
     }
 }

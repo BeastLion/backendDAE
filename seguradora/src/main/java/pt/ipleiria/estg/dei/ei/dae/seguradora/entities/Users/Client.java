@@ -3,19 +3,21 @@ package pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users;
 import lombok.Getter;
 import lombok.Setter;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.ClientType;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.User;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("C")
 @Table(name = "Clients")
 public class Client extends User {
+
+    @Column(unique = true)
     @NotNull
     @Getter
     @Setter
@@ -36,13 +38,12 @@ public class Client extends User {
     @Setter
     private Long insurenceNumber;
 
-    /*
     @OneToMany(mappedBy = "client")
     private List<Occurrence> occurrences;
-     */
 
     public Client() {
         super();
+        this.occurrences = new LinkedList<>();
     }
 
     public Client(String username,String name, String lastName, LocalDate birthDate, String address, String phoneNumber, int financialNumber,  String password, String email, ClientType clientType) {
@@ -51,6 +52,7 @@ public class Client extends User {
         this.address = address;
         this.financialNumber = financialNumber;
         this.clientType = clientType;
-        this.insurenceNumber = 1l;
+        this.insurenceNumber = 1L;
+        this.occurrences = new LinkedList<>();
     }
 }
