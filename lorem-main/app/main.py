@@ -3,6 +3,7 @@ from typing import Any, List
 from motor.motor_asyncio import AsyncIOMotorCollection
 from pymongo.results import InsertOneResult, InsertManyResult, DeleteResult
 from fastapi import FastAPI, Depends, Request, status
+from fastapi.middleware.cors import CORSMiddleware
 
 import exceptions
 
