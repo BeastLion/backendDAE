@@ -16,11 +16,7 @@ public class ConfigBean {
     private ClientBean clientBean;
 
     @EJB
-    private InsurerBean insurerBean;
-
- /*   @Transactional
-    public void getApiData(){
-    }*/
+    private TestBean testBean;
 
     @PostConstruct
     public void populateDB() {
@@ -31,6 +27,10 @@ public class ConfigBean {
         clientBean.create("ola", "ola", LocalDate.EPOCH,
                 "ola", "910202022", 5000000,
                 "ola", "ola", "ola@ola.pt", 123123123123L);
+        System.out.println("                                      Hello Java EE!");
+        System.out.println("              Hello Java EE!");
+        System.out.println("Hello Java EE!");
 
+        testBean.getA();
     }
 }

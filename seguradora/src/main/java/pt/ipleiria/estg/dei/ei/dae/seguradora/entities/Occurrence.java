@@ -1,58 +1,57 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.entities;
-
 import lombok.Getter;
 import lombok.Setter;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceStatus;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
-
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
-
 @Entity
+@DiscriminatorValue("O")
 @Table(name="Occurence")
+@NamedQueries({
+        @NamedQuery(
+                name = "getAllOccurrences",
+                query = "SELECT o FROM Occurrence o ORDER BY o.id"
+        )})
 public class Occurrence implements Serializable {
-
     @Id
     @Getter
     @Setter
     private Long id;
-
+    //Ensurer ensurer
     @Getter
     @Setter
     private String policyNumber;
-
     @Getter
     @Setter
     private String description;
-
     @Getter
     @Setter
     private LocalDate occurrenceDate;
-
     @Getter
     @Setter
     private String location;
-
     @Getter
     @Setter
     private OccurrenceType type;
-
+    @NotNull
+    @Getter
+    @Setter
+    @Enumerated(EnumType.STRING)
+    private OccurrenceStatus status;
     @Getter
     @Setter
     private String object; //podiamos meter InsuredObject (ou seja mais uma class) assim podiamos ter uma lista de objetos
     //que depois tinham um ID para cada user, etc... etc... etc...
-
     /*
     @Getter
     @Setter
     @ManyToOne(mappedBy = "occurrences")
     private Client client; //cada occurrence tem um user !!
     */
-
-    public Occurrence(Long id, String policyNumber, String description, LocalDate occurrenceDate, String location, OccurrenceType type, String object) {
+    public Occurrence(Long id, String policyNumber, String description, LocalDate occurrenceDate, String location, OccurrenceType type, String object, OccurrenceStatus status) {
         this.id = id;
         this.policyNumber = policyNumber;
         this.description = description;
@@ -61,5 +60,6 @@ public class Occurrence implements Serializable {
         this.type = type;
         this.object = object;
         //this.user = user;
+        this.status = OccurrenceStatus.WAITING;
     }
 }
