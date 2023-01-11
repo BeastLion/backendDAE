@@ -21,16 +21,20 @@ public class TestBean {
     @PersistenceContext
     private EntityManager em;
     public void getA() {
-      /*  try {
+        try {
+            System.out.println("ENTREI                   ");
             // Create a URL for the desired page
-            URL url = new URL("https://63b88f9f3329392049dfb862.mockapi.io/seguros/seguros");
+            URL url = new URL("http://host.docker.internal:8000/insurers");
+
             // Create an HttpURLConnection.  This is useful for setting the request method, headers, and so on.
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
+            System.out.println("                                        GETTTTTTTTTTTTTTTT");
             // Read the response from the server
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
             String inputLine;
+            System.out.println("                                        BUFFER");
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
@@ -38,19 +42,22 @@ public class TestBean {
             //System.out.println(response.toString());
             // Parse the JSON data and create a list of Insure objects
             JsonReader jsonReader = Json.createReader(new StringReader(response.toString()));
+            System.out.println("                                        JSONREADER");
             JsonArray array = jsonReader.readArray();
             for (int i = 0; i < array.size(); i++) {
+                System.out.println("                                        FOR");
                 JsonObject object = array.getJsonObject(i);
                 String id = object.getString("id");
-                String name = object.getString("name");
+                System.out.println("                                        FOR");
+                String nif = object.getString("nif");
+                System.out.println("                                        FOR");
+                Test test = new Test(Long.parseLong(id),nif);
 
-                //Test test = new Test(Long.parseLong(id),name);
-
-               // em.persist(test);
+                em.persist(test);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
     }
 }
