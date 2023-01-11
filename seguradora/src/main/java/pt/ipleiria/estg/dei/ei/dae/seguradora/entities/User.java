@@ -17,6 +17,10 @@ import lombok.Setter;
         @NamedQuery(name = "getAllUsers", query = "SELECT u FROM User u ORDER BY u.id")
 })
 public class User implements Serializable {
+    @Id
+    @Getter
+    @Setter
+    private String username;
     @NotNull
     @Getter
     @Setter
@@ -27,17 +31,16 @@ public class User implements Serializable {
     private String lastName;
 
     @NotNull
+    @Column(unique = true)
     @Pattern(regexp="^[9][0-9]{8}$",message="Invalid Phone Number") //começa por nove tem oito digitos asseguir de 0 a 9
     @Getter
     @Setter
     private String phoneNumber;
-    @Id
-    @Getter
-    @Setter
-    private String username;
+    @NotNull
     @Getter
     @Setter
     private String password;
+    @NotNull
     @Email
     @Column(unique = true)
     @Getter
@@ -47,11 +50,12 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(String name, String lastName, String phoneNumber,String username, String password, String email) {
+    public User(String username,String name, String lastName, String phoneNumber, String password, String email) {
+        this();
+        this.username = username;
         this.name = name;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
-        this.username = username;
         this.password = password;
         this.email = email;
     }

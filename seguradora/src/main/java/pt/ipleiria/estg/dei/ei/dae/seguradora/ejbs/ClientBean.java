@@ -18,9 +18,9 @@ public class ClientBean {
     @Inject // import javax.inject.Inject;
     private Hasher hasher;
 
-    public void create(String name, String lastName, LocalDate birthDate, String address, String phoneNumber, int financialNumber,String username, String password, String email, Long insurenceNumber) {
+    public void create(String username,String name, String lastName, LocalDate birthDate, String address, String phoneNumber, int financialNumber, String password, String email) {
         ClientType clientType = whatTypeOfClient(financialNumber);
-        Client client = new Client(name,lastName,birthDate,address,phoneNumber,financialNumber,username, hasher.hash(password),email,clientType, insurenceNumber);
+        Client client = new Client(username,name,lastName,birthDate,address,phoneNumber,financialNumber, hasher.hash(password),email,clientType);
         em.persist(client);
     }
 

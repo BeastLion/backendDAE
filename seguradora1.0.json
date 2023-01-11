@@ -1,6 +1,100 @@
 [
   {
     "id": "1",
-    "Insurer": "Fidelidade"
+    "Insurer": "Fidelidade",
+    "Expert": [
+      {
+        "username": "expert1"
+      },
+      {
+        "username": "expert2"
+      }
+    ],
+    "Insurances": [
+      {
+        "id": "1",
+        "policyName": "SaudePlus",
+        "covers": [
+          "accident",
+          "dentist",
+          "medicine"
+        ],
+        "InsurerId": "1",
+        "type": "health"
+      }
+    ],
+    "Services": [
+      {
+        "name": "Carrito",
+        "location": "South Gate",
+        "Id": "1",
+        "specialty": "Auto",
+        "technician": [
+          {
+            "nif": "255705875"
+          }
+        ]
+      },
+      {
+        "name": "Tomas e Filhos",
+        "location": "Cedar Hill",
+        "Id": "5",
+        "specialty": "Housing",
+        "technician": [
+          {
+            "username": "tech2"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1",
+    "Insurer": "Fidelidade",
+    "Expert": [
+      {
+        "username": "expert1"
+      },
+      {
+        "username": "expert2"
+      }
+    ],
+    "Insurances": [
+      {
+        "id": "1",
+        "policyName": "SaudePlus",
+        "covers": [
+          "accident",
+          "dentist",
+          "medicine"
+        ],
+        "InsurerId": "1",
+        "type": "health"
+      }
+    ],
+    "Services": [
+      {
+        "name": "Carrito",
+        "location": "South Gate",
+        "Id": "1",
+        "specialty": "Auto",
+        "technician": [
+          {
+            "username": "tech1"
+          }
+        ]
+      },
+      {
+        "name": "Tomas e Filhos",
+        "location": "Cedar Hill",
+        "Id": "5",
+        "specialty": "Housing",
+        "technician": [
+          {
+            "username": "tech2"
+          }
+        ]
+      }
+    ]
   }
 ]
