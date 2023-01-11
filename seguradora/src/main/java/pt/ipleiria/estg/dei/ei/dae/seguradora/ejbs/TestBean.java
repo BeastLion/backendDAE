@@ -29,12 +29,10 @@ public class TestBean {
             // Create an HttpURLConnection.  This is useful for setting the request method, headers, and so on.
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            System.out.println("                                        GETTTTTTTTTTTTTTTT");
             // Read the response from the server
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder response = new StringBuilder();
             String inputLine;
-            System.out.println("                                        BUFFER");
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
@@ -42,18 +40,11 @@ public class TestBean {
             //System.out.println(response.toString());
             // Parse the JSON data and create a list of Insure objects
             JsonReader jsonReader = Json.createReader(new StringReader(response.toString()));
-            System.out.println("                                        JSONREADER");
             JsonArray array = jsonReader.readArray();
             for (int i = 0; i < array.size(); i++) {
-                System.out.println("                                        FOR");
                 JsonObject object = array.getJsonObject(i);
                 String id = object.getString("id");
-                System.out.println("                                        FOR");
-                String Insurer = object.getString("Insurer");
-                System.out.println("                                        FOR");
-                Test test = new Test(Long.parseLong(id),Insurer);
-
-                em.persist(test);
+               // Test test = new Test(Long.parseLong(id),Insurer);
             }
 
         } catch (Exception e) {

@@ -20,7 +20,6 @@ public class ConfigBean {
 
     @PostConstruct
     public void populateDB() {
-        insurerBean.getAll();
 
         System.out.println("Hello Java EE!");
 
