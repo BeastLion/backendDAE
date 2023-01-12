@@ -29,7 +29,6 @@ public class Client extends User {
     LocalDate birthDate;
     @NotNull
     private String address;
-    private Long insurenceNumber;
     @Transient
     private List<Policy> policies;
 
@@ -44,7 +43,6 @@ public class Client extends User {
         this.address = address;
         this.financialNumber = financialNumber;
         this.clientType = clientType;
-        this.insurenceNumber = 1L;
         this.policies = new ArrayList<>();
     }
     public void addPolicy(Policy policy) {
