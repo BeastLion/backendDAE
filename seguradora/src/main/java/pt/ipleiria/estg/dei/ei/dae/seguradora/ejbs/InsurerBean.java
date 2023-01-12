@@ -164,8 +164,11 @@ public class InsurerBean {
             case "HEALTH":
             case "health":
                 return InsuranceType.HEALTH;
+            case "TECH":
+            case "tech":
+                return InsuranceType.TECH;
             default:
-                return InsuranceType.OTHERS;
+                return null;
         }
     }
 

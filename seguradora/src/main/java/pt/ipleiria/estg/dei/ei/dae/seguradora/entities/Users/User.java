@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Policy;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "userType")
@@ -39,7 +40,7 @@ public class User implements Serializable {
     @Email
     @Column(unique = true)
     private String email;
-    @OneToMany(mappedBy = "user")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
     private List<Occurrence> occurrences;
     @Version
     private int version;
@@ -63,5 +64,11 @@ public class User implements Serializable {
         DiscriminatorValue userType = this.getClass().getAnnotation(DiscriminatorValue.class);
         return userType == null ? null : userType.value();
     }
+    public void addOccurrence(Occurrence occurrence) {
+        this.occurrences.add(occurrence);
+    }
 
+    public void removeOccurrence(Occurrence occurrence) {
+        this.occurrences.remove(occurrence);
+    }
 }

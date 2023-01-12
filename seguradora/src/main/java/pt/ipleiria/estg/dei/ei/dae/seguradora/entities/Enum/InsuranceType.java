@@ -4,5 +4,5 @@ public enum InsuranceType {
     AUTO,
     HOUSING,
     HEALTH,
-    OTHERS
+    TECH
 }

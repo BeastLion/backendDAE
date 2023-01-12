@@ -6,8 +6,10 @@ import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Client;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Expert;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.User;
 
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
@@ -24,16 +26,39 @@ import java.util.stream.Collectors;
 
 @Stateless
 public class OccurrenceBean {
+    @EJB
+    private PolicyBean policyBean;
     @PersistenceContext
     EntityManager em;
 
-    public void create(Long id, String policyNumber, String description, LocalDate occurrenceDate, String location, OccurrenceType type, String item, OccurrenceStatus status, String userName) throws MyEntityNotFoundException {
+    public void create(long policyNumber, String description,
+                       String location, OccurrenceType type, String item, String userName) throws MyEntityNotFoundException {
+        System.out.println("-----------------------------------------");
+        System.out.println("-----------------------------------------");
+        System.out.println("-----------------------------------------");
+        System.out.println("-----------------------------------------");
+        System.out.println("-----------------------------------------");
+        System.out.println("-----------------------------------------");
+        System.out.println("policy:"+policyNumber);
+        System.out.println("policy:"+description);
+        System.out.println("policy:"+location);
+        System.out.println("policy:"+type);
+        System.out.println("policy:"+item);
+        System.out.println("policy:"+userName);
+        var policy = policyBean.find(policyNumber);
+        System.out.println("AQUI");
         var client = findOrFailClient(userName);
-        var occurrence = new Occurrence(id, policyNumber, description, occurrenceDate, location, type, item, status, client);
+        System.out.println("AQUI2");
+        var occurrence = new Occurrence(policy, description, location, type, item);
+        System.out.println("AQUI3");
+        client.addOccurrence(occurrence);
+        System.out.println("AQUI4");
+        occurrence.addUser(client);
+        System.out.println("AQUI5");
         em.persist(occurrence);
     }
 
-    public void update(Long id, String description, String location, OccurrenceType type, String item, String userName) throws MyEntityNotFoundException {
+    public void update(Long id, String description, String location, OccurrenceType type, String item, List<User> users) throws MyEntityNotFoundException {
         var occurrence = findOrFailOccurrence(id);
         em.lock(occurrence, LockModeType.OPTIMISTIC); //Enquanto user estiver fazer update mais ninguem pode mexer naquela ocorrencia
 

@@ -30,28 +30,26 @@ public class OccurrenceService {
     public Response createNewOccurrence(OccurrenceDTO occurrenceDTO) throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
         occurrenceBean.create(
-                occurrenceDTO.getId(),
                 occurrenceDTO.getPolicyNumber(),
                 occurrenceDTO.getDescription(),
-                occurrenceDTO.getOccurrenceDate(),
                 occurrenceDTO.getLocation(),
                 occurrenceDTO.getType(),
                 occurrenceDTO.getItem(),
-                occurrenceDTO.getStatus(),
                 username
         );
 
         //TODO nao esquecer lazy loads !!
-        var occurrence = occurrenceBean.findOrFailOccurrence(occurrenceDTO.getId());
+        //var occurrence = occurrenceBean.findOrFailOccurrence(occurrenceDTO.getId());
 
-        return Response.status(Response.Status.CREATED).entity(OccurrenceDTO.toDTO(occurrence)).build();
+        return Response.status(Response.Status.CREATED).entity("OccurrenceDTO.toDTO(occurrence)").build();
+        //return Response.status(Response.Status.CREATED).entity(OccurrenceDTO.toDTO(occurrence)).build();
     }
 
     @PUT
     @Path("/{id}")
     public Response updateOccurrence(@PathParam("id") Long id, OccurrenceDTO occurrenceDTO) throws MyEntityNotFoundException {
 
-        occurrenceBean.update(id, occurrenceDTO.getDescription(), occurrenceDTO.getLocation(), occurrenceDTO.getType(), occurrenceDTO.getItem(), occurrenceDTO.getUsername());
+        occurrenceBean.update(id, occurrenceDTO.getDescription(), occurrenceDTO.getLocation(), occurrenceDTO.getType(), occurrenceDTO.getItem(), occurrenceDTO.getUsers());
 
         //TODO temos de validar se o USER tem essa ocurrencia ou seja logo tem que se mudar ocurrencia de sitio, list<Occurrrencia> vai para user
 

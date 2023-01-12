@@ -5,6 +5,7 @@ import lombok.Setter;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceStatus;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.User;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -18,7 +19,7 @@ public class OccurrenceDTO implements Serializable {
     private Long id;
     @Getter
     @Setter
-    private String policyNumber;
+    private long policyNumber;
     @Getter
     @Setter
     private String description;
@@ -39,13 +40,13 @@ public class OccurrenceDTO implements Serializable {
     private String item;
     @Getter
     @Setter
-    private String username;
+    private List<User> users;
 
     public OccurrenceDTO(){
 
     }
 
-    public OccurrenceDTO(Long id, String policyNumber, String description, LocalDate occurrenceDate, String location, OccurrenceType type, String item, OccurrenceStatus status, String username) {
+    public OccurrenceDTO(Long id, long policyNumber, String description, LocalDate occurrenceDate, String location, OccurrenceType type, String item, OccurrenceStatus status, List<User> users) {
         this.id = id;
         this.policyNumber = policyNumber;
         this.description = description;
@@ -53,21 +54,21 @@ public class OccurrenceDTO implements Serializable {
         this.location = location;
         this.type = type;
         this.item = item;
-        this.username = username;
+        this.users = users;
         this.status = OccurrenceStatus.WAITING;
     }
 
     public static OccurrenceDTO toDTO(Occurrence occurrence){
         return new OccurrenceDTO(
                 occurrence.getId(),
-                occurrence.getPolicyNumber(),
+                occurrence.getPolicy().getPolicyCode(),
                 occurrence.getDescription(),
                 occurrence.getOccurrenceDate(),
                 occurrence.getLocation(),
                 occurrence.getType(),
                 occurrence.getItem(),
                 occurrence.getStatus(),
-                occurrence.getUser().getUsername()
+                occurrence.getUsers()
         );
     }
 

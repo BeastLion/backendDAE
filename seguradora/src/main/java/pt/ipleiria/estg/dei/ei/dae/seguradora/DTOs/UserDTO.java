@@ -2,20 +2,19 @@ package pt.ipleiria.estg.dei.ei.dae.seguradora.DTOs;
 
 import lombok.Getter;
 import lombok.Setter;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Policy;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
+@Setter
 public class UserDTO {
-
-    @Getter
-    @Setter
     private String username;
-
-    @Getter
-    @Setter
     private String userType;
+
+    private List<Policy> policyList;
 
     public UserDTO() {
     }

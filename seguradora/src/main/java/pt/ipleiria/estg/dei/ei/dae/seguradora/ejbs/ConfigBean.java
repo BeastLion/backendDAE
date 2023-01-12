@@ -1,5 +1,8 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs;
 
+import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityNotFoundException;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -19,9 +22,11 @@ public class ConfigBean {
     private TechnicianBean technicianBean;
     @EJB
     private PolicyBean policyBean;
+    @EJB
+    private OccurrenceBean occurrenceBean;
 
     @PostConstruct
-    public void populateDB() {
+    public void populateDB() throws MyEntityNotFoundException {
 
         System.out.println("Hello Java EE!");
 
@@ -35,11 +40,12 @@ public class ConfigBean {
         technicianBean.create("tech1","Tech","1","912345633","tech1","tech1@mail.pt");
         technicianBean.create("tech2","Tech","2","912345634","tech2","tech2@mail.pt");
 
+
         //Api get data
-        System.out.println("ola");
-        System.out.println("ola");
-        System.out.println("ola");
         insurerBean.getAll();
         policyBean.getAll();
+
+        occurrenceBean.create(1l,"Aparelho dentario","Rua Bar la fiesta", OccurrenceType.OTHERS,"Aparelho","ola");
+        occurrenceBean.create(1l,"Aparelho dentario","Rua Bar la fiesta", OccurrenceType.OTHERS,"Aparelho","ola");
     }
 }
