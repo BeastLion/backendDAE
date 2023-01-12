@@ -18,7 +18,9 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Stateless
 public class InsurerBean {
@@ -35,6 +37,8 @@ public class InsurerBean {
     @Setter
     private List<InsurerOwner> insurerOwnerList;
 
+    private Map<Integer, InsurerOwner> insurerOwnerHashMap = new HashMap<>();
+    private Map<String, Insurance> insuranceHashMap = new HashMap<>();
     public void getAll() {
         insurerOwnerList = new ArrayList<>();
         try {
@@ -121,6 +125,7 @@ public class InsurerBean {
             e.printStackTrace();
         }
         System.out.println("insurerOwners: " + insurerOwnerList.size());
+        initializeHashMap();
     }
 
     public InsurerOwner createInsurerOwner(String name, int id) {
@@ -132,8 +137,6 @@ public class InsurerBean {
         var insurance = new Insurance(id, name,insuranceType);
         return insurance;
     }
-
-
     private OccurrenceType setJsonToOccurrenceType(String type) {
         switch (type) {
             case "ACCIDENT":
@@ -166,18 +169,21 @@ public class InsurerBean {
         }
     }
 
-    public Insurance getbyInsuranceForPolicy(int insurerOwner, int insuranceID) {
-        InsurerOwner insurerOwnerAUX;
+    public void initializeHashMap() {
         for (InsurerOwner i : insurerOwnerList) {
-            if (i.getId() == insurerOwner) {
-                insurerOwnerAUX = i;
-                for (Insurance j : insurerOwnerAUX.getInsuranceList()) {
-                    if (j.getId() == insuranceID) {
-                        return j;
-                    }
-                }
+            insurerOwnerHashMap.put(i.getId(), i);
+            for (Insurance j : i.getInsuranceList()) {
+                String key = i.getId() + "-" + j.getId();
+                insuranceHashMap.put(key, j);
             }
         }
-        return null;
+    }
+    public Insurance getbyInsuranceForPolicy(int insurerOwner, int insuranceID) {
+        InsurerOwner insurerOwnerAUX = insurerOwnerHashMap.get(insurerOwner);
+        if (insurerOwnerAUX == null) {
+            return null;
+        }
+        String insuranceKey = insurerOwner + "-" + insuranceID;
+        return insuranceHashMap.get(insuranceKey);
     }
 }

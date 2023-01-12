@@ -18,7 +18,6 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @ToString
 public class Occurrence implements Serializable {
-
     //@GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;

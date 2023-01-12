@@ -16,7 +16,9 @@ import javax.json.JsonReader;
 import java.io.StringReader;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Stateless
 public class PolicyBean {
@@ -31,6 +33,7 @@ public class PolicyBean {
     @Setter
     private List<Policy> policyList;
 
+    private Map<Long, Policy> policyHashMap = new HashMap<>();
     public void getAll() {
         policyList = new ArrayList<>();
         try {
@@ -57,6 +60,7 @@ public class PolicyBean {
             e.printStackTrace();
         }
         System.out.println("Polices List: "+ policyList.size());
+        initializeHashMap();
     }
 
     public void create(long policyCode, Insurance insurance, Client client, long price, LocalDate subscriptionDate, long loyaltyPeriod, long coverAmount, String securedGood){
@@ -64,5 +68,17 @@ public class PolicyBean {
         policy.getInsurance().addPolicy(policy);
         policy.getClient().addPolicy(policy);
         policyList.add(policy);
+    }
+
+    public void initializeHashMap() {
+        // Initialize the HashMap with the Policy objects from the policyList
+        for (Policy i : policyList) {
+            policyHashMap.put(i.getPolicyCode(), i);
+        }
+    }
+
+    public Policy find(long policyCode) {
+        // Look up the Policy object with the given code in the HashMap
+        return policyHashMap.get(policyCode);
     }
 }
