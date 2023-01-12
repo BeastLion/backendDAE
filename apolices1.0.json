@@ -1,0 +1,30 @@
+[
+    {
+        
+            
+                "financialNumber": "5000000",
+                "InsurerOwner": "1",
+                "InsuranceID": "1",
+                "price": "100",
+                "subscriptionDate": "2022-12-28",
+                "loyaltyPeriod": "48",
+                "coverAmount": "1000000",
+                "securedGood": "",
+                "policyCode": "1"
+            
+        
+    },
+    {
+
+                "financialNumber": "5000000",
+                "InsurerOwner": "1",
+                "InsuranceID": "2",
+                "price": "300",
+                "subscriptionDate": "2022-12-29",
+                "loyaltyPeriod": "6",
+                "coverAmount": "500000",
+                "securedGood": "AA-00-AA",
+                "policyCode": "2"
+
+    }
+]

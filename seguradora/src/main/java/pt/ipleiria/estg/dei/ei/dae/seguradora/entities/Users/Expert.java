@@ -11,12 +11,12 @@ import java.io.Serializable;
 
 @Entity
 @DiscriminatorValue("E")
-@Table(name = "Experts")
 public class Expert extends User implements Serializable {
+
+    @Transient
     @Getter
     @Setter
-    @NotNull
-    private long insurerOwner;
+    private InsurerOwner insurerOwner;
 
     public Expert() {
         super();
@@ -24,6 +24,6 @@ public class Expert extends User implements Serializable {
 
     public Expert(String username, String name, String lastName, String phoneNumber, String password, String email) {
         super(username,name, lastName, phoneNumber,  password, email);
-        this.insurerOwner = -1;
+        this.insurerOwner = null;
     }
 }

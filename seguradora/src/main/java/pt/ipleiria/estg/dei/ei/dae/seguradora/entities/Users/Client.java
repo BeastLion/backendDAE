@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.ClientType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Policy;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.User;
 
 import javax.persistence.*;
@@ -15,7 +16,6 @@ import java.util.List;
 
 @Entity
 @DiscriminatorValue("C")
-@Table(name = "Clients")
 public class Client extends User {
 
     @Column(unique = true)
@@ -39,11 +39,17 @@ public class Client extends User {
     @Setter
     private Long insurenceNumber;
 
+    @Transient
+    @Getter
+    @Setter
+    private List<Policy> policies;
+
     @OneToMany(mappedBy = "client")
     private List<Occurrence> occurrences;
 
     public Client() {
         super();
+        this.policies = new ArrayList<>();
         this.occurrences = new ArrayList<>();
     }
 
@@ -54,6 +60,14 @@ public class Client extends User {
         this.financialNumber = financialNumber;
         this.clientType = clientType;
         this.insurenceNumber = 1L;
+        this.policies = new ArrayList<>();
         this.occurrences = new ArrayList<>();
+    }
+    public void addPolicy(Policy policy) {
+        this.policies.add(policy);
+    }
+
+    public void removePolicy(Policy policy) {
+        this.policies.remove(policy);
     }
 }

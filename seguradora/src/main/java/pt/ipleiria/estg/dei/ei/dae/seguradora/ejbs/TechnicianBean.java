@@ -16,16 +16,6 @@ public class TechnicianBean {
         em.persist(technician);
     }
 
-    public void setRepairService(String username, long repairService_id) {
-        var technician = find(username);
-        if (technician.getRepairServices() == repairService_id) {
-            return;
-        }
-        if (technician != null) {
-            technician.setRepairServices(repairService_id);
-        }
-    }
-
     public Technician find(String username) {
         var technician = em.find(Technician.class, username);
         if (technician != null)

@@ -4,9 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.InsuranceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Policy;
 
 import javax.persistence.Transient;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Insurance {
 
@@ -35,8 +37,14 @@ public class Insurance {
     @Setter
     private InsuranceType insuranceType;
 
+    @Transient
+    @Getter
+    @Setter
+    private List<Policy> policies;
+
     public Insurance() {
         this.occurrenceTypes = new LinkedList<>();
+        this.policies = new LinkedList<>();
     }
 
     public Insurance(int id, String name, InsuranceType insuranceType) {
@@ -53,5 +61,13 @@ public class Insurance {
 
     public void removeOccurrenceType(OccurrenceType occurrenceType) {
         this.occurrenceTypes.remove(occurrenceType);
+    }
+
+    public void addPolicy(Policy policy) {
+        this.policies.add(policy);
+    }
+
+    public void removePolicy(Policy policy) {
+        this.policies.remove(policy);
     }
 }

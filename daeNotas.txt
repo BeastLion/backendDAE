@@ -1,0 +1,12 @@
+Meter nif logar com client, expert username, serviços token.
+
+super Serialibe ( pensar)
+
+antes de criar ocorrencia e preciso verificar montante 
+
+ocorencia falta id incrementar e meter data corrente	
+
+querry user role para DTO ****
+
+
+

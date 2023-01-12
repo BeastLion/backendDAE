@@ -17,16 +17,6 @@ public class ExpertBean {
         em.persist(expert);
     }
 
-    public void setInsurer(String username, int insurer_id) {
-        var expert = find(username);
-        if (expert.getInsurerOwner() == insurer_id) {
-            return;
-        }
-        if (expert != null) {
-            expert.setInsurerOwner(insurer_id);
-        }
-    }
-
     public Expert find(String username) {
         var expert = em.find(Expert.class, username);
         if (expert != null)

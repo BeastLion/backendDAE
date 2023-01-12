@@ -25,28 +25,21 @@ import java.util.List;
 @Stateless
 public class InsurerBean {
     @EJB
+    private LoremBean loremBean;
+    @EJB
     private ExpertBean expertBean;
     @EJB
     private TechnicianBean technicianBean;
+    @EJB
+    private RepairServicesBean repairServicesBean;
+
+    private List<InsurerOwner> insurerOwners;
 
     public void getAll() {
+        insurerOwners = new ArrayList<>();
         try {
             //---------------------------------
-            // Create a URL for the desired page
-            URL url = new URL("http://host.docker.internal:8000/insurers");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-
-            // Read the response from the server
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String inputLine;
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-
-            in.close();
+            StringBuilder response = loremBean.connect("insurers");
             //---------------------------------
 
             // Parse the JSON data and create a list of Insure objects
@@ -55,23 +48,21 @@ public class InsurerBean {
 
             for (int i = 0; i < array.size(); i++) {
                 JsonObject objectOwner = array.getJsonObject(i);
-                String insuranceOwner_id = objectOwner.getString("id");
+                int insuranceOwner_id = Integer.parseInt(objectOwner.getString("id"));
                 String insuranceOwner_name = objectOwner.getString("Insurer");
 
                 JsonArray insuranceOwner_Experts = objectOwner.getJsonArray("Expert");
                 List<Expert> experts = new ArrayList<>();
                 for (int j = 0; j < insuranceOwner_Experts.size(); j++) {
                     JsonObject objectExperts = insuranceOwner_Experts.getJsonObject(j);
-                    String expert_username = objectExperts.getString("username");
-                    expertBean.setInsurer(expert_username, Integer.parseInt(insuranceOwner_id));
-                    experts.add(expertBean.find(expert_username));
+                    experts.add(expertBean.find(objectExperts.getString("username")));
                 }
 
                 JsonArray insuranceOwner_insurances = objectOwner.getJsonArray("Insurances");
                 List<Insurance> insurances = new ArrayList<>();
                 for (int k = 0; k < insuranceOwner_insurances.size(); k++) {
                     JsonObject objectInsurances = insuranceOwner_insurances.getJsonObject(k);
-                    String insurace_id = objectInsurances.getString("id");
+                    int insurace_id = Integer.parseInt(objectInsurances.getString("id"));
                     String insurace_name = objectInsurances.getString("policyName");
                     InsuranceType insrance_type = setJsonToInsurerType(objectInsurances.getString("type"));
 
@@ -81,7 +72,7 @@ public class InsurerBean {
                         occurrences.add(setJsonToOccurrenceType(cover.getString(l)));
                     }
 
-                    Insurance insurance = new Insurance(Integer.parseInt(insurace_id), insurace_name, insrance_type);
+                    Insurance insurance = createInsurance(insurace_id, insurace_name, insrance_type);
                     for (OccurrenceType o : occurrences) {
                         insurance.addOccurrenceType(o);
                     }
@@ -92,7 +83,7 @@ public class InsurerBean {
                 List<RepairServices> servicesArray = new ArrayList<>();
                 for (int n = 0; n < services.size(); n++) {
                     JsonObject objectServices = services.getJsonObject(n);
-                    String service_id = objectServices.getString("Id");
+                    long service_id = Long.parseLong(objectServices.getString("Id"));
                     String service_name = objectServices.getString("name");
                     String service_location = objectServices.getString("location");
                     InsuranceType service_insurertype = setJsonToInsurerType(objectServices.getString("specialty"));
@@ -101,22 +92,22 @@ public class InsurerBean {
                     List<Technician> technicians = new ArrayList<>();
                     for (int m = 0; m < service_technicians.size(); m++) {
                         JsonObject objectTechnician = service_technicians.getJsonObject(m);
-                        String technician_username = objectTechnician.getString("username");
-                        technicianBean.setRepairService(technician_username, Integer.parseInt(service_id));
-                        technicians.add(technicianBean.find(technician_username));
+                        technicians.add(technicianBean.find(objectTechnician.getString("username")));
                     }
 
-                    RepairServices repairServices = new RepairServices(Long.parseLong(service_id), service_name, service_location, service_insurertype);
+                    RepairServices repairServices = repairServicesBean.create(service_id, service_name, service_location, service_insurertype);
                     for (Technician t : technicians) {
                         repairServices.addRepairTechnician(t);
+                        t.setRepairServices(repairServices);
                     }
                     servicesArray.add(repairServices);
                 }
 
-                //Creation of insurerOwner and set insurerOwner on insurance class
-                InsurerOwner insurerOwner = new InsurerOwner(insuranceOwner_name, Integer.parseInt(insuranceOwner_id));
+                //Creation of insurerOwner
+                InsurerOwner insurerOwner = createInsurerOwner(insuranceOwner_name, insuranceOwner_id);
                 for (Expert e : experts) {
                     insurerOwner.addExpert(e);
+                    e.setInsurerOwner(insurerOwner);
                 }
                 for (Insurance insurance : insurances) {
                     insurerOwner.addInsurance(insurance);
@@ -125,11 +116,24 @@ public class InsurerBean {
                 for (RepairServices s : servicesArray) {
                     insurerOwner.addRepairServices(s);
                 }
+                insurerOwners.add(insurerOwner);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("insurerOwners: " + insurerOwners.size());
     }
+
+    public InsurerOwner createInsurerOwner(String name, int id) {
+        var insurerOwner = new InsurerOwner(name, id);
+        return insurerOwner;
+    }
+
+    public Insurance createInsurance(int id, String name, InsuranceType insuranceType) {
+        var insurance = new Insurance(id, name,insuranceType);
+        return insurance;
+    }
+
 
     private OccurrenceType setJsonToOccurrenceType(String type) {
         switch (type) {
@@ -163,4 +167,18 @@ public class InsurerBean {
         }
     }
 
+    public Insurance getbyInsuranceForPolicy(int insurerOwner, int insuranceID) {
+        InsurerOwner insurerOwnerAUX;
+        for (InsurerOwner i : insurerOwners) {
+            if (i.getId() == insurerOwner) {
+                insurerOwnerAUX = i;
+                for (Insurance j : insurerOwnerAUX.getInsuranceList()) {
+                    if (j.getId() == insuranceID) {
+                        return j;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }

@@ -8,6 +8,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.time.LocalDate;
 
 @Stateless
@@ -42,6 +43,12 @@ public class ClientBean {
             default:
                 return null;
         }
+    }
+
+    public Client findByNif(int financialNumber) {
+        TypedQuery<Client> query = em.createQuery("SELECT c FROM Client c WHERE c.financialNumber = :financialNumber", Client.class);
+        query.setParameter("financialNumber", financialNumber);
+        return query.getResultList().stream().findFirst().orElse(null);
     }
 
 }

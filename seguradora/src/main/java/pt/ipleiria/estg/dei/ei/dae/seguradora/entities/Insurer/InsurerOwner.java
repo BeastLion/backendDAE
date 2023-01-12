@@ -22,7 +22,7 @@ public class InsurerOwner {
     @Transient
     @Getter
     @Setter
-    private List<Insurance> insurersList;
+    private List<Insurance> insuranceList;
 
     @Transient
     @Getter
@@ -35,7 +35,7 @@ public class InsurerOwner {
     private List<RepairServices> repairServices;
 
     public InsurerOwner() {
-        this.insurersList = new ArrayList<>();
+        this.insuranceList = new ArrayList<>();
         this.experts = new ArrayList<>();
         this.repairServices = new ArrayList<>();
     }
@@ -55,11 +55,11 @@ public class InsurerOwner {
     }
 
     public void addInsurance(Insurance insurance) {
-        this.insurersList.add(insurance);
+        this.insuranceList.add(insurance);
     }
 
     public void removeInsurance(Insurance insurance) {
-        this.insurersList.remove(insurance);
+        this.insuranceList.remove(insurance);
     }
 
     public void addRepairServices(RepairServices repairServices) {

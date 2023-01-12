@@ -17,6 +17,8 @@ public class ConfigBean {
     private ExpertBean expertBean;
     @EJB
     private TechnicianBean technicianBean;
+    @EJB
+    private PolicyBean policyBean;
 
     @PostConstruct
     public void populateDB() {
@@ -34,5 +36,12 @@ public class ConfigBean {
         technicianBean.create("tech2","Tech","2","912345634","tech2","tech2@mail.pt");
 
         insurerBean.getAll();
+
+        policyBean.getAll();
+/*
+        System.out.println("-----------------");
+        var client = clientBean.findByNif(5000000);
+        System.out.println(client.toString());
+        System.out.println("-----------------");*/
     }
 }

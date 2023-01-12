@@ -19,8 +19,16 @@
           "dentist",
           "medicine"
         ],
-        "InsurerId": "1",
         "type": "health"
+      },
+      {
+        "id": "2",
+        "policyName": "AutoPlus",
+        "covers": [
+          "accident",
+          "theft"
+        ],
+        "type": "auto"
       }
     ],
     "Services": [
@@ -68,7 +76,6 @@
           "dentist",
           "medicine"
         ],
-        "InsurerId": "1",
         "type": "health"
       }
     ],
