@@ -37,12 +37,10 @@ public class OccurrenceService {
                 occurrenceDTO.getItem(),
                 username
         );
-
         //TODO nao esquecer lazy loads !!
         //var occurrence = occurrenceBean.findOrFailOccurrence(occurrenceDTO.getId());
-
-        return Response.status(Response.Status.CREATED).entity("OccurrenceDTO.toDTO(occurrence)").build();
         //return Response.status(Response.Status.CREATED).entity(OccurrenceDTO.toDTO(occurrence)).build();
+        return Response.status(Response.Status.CREATED).entity("Occurrence Created").build();
     }
 
     @PUT
