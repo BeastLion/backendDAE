@@ -10,11 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 @Entity
-@NamedQueries({
-        @NamedQuery(
-                name = "getAllOccurrences",
-                query = "SELECT o FROM Occurrence o ORDER BY o.id"
-        )})
+
 public class Occurrence implements Serializable {
 
     //@GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,16 +44,20 @@ public class Occurrence implements Serializable {
     private String item; //podiamos meter InsuredObject (ou seja mais uma class) assim podiamos ter uma lista de objetos
     //que depois tinham um ID para cada user, etc... etc... etc...
 
+    @NotNull
     @Getter
     @Setter
     @ManyToOne
-    @JoinColumn(name = "client_nif")
-    private Client client; //cada occurrence tem um user !!
+    @JoinColumn(name = "username")
+    private User user; //cada occurrence tem um user !!
+
+    @Version
+    private int version;
 
     public Occurrence() {
     }
 
-    public Occurrence(Long id, String policyNumber, String description, LocalDate occurrenceDate, String location, OccurrenceType type, String item, OccurrenceStatus status, Client client) {
+    public Occurrence(Long id, String policyNumber, String description, LocalDate occurrenceDate, String location, OccurrenceType type, String item, OccurrenceStatus status, User user) {
         this();
         this.id = id;
         this.policyNumber = policyNumber;
@@ -66,7 +66,7 @@ public class Occurrence implements Serializable {
         this.location = location;
         this.type = type;
         this.item = item;
-        this.client = client;
+        this.user = user;
         this.status = OccurrenceStatus.WAITING;
     }
 }

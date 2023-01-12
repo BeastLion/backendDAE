@@ -36,7 +36,4 @@ public class UserDTO {
         return users.stream().map(UserDTO::from).collect(Collectors.toList());
     }
 
-    public String getUserType() {
-        return user_type;
-    }
 }

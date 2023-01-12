@@ -5,9 +5,12 @@ import lombok.Setter;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceStatus;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.User;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class OccurrenceDTO implements Serializable {
 
@@ -65,7 +68,11 @@ public class OccurrenceDTO implements Serializable {
                 occurrence.getType(),
                 occurrence.getItem(),
                 occurrence.getStatus(),
-                occurrence.getClient().getUsername()
+                occurrence.getUser().getUsername()
         );
+    }
+
+    public static List<OccurrenceDTO> toDTOs(List<Occurrence> occurrences) {
+        return occurrences.stream().map(OccurrenceDTO::toDTO).collect(Collectors.toList());
     }
 }

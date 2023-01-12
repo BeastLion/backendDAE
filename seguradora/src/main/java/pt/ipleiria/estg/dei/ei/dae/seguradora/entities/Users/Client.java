@@ -44,13 +44,9 @@ public class Client extends User {
     @Setter
     private List<Policy> policies;
 
-    @OneToMany(mappedBy = "client")
-    private List<Occurrence> occurrences;
-
     public Client() {
         super();
         this.policies = new ArrayList<>();
-        this.occurrences = new ArrayList<>();
     }
 
     public Client(String username,String name, String lastName, LocalDate birthDate, String address, String phoneNumber, int financialNumber,  String password, String email, ClientType clientType) {
@@ -61,7 +57,6 @@ public class Client extends User {
         this.clientType = clientType;
         this.insurenceNumber = 1L;
         this.policies = new ArrayList<>();
-        this.occurrences = new ArrayList<>();
     }
     public void addPolicy(Policy policy) {
         this.policies.add(policy);

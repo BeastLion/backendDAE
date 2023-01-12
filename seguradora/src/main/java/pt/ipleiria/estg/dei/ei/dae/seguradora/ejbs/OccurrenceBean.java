@@ -7,12 +7,20 @@ import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Client;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Expert;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Response;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
 public class OccurrenceBean {
@@ -67,6 +75,12 @@ public class OccurrenceBean {
         }
     }
 */
+    public List<Occurrence> findOccurrenceByUsername(String username) {
+        TypedQuery<Occurrence> query = em.createQuery("SELECT o FROM Occurrence o WHERE o.username = :username", Occurrence.class);
+        query.setParameter("username", username);
+        return new ArrayList<>(query.getResultList());
+    }
+
     public Client findOrFailClient(String username) throws MyEntityNotFoundException {
         var client = em.find(Client.class, username);
         if (client == null) {
@@ -90,4 +104,10 @@ public class OccurrenceBean {
         }
         return occurrence;
     }
-}
+
+
+    public Occurrence findOrFailOccurrenceForDelete(Long id){
+        var occurrence = em.find(Occurrence.class, id);
+        return occurrence;
+    }
+}    //return null if has been deleted that means OK or return occurrence if its not deleted

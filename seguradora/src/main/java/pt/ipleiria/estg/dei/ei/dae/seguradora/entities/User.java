@@ -5,6 +5,9 @@ import javax.validation.constraints.NotNull;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,9 +15,7 @@ import lombok.Setter;
 @DiscriminatorColumn(name = "user_type")
 @Entity
 @Table(name = "users",uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
-@NamedQueries({
-        @NamedQuery(name = "getAllUsers", query = "SELECT u FROM User u ORDER BY u.id")
-})
+
 public class User implements Serializable {
     @Id
     @Getter
@@ -46,7 +47,14 @@ public class User implements Serializable {
     @Setter
     private String email;
 
+    @OneToMany(mappedBy = "user")
+    private List<Occurrence> occurrences;
+
+    @Version
+    private int version;
+
     public User() {
+        this.occurrences = new ArrayList<>();
     }
 
     public User(String username,String name, String lastName, String phoneNumber, String password, String email) {
@@ -57,6 +65,7 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.email = email;
+        this.occurrences = new ArrayList<>();
     }
 
     public String getUserType() {
