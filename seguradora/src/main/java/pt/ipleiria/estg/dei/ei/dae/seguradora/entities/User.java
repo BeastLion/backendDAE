@@ -59,4 +59,9 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    public String getUserType() {
+        DiscriminatorValue userType = this.getClass().getAnnotation(DiscriminatorValue.class);
+        return userType == null ? null : userType.value();
+    }
+
 }

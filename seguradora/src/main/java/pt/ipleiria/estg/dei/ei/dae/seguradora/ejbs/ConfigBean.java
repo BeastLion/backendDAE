@@ -35,9 +35,9 @@ public class ConfigBean {
         technicianBean.create("tech1","Tech","1","912345633","tech1","tech1@mail.pt");
         technicianBean.create("tech2","Tech","2","912345634","tech2","tech2@mail.pt");
 
-        insurerBean.getAll();
+        //insurerBean.getAll();
 
-        policyBean.getAll();
+        //policyBean.getAll();
 /*
         System.out.println("-----------------");
         var client = clientBean.findByNif(5000000);

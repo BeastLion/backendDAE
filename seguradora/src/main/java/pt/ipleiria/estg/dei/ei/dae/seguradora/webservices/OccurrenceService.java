@@ -1,6 +1,5 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.webservices;
 
-
 import pt.ipleiria.estg.dei.ei.dae.seguradora.DTOs.OccurrenceDTO;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.OccurrenceBean;

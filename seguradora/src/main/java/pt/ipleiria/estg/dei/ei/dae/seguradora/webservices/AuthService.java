@@ -48,4 +48,13 @@ public class AuthService {
         return Response.ok(UserDTO.from(user)).build();
     }
 
+    @GET
+    @Authenticated
+    @Path("/userType")
+    public Response getUserType(){
+        var username = securityContext.getUserPrincipal().getName();
+        var user = userBean.findOrFail(username);
+        return Response.ok(user.getUserType()).build();
+    }
+
 }

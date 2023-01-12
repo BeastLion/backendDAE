@@ -13,20 +13,30 @@ public class UserDTO {
     @Setter
     private String username;
 
+    @Getter
+    @Setter
+    private String user_type;
+
     public UserDTO() {
     }
 
-    public UserDTO(String username) {
+    public UserDTO(String username, String user_type) {
         this.username = username;
+        this.user_type = user_type;
     }
 
         public static UserDTO from(User user) {
             return new UserDTO(
-                    user.getUsername()
+                    user.getUsername(),
+                    user.getUserType()
             );
         }
 
     public static List<UserDTO> from(List<User> users) {
         return users.stream().map(UserDTO::from).collect(Collectors.toList());
+    }
+
+    public String getUserType() {
+        return user_type;
     }
 }
