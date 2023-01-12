@@ -75,9 +75,10 @@ public class OccurrenceBean {
         }
     }
 */
-    public List<Occurrence> findOccurrenceByUsername(String username) {
-        TypedQuery<Occurrence> query = em.createQuery("SELECT o FROM Occurrence o WHERE o.username = :username", Occurrence.class);
-        query.setParameter("username", username);
+    public List<Occurrence> findOccurrenceByUsername(String username) throws MyEntityNotFoundException {
+        var user = findOrFailClient(username);
+        TypedQuery<Occurrence> query = em.createQuery("SELECT o FROM Occurrence o WHERE o.user = :user", Occurrence.class);
+        query.setParameter("user", user);
         return new ArrayList<>(query.getResultList());
     }
 

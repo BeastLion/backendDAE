@@ -95,7 +95,7 @@ public class OccurrenceService {
 
     @GET
     @Path("/")
-    public Response getAllOccurrences(){
+    public Response getAllOccurrences() throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
         List<Occurrence> occurrences = occurrenceBean.findOccurrenceByUsername(username);
         if(occurrences == null){
