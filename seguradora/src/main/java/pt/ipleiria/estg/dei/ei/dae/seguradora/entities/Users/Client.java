@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Entity
-@DiscriminatorValue("C")
+@DiscriminatorValue("Client")
 public class Client extends User {
 
     @Column(unique = true)

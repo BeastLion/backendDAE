@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@DiscriminatorValue("E")
+@DiscriminatorValue("Expert")
 public class Expert extends User implements Serializable {
 
     @Transient

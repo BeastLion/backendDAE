@@ -15,14 +15,14 @@ public class UserDTO {
 
     @Getter
     @Setter
-    private String user_type;
+    private String userType;
 
     public UserDTO() {
     }
 
-    public UserDTO(String username, String user_type) {
+    public UserDTO(String username, String userType) {
         this.username = username;
-        this.user_type = user_type;
+        this.userType = userType;
     }
 
         public static UserDTO from(User user) {

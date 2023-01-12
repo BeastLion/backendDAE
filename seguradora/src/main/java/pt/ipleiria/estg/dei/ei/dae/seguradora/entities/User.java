@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "user_type")
+@DiscriminatorColumn(name = "userType")
 @Entity
 @Table(name = "users",uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
 
