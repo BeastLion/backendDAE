@@ -1,45 +1,31 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Insurer;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.InsuranceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Policy;
 
-import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 import java.util.LinkedList;
 import java.util.List;
-
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class Insurance {
-
-    @Transient
-    @Getter
-    @Setter
+    @NotNull
     private int id;
-
-    @Transient
-    @Getter
-    @Setter
+    @NotNull
     private String name;
-
-    @Transient
-    @Getter
-    @Setter
+    @NotNull
     private InsurerOwner owner;
-
-    @Transient
-    @Getter
-    @Setter
+    @NotNull
+    private InsuranceType insuranceType;
     private LinkedList<OccurrenceType> occurrenceTypes;
 
-    @Transient
-    @Getter
-    @Setter
-    private InsuranceType insuranceType;
-
-    @Transient
-    @Getter
-    @Setter
     private List<Policy> policies;
 
     public Insurance() {

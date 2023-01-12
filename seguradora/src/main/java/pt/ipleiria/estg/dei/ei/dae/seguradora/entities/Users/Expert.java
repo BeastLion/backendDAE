@@ -1,21 +1,22 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Insurer.InsurerOwner;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
 @DiscriminatorValue("Expert")
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class Expert extends User implements Serializable {
-
     @Transient
-    @Getter
-    @Setter
     private InsurerOwner insurerOwner;
 
     public Expert() {

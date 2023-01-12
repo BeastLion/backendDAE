@@ -1,47 +1,36 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.ClientType;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Policy;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @Entity
 @DiscriminatorValue("Client")
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class Client extends User {
-
     @Column(unique = true)
     @NotNull
-    @Getter
-    @Setter
     private int financialNumber;
     @NotNull
-    @Getter
-    @Setter
     private ClientType clientType;
     @NotNull
-    @Getter
-    @Setter
     LocalDate birthDate;
     @NotNull
-    @Getter
-    @Setter
     private String address;
-    @Getter
-    @Setter
     private Long insurenceNumber;
-
     @Transient
-    @Getter
-    @Setter
     private List<Policy> policies;
 
     public Client() {

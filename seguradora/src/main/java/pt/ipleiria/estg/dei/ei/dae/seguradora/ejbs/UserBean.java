@@ -1,15 +1,12 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs;
 import org.hibernate.Hibernate;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.User;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Client;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.User;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.security.Hasher;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 @Stateless
 public class UserBean {

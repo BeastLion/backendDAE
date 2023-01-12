@@ -5,7 +5,6 @@ import lombok.Setter;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceStatus;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.User;
 
 import java.io.Serializable;
 import java.time.LocalDate;

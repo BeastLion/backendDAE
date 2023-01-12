@@ -25,7 +25,7 @@ public class ConfigBean {
 
         System.out.println("Hello Java EE!");
 
-        clientBean.create("ola", "ola","ola", LocalDate.EPOCH,
+        clientBean.create("ola", "ola","ola", LocalDate.parse("1979-12-28"),
                 "ola", "910202022", 5000000,
                 "ola", "ola@ola.pt");
 
@@ -35,13 +35,11 @@ public class ConfigBean {
         technicianBean.create("tech1","Tech","1","912345633","tech1","tech1@mail.pt");
         technicianBean.create("tech2","Tech","2","912345634","tech2","tech2@mail.pt");
 
-        //insurerBean.getAll();
-
-        //policyBean.getAll();
-/*
-        System.out.println("-----------------");
-        var client = clientBean.findByNif(5000000);
-        System.out.println(client.toString());
-        System.out.println("-----------------");*/
+        //Api get data
+        System.out.println("ola");
+        System.out.println("ola");
+        System.out.println("ola");
+        insurerBean.getAll();
+        policyBean.getAll();
     }
 }

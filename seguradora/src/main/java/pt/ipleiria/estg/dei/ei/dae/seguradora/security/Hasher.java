@@ -1,6 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.security;
 
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.User;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.User;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;

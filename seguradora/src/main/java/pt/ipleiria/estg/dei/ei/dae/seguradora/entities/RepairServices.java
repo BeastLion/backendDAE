@@ -1,40 +1,28 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.entities;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.InsuranceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Technician;
 
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class RepairServices {
-
-    @Transient
     @NotNull
-    @Getter
-    @Setter
     private Long id;
-    @Transient
     @NotNull
-    @Getter
-    @Setter
     private String name;
-    @Transient
     @NotNull
-    @Getter
-    @Setter
     private String location;
-    @Transient
     @NotNull
-    @Getter
-    @Setter
     private InsuranceType insuranceType;
-    @Transient
-    @Getter
-    @Setter
     private List<Technician> technicians;
 
     public RepairServices() {

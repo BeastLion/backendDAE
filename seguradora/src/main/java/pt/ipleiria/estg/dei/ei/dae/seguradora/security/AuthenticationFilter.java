@@ -2,7 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.seguradora.security;
 
 import io.jsonwebtoken.Jwts;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.UserBean;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.User;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.User;
 
 import javax.annotation.Priority;
 import javax.crypto.spec.SecretKeySpec;

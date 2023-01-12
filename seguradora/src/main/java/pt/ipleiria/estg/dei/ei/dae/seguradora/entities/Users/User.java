@@ -1,4 +1,4 @@
-package pt.ipleiria.estg.dei.ei.dae.seguradora.entities;
+package pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -8,48 +8,39 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "userType")
 @Entity
-@Table(name = "users",uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
-
+@Table(name = "users")
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class User implements Serializable {
     @Id
-    @Getter
-    @Setter
     private String username;
     @NotNull
-    @Getter
-    @Setter
     private String name;
     @NotNull
-    @Getter
-    @Setter
     private String lastName;
-
     @NotNull
     @Column(unique = true)
     @Pattern(regexp="^[9][0-9]{8}$",message="Invalid Phone Number") //começa por nove tem oito digitos asseguir de 0 a 9
-    @Getter
-    @Setter
     private String phoneNumber;
     @NotNull
-    @Getter
-    @Setter
     private String password;
     @NotNull
     @Email
     @Column(unique = true)
-    @Getter
-    @Setter
     private String email;
-
     @OneToMany(mappedBy = "user")
     private List<Occurrence> occurrences;
-
     @Version
     private int version;
 

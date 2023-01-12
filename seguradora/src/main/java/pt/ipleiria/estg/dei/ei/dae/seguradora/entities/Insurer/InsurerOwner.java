@@ -1,37 +1,27 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Insurer;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.RepairServices;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Expert;
 
-import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class InsurerOwner {
-    @Transient
-    @Getter
-    @Setter
+    @NotNull
     private int id;
-    @Transient
-    @Getter
-    @Setter
+    @NotNull
     private String name;
-
-    @Transient
-    @Getter
-    @Setter
     private List<Insurance> insuranceList;
-
-    @Transient
-    @Getter
-    @Setter
     private List<Expert> experts;
-
-    @Transient
-    @Getter
-    @Setter
     private List<RepairServices> repairServices;
 
     public InsurerOwner() {
@@ -40,7 +30,7 @@ public class InsurerOwner {
         this.repairServices = new ArrayList<>();
     }
 
-    public InsurerOwner(String name,int id) {
+    public InsurerOwner(String name, int id) {
         this();
         this.id = id;
         this.name = name;

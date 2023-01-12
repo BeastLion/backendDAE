@@ -2,15 +2,10 @@ package pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs;
 
 import lombok.Getter;
 import lombok.Setter;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.InsuranceType;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
+
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Insurer.Insurance;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Insurer.InsurerOwner;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Policy;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.RepairServices;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Client;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Expert;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Technician;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -18,11 +13,7 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,14 +29,13 @@ public class PolicyBean {
 
     @Getter
     @Setter
-    private List<Policy> policies;
+    private List<Policy> policyList;
 
     public void getAll() {
-        policies = new ArrayList<>();
+        policyList = new ArrayList<>();
         try {
-            //---------------------------------
+            // Connect to the API and retrieve the JSON data
             StringBuilder response = loremBean.connect("policies");
-            //---------------------------------
 
             // Parse the JSON data and create a list of Insure objects
             JsonReader jsonReader = Json.createReader(new StringReader(response.toString()));
@@ -66,13 +56,13 @@ public class PolicyBean {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Polices List: "+policies.size());
+        System.out.println("Polices List: "+ policyList.size());
     }
 
     public void create(long policyCode, Insurance insurance, Client client, long price, LocalDate subscriptionDate, long loyaltyPeriod, long coverAmount, String securedGood){
         Policy policy = new Policy(policyCode,insurance,client,price,subscriptionDate,loyaltyPeriod,coverAmount,securedGood);
         policy.getInsurance().addPolicy(policy);
         policy.getClient().addPolicy(policy);
-        policies.add(policy);
+        policyList.add(policy);
     }
 }
