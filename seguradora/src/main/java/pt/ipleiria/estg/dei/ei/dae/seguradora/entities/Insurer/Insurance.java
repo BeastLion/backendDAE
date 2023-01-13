@@ -26,7 +26,6 @@ public class Insurance {
     private InsuranceType insuranceType;
     private LinkedList<OccurrenceType> occurrenceTypes;
 
-
     public Insurance() {
         this.occurrenceTypes = new LinkedList<>();
     }
