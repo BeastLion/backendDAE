@@ -15,6 +15,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import java.util.LinkedList;
 import java.util.List;
 
 @Path("user")
@@ -35,12 +36,14 @@ public class UserService {
     @Authenticated
     @Path("/client")
     public Response getUser() {
+
         var username = securityContext.getUserPrincipal().getName();
         List<Policy> policyList = policyBean.getPolicyByUsername(username);
 
         if (policyList.isEmpty()) {
             return Response.noContent().build();
         }
+
         return Response.ok(policyList).build();
 
     }

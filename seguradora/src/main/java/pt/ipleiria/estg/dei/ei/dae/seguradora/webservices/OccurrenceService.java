@@ -66,7 +66,7 @@ public class OccurrenceService {
     @Path("/{id}")
     public Response getOccurrenceDetails(@PathParam("id") Long id) throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
-        var client = occurrenceBean.findOrFailClient(username);
+        var client = occurrenceBean.findOrFailUser(username);
 
         //TODO temos de validar se o USER tem essa ocurrencia ou seja logo tem que se mudar ocurrencia de sitio, list<Occurrrencia> vai para user
 

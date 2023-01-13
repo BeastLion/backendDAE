@@ -21,20 +21,24 @@ import java.util.List;
 public class OccurrenceBean {
     @EJB
     private PolicyBean policyBean;
+
+    @EJB
+    private InsurerBean insurerBean;
+
     @PersistenceContext
     EntityManager em;
 
     public Long create(long policyNumber, String description, String location, OccurrenceType type, String item, String userName) throws MyEntityNotFoundException {
         Occurrence occurrence;
-        var client = findOrFailClient(userName);
+        var user = findOrFailUser(userName);
         System.out.println("OLA");
         if (policyBean.valid(policyNumber, userName)) {
             System.out.println("aqui");
             System.out.println("aqui");
             System.out.println("aqui");
             occurrence = new Occurrence(policyNumber,description, location, type, item);
-            client.addOccurrence(occurrence);
-            occurrence.addUser(client);
+            user.addOccurrence(occurrence);
+            occurrence.addUser(user);
             em.persist(occurrence);
             System.out.println(occurrence.getId());
             policyBean.addOccurence(occurrence.getPolicyNumber(),occurrence.getId());
@@ -61,43 +65,42 @@ public class OccurrenceBean {
         em.remove(occurrence);
     }
 
-    /*
     public void enrollExpertOccurrence(String username, Long id) throws MyEntityNotFoundException {
-        var expert = findOrFail(username);
-        var occurrence = findOrFail(id);
-        //var expertInsurer = expert.getInsurer();
-        //var occurrenceInsurer = occurrence.getInsurer();
-        if (expertInsurer.equals(occurrenceInsurer)) {
-            student.addSubject(subject);
-            subject.addStudent(student);
+        var expert = findOrFailExpert(username);
+        var occurrence = findOrFailOccurrence(id);
+
+
+        //TODO VALIDAR SE ELES TEM MESMO INSURER NUMBER
+        if (expert.equals(occurrence)) {
+            expert.addOccurrence(occurrence);
+            occurrence.addUser(expert);
         }
     }
 
-    public void unrollExpertOccurrence(String username, Long code) {
-        var expert = findOrFail(username);
-        var occurrence = findOrFail(id);
-        //var expertInsurer = expert.getInsurer();
-        //var occurrenceInsurer = occurrence.getInsurer();
-        if (expertInsurer.equals(occurrenceInsurer)) {
-            student.addSubject(subject);
-            subject.addStudent(student);
-        }
+    public void unrollExpertOccurrence(String username, Long id) throws MyEntityNotFoundException {
+        var expert = findOrFailExpert(username);
+        var occurrence = findOrFailOccurrence(id);
+        //TODO VALIDAR SE ELES TEM MESMO INSURER NUMBER
+            if (expert.equals(occurrence)) {
+                expert.removeOccurrence(occurrence);
+                occurrence.removeUser(expert);
+            }
     }
-*/
+
     public List<Occurrence> findOccurrenceByUsername(String username) throws MyEntityNotFoundException {
-        var user = findOrFailClient(username);
+        var user = findOrFailUser(username);
         TypedQuery<Occurrence> query = em.createQuery("SELECT o FROM Occurrence o WHERE o.user = :user", Occurrence.class);
         query.setParameter("user", user);
         return new ArrayList<>(query.getResultList());
     }
 
-    public Client findOrFailClient(String username) throws MyEntityNotFoundException {
-        var client = em.find(Client.class, username);
-        if (client == null) {
+    public User findOrFailUser(String username) throws MyEntityNotFoundException {
+        var user = em.find(User.class, username);
+        if (user == null) {
             throw new MyEntityNotFoundException("Client not found with name: " + username);
         }
-        Hibernate.initialize(client);
-        return client;
+        Hibernate.initialize(user);
+        return user;
     }
 
     public Expert findOrFailExpert(String username) throws MyEntityNotFoundException {
