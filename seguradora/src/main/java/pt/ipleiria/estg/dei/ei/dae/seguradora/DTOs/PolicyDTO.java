@@ -3,11 +3,9 @@ package pt.ipleiria.estg.dei.ei.dae.seguradora.DTOs;
 import lombok.Getter;
 import lombok.Setter;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Insurer.Insurance;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Policy;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Client;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,42 +15,36 @@ import java.util.stream.Collectors;
 public class PolicyDTO {
     private long policyCode;
 
-    private Insurance insurance;
-
-    private Client client;
-
     private long price;
-
-    private LocalDate subscriptionDate;
-
+    private String subscriptionDate;
     private long loyaltyPeriod;
-
     private long coverAmount;
     private String securedGood;
+
+    private Insurance insurance;
 
     public PolicyDTO() {
     }
 
-    public PolicyDTO(long policyCode,  Client client, long price, LocalDate subscriptionDate, long loyaltyPeriod, long coverAmount, String securedGood) {
-        this();
+    public PolicyDTO(long policyCode, long price, String subscriptionDate, long loyaltyPeriod, long coverAmount, String securedGood, Insurance insurance) {
         this.policyCode = policyCode;
-        this.client = client;
         this.price = price;
         this.subscriptionDate = subscriptionDate;
         this.loyaltyPeriod = loyaltyPeriod;
         this.coverAmount = coverAmount;
         this.securedGood = securedGood;
+        this.insurance = insurance;
     }
 
     public static PolicyDTO toDTO(Policy policy) {
         return new PolicyDTO(
                 policy.getPolicyCode(),
-                policy.getClient(),
                 policy.getPrice(),
-                policy.getSubscriptionDate(),
+                policy.getSubscriptionDate().toString(),
                 policy.getLoyaltyPeriod(),
                 policy.getCoverAmount(),
-                policy.getSecuredGood()
+                policy.getSecuredGood(),
+                policy.getInsurance()
         );
     }
 

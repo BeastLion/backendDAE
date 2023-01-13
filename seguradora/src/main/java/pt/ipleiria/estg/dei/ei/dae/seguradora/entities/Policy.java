@@ -14,9 +14,6 @@ import java.time.LocalDate;
 public class Policy {
     @NotNull
     private long policyCode;
-
-    @NotNull
-    private Insurance insurance;
     @NotNull
     private Client client;
     @NotNull
@@ -30,24 +27,21 @@ public class Policy {
     private String securedGood;
 
     @NotNull
-    private Long insuranceId;
-
-    @NotNull
-    private Long insurerOwner;
+    private Insurance insurance;
 
     public Policy() {
     }
 
-    public Policy(long policyCode, Long insurerOwner, Long insuranceId, Insurance insurance, Client client, long price, LocalDate subscriptionDate, long loyaltyPeriod, long coverAmount, String securedGood) {
+    public Policy(long policyCode, Insurance insurance, Client client, long price, LocalDate subscriptionDate, long loyaltyPeriod, long coverAmount, String securedGood) {
+        this();
         this.policyCode = policyCode;
+        this.insurance = insurance;
         this.client = client;
         this.price = price;
         this.subscriptionDate = subscriptionDate;
         this.loyaltyPeriod = loyaltyPeriod;
         this.coverAmount = coverAmount;
         this.securedGood = securedGood;
-        this.insurerOwner = insurerOwner;
-        this.insuranceId = insuranceId;
-        this.insurance = insurance;
+
     }
 }

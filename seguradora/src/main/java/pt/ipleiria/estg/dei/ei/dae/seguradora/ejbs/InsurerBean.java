@@ -38,7 +38,6 @@ public class InsurerBean {
     private List<InsurerOwner> insurerOwnerList;
 
     private Map<Integer, InsurerOwner> insurerOwnerHashMap = new HashMap<>();
-    private Map<String, Insurance> insuranceHashMap = new HashMap<>();
     public void getAll() {
         insurerOwnerList = new ArrayList<>();
         try {
@@ -51,8 +50,8 @@ public class InsurerBean {
 
             for (int i = 0; i < array.size(); i++) {
                 JsonObject objectOwner = array.getJsonObject(i);
-                int insuranceOwner_id = Integer.parseInt(objectOwner.getString("id"));
-                String insuranceOwner_name = objectOwner.getString("Insurer");
+                int insurerOwner_id = Integer.parseInt(objectOwner.getString("id"));
+                String insurerOwner_name = objectOwner.getString("Insurer");
 
                 JsonArray insuranceOwner_Experts = objectOwner.getJsonArray("Expert");
                 List<Expert> expertList = new ArrayList<>();
@@ -75,7 +74,7 @@ public class InsurerBean {
                         occurrenceTypeList.add(setJsonToOccurrenceType(cover.getString(l)));
                     }
 
-                    Insurance insurance = createInsurance(insurace_id, insurace_name, insrance_type);
+                    Insurance insurance = createInsurance(insurace_id, insurace_name, insrance_type,insurerOwner_id,insurerOwner_name);
                     for (OccurrenceType o : occurrenceTypeList) {
                         insurance.addOccurrenceType(o);
                     }
@@ -106,13 +105,12 @@ public class InsurerBean {
                 }
 
                 //Creation of insurerOwner
-                InsurerOwner insurerOwner = createInsurerOwner(insuranceOwner_name, insuranceOwner_id);
+                InsurerOwner insurerOwner = createInsurerOwner(insurerOwner_name, insurerOwner_id);
                 for (Expert e : expertList) {
                     insurerOwner.addExpert(e);
                 }
                 for (Insurance insurance : insuranceList) {
                     insurerOwner.addInsurance(insurance);
-                    insurance.setOwner(insurerOwner);
                 }
                 for (RepairServices s : repairServicesList) {
                     insurerOwner.addRepairServices(s);
@@ -130,8 +128,8 @@ public class InsurerBean {
         var insurerOwner = new InsurerOwner(name, id);
         return insurerOwner;
     }
-    public Insurance createInsurance(int id, String name, InsuranceType insuranceType) {
-        var insurance = new Insurance(id, name,insuranceType);
+    public Insurance createInsurance(int id, String name, InsuranceType insuranceType,int insurerOwner,String insurerName) {
+        Insurance insurance = new Insurance(id, name,insuranceType,insurerOwner,insurerName);
         return insurance;
     }
     private OccurrenceType setJsonToOccurrenceType(String type) {
@@ -170,18 +168,19 @@ public class InsurerBean {
     public void initializeHashMap() {
         for (InsurerOwner i : insurerOwnerList) {
             insurerOwnerHashMap.put(i.getId(), i);
-            for (Insurance j : i.getInsuranceList()) {
-                String key = i.getId() + "-" + j.getId();
-                insuranceHashMap.put(key, j);
-            }
         }
     }
+
     public Insurance getbyInsuranceForPolicy(int insurerOwner, int insuranceID) {
         InsurerOwner insurerOwnerAUX = insurerOwnerHashMap.get(insurerOwner);
         if (insurerOwnerAUX == null) {
             return null;
         }
-        String insuranceKey = insurerOwner + "-" + insuranceID;
-        return insuranceHashMap.get(insuranceKey);
+        for (Insurance insurance:insurerOwnerAUX.getInsuranceList()) {
+            if (insurance.getId() == insuranceID){
+                return insurance;
+            }
+        }
+        return null;
     }
 }
