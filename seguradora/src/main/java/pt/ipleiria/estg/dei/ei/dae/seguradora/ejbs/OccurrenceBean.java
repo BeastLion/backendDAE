@@ -130,7 +130,6 @@ public class OccurrenceBean {
         return occurrence;
     }
 
-
     public Occurrence findOrFailOccurrenceForDelete(Long id) {
         var occurrence = em.find(Occurrence.class, id);
         return occurrence;

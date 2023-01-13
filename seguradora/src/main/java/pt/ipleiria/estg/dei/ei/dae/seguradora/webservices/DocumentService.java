@@ -24,6 +24,7 @@ import java.security.Principal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Path("documents")
 @Authenticated
@@ -51,7 +52,7 @@ public class DocumentService {
             InputStream inputStream = inputPart.getBody(InputStream.class, null);
             byte[] bytes = IOUtils.toByteArray(inputStream);
             String homedir = System.getProperty("user.home");
-            String dirpath = homedir + File.separator + "uploads" + File.separator + username ;
+            String dirpath = homedir + File.separator + "uploads" + File.separator + username;
             mkdirIfNotExists(dirpath);
             String filepath = dirpath + File.separator + filename;
             writeFile(bytes, filepath);
@@ -68,7 +69,7 @@ public class DocumentService {
         }
     }
 
-/*
+    /*
     @GET
     @Path("download/{id}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
@@ -84,22 +85,21 @@ public class DocumentService {
         return response.build();
     }
 
+        @GET
+        @Path("{id}")
+        @Produces(MediaType.APPLICATION_JSON)
+        public Response getDocuments(@PathParam("id") Long id) throws MyEntityNotFoundException {
+            var username = securityContext.getUserPrincipal().getName();
+            var documents = documentBean.getOccurenceDocuments(id);
+            return Response.ok(DocumentDTO.from(documents)).build();
+        }
+
+
     @GET
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getDocuments(@PathParam("id") Long id) throws MyEntityNotFoundException {
-        var username = securityContext.getUserPrincipal().getName();
-        var documents = documentBean.getOccurenceDocuments(id);
-        return Response.ok(DocumentDTO.from(documents)).build();
-    }
-    @GET
-    @Path("exists")
-    public Response hasDocuments() throws MyEntityNotFoundException {
+    @Path("exists/{id}")
+    public Response hasDocuments(@PathParam("id") Long id) throws MyEntityNotFoundException {
         Principal principal = securityContext.getUserPrincipal();
-
         var username = securityContext.getUserPrincipal().getName();
-
-
         if (student == null)
             throw new MyEntityNotFoundException("Student not found");
 
@@ -107,8 +107,19 @@ public class DocumentService {
                 .entity(!student.getDocuments().isEmpty())
                 .build();
     }
+ */
+    DocumentDTO toDTO(Document document) {
+        return new DocumentDTO(
+                document.getId(),
+                document.getFilename(),
+                document.getFilepath(),
+                document.getOccurrence());
+    }
 
-    */
+    List<DocumentDTO> documentsToDTOs(List<Document> documents) {
+        return documents.stream().map(this::toDTO).collect(Collectors.toList());
+    }
+
     private String getFilename(MultivaluedMap<String, String> headers) {
         var contentDisposition = headers.getFirst("Content-Disposition").split(";");
         for (String filename : contentDisposition) {
@@ -130,6 +141,7 @@ public class DocumentService {
         fop.write(content);
         fop.flush();
         fop.close();
+        System.out.println("Written: " + filename);
     }
 
 }

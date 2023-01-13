@@ -14,6 +14,12 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
+/*
+@NamedQuery(
+        name = "getStudentDocuments",
+        query = "SELECT doc FROM Document doc WHERE doc.username = :username"
+)
+*/
 public class Document implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
