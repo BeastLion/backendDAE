@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.webservices;
 
+import pt.ipleiria.estg.dei.ei.dae.seguradora.DTOs.PolicyDTO;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.ClientBean;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.PolicyBean;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.UserBean;
@@ -38,7 +39,7 @@ public class UserService {
     public Response getUser() {
 
         var username = securityContext.getUserPrincipal().getName();
-        List<Policy> policyList = policyBean.getPolicyByUsername(username);
+        List<PolicyDTO> policyList = PolicyDTO.toDTOs(policyBean.getPolicyByUsername(username));
 
         if (policyList.isEmpty()) {
             return Response.noContent().build();

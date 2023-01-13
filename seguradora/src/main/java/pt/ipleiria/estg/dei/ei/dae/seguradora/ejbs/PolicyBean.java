@@ -48,8 +48,8 @@ public class PolicyBean {
                 JsonObject object = array.getJsonObject(i);
                 Client client = clientBean.findOrFail(object.getString("username"));
                 long policyCode = Long.parseLong(object.getString("policyCode"));
-                long InsurerOwner = Long.parseLong(object.getString("InsurerOwner"));
-                long InsuranceID = Long.parseLong(object.getString("InsuranceID"));
+                //long InsurerOwner = Long.parseLong(object.getString("InsurerOwner"));
+                //long InsuranceID = Long.parseLong(object.getString("InsuranceID"));
                 long price = Long.parseLong(object.getString("price"));
                 Insurance insurance = insurerBean.getbyInsuranceForPolicy(Integer.parseInt(object.getString("InsurerOwner")),Integer.parseInt(object.getString("InsuranceID")));
                 LocalDate subscriptionDate = LocalDate.parse(object.getString("subscriptionDate"));
@@ -57,7 +57,7 @@ public class PolicyBean {
                 long coverAmount = Long.parseLong(object.getString("coverAmount"));
                 String securedGood = object.getString("securedGood");
 
-                create(policyCode,InsurerOwner,InsuranceID,client,price,subscriptionDate,loyaltyPeriod,coverAmount,securedGood,insurance);
+                create(policyCode,insurance,client,price,subscriptionDate,loyaltyPeriod,coverAmount,securedGood);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,9 +66,9 @@ public class PolicyBean {
         initializeHashMap();
     }
 
-    public void create(long policyCode, Long InsurerOwner, Long InsuranceID, Client client, long price, LocalDate subscriptionDate, long loyaltyPeriod, long coverAmount, String securedGood, Insurance insurance){
-        Policy policy = new Policy(policyCode, InsurerOwner, InsuranceID, insurance, client,price,subscriptionDate,loyaltyPeriod,coverAmount,securedGood);
-        policy.getInsurance().addPolicy(policy);
+    public void create(long policyCode, Insurance insurance, Client client, long price, LocalDate subscriptionDate, long loyaltyPeriod, long coverAmount, String securedGood){
+        Policy policy = new Policy(policyCode, insurance, client,price,subscriptionDate,loyaltyPeriod,coverAmount,securedGood);
+        //policy.getInsurance().addPolicy(policy);
         System.out.println("Policy:"+policy.getClient().getFinancialNumber());
         policyList.add(policy);
     }
@@ -97,10 +97,7 @@ public class PolicyBean {
 
     public boolean valid(long policyNumber, String username) {
         Policy policy = policyHashMap.get(policyNumber);
-        if (!policy.getClient().getUsername().equals(username)){
-            return false;
-        }
-        return true;
+        return policy.getClient().getUsername().equals(username);
     }
 
     public void addOccurence(long policyNumber, Long id) {

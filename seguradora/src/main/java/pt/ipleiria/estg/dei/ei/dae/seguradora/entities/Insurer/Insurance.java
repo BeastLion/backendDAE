@@ -19,24 +19,25 @@ public class Insurance {
     @NotNull
     private String name;
     @NotNull
-    private InsurerOwner owner;
+    private int insurerOwner_id;
+    @NotNull
+    private String insurerOwner_name;
     @NotNull
     private InsuranceType insuranceType;
     private LinkedList<OccurrenceType> occurrenceTypes;
 
-    private List<Policy> policies;
 
     public Insurance() {
         this.occurrenceTypes = new LinkedList<>();
-        this.policies = new LinkedList<>();
     }
 
-    public Insurance(int id, String name, InsuranceType insuranceType) {
+    public Insurance(int id, String name, InsuranceType insuranceType,int insurerOwner_id,String insurerOwner_name) {
         this();
         this.id = id;
         this.name = name;
         this.insuranceType = insuranceType;
-        this.owner = null;
+        this.insurerOwner_id = insurerOwner_id;
+        this.insurerOwner_name = insurerOwner_name;
     }
 
     public void addOccurrenceType(OccurrenceType occurrenceType) {
@@ -47,11 +48,4 @@ public class Insurance {
         this.occurrenceTypes.remove(occurrenceType);
     }
 
-    public void addPolicy(Policy policy) {
-        this.policies.add(policy);
-    }
-
-    public void removePolicy(Policy policy) {
-        this.policies.remove(policy);
-    }
 }
