@@ -25,7 +25,7 @@ public class OccurrenceDTO implements Serializable {
     private String description;
     @Getter
     @Setter
-    private LocalDate occurrenceDate;
+    private String occurrenceDate;
     @Getter
     @Setter
     private String location;
@@ -38,15 +38,12 @@ public class OccurrenceDTO implements Serializable {
     @Getter
     @Setter
     private String item;
-    @Getter
-    @Setter
-    private List<User> users;
 
     public OccurrenceDTO(){
 
     }
 
-    public OccurrenceDTO(Long id, long policyNumber, String description, LocalDate occurrenceDate, String location, OccurrenceType type, String item, OccurrenceStatus status, List<User> users) {
+    public OccurrenceDTO(Long id, long policyNumber, String description, String occurrenceDate, String location, OccurrenceType type, String item, OccurrenceStatus status) {
         this.id = id;
         this.policyNumber = policyNumber;
         this.description = description;
@@ -54,21 +51,19 @@ public class OccurrenceDTO implements Serializable {
         this.location = location;
         this.type = type;
         this.item = item;
-        this.users = users;
         this.status = OccurrenceStatus.WAITING;
     }
 
     public static OccurrenceDTO toDTO(Occurrence occurrence){
         return new OccurrenceDTO(
                 occurrence.getId(),
-                occurrence.getPolicy().getPolicyCode(),
+                occurrence.getPolicyNumber(),
                 occurrence.getDescription(),
-                occurrence.getOccurrenceDate(),
+                occurrence.getOccurrenceDate().toString(),
                 occurrence.getLocation(),
                 occurrence.getType(),
                 occurrence.getItem(),
-                occurrence.getStatus(),
-                occurrence.getUsers()
+                occurrence.getStatus()
         );
     }
 

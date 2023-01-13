@@ -22,9 +22,8 @@ public class Occurrence implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    //Ensurer ensurer
-    @Transient
-    private Policy policy;
+    @NotNull
+    private Long policyNumber;
     @NotNull
     private String description;
     @NotNull
@@ -56,9 +55,9 @@ public class Occurrence implements Serializable {
         this.documents = new ArrayList<>();
     }
 
-    public Occurrence(Policy policy, String description, String location, OccurrenceType type, String item) {
+    public Occurrence(Long policyNumber,String description, String location, OccurrenceType type, String item) {
         this();
-        this.policy = policy;
+        this.policyNumber = policyNumber;
         this.description = description;
         this.occurrenceDate = LocalDate.now();
         this.location = location;

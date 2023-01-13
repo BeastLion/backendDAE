@@ -28,7 +28,6 @@ public class Client extends User {
     @NotNull
     private String address;
 
-
     public Client() {
         super();
     }

@@ -101,7 +101,6 @@ public class InsurerBean {
                     RepairServices repairServices = repairServicesBean.create(service_id, service_name, service_location, service_insurertype);
                     for (Technician t : technicianList) {
                         repairServices.addRepairTechnician(t);
-                        t.setRepairServices(repairServices);
                     }
                     repairServicesList.add(repairServices);
                 }
@@ -110,7 +109,6 @@ public class InsurerBean {
                 InsurerOwner insurerOwner = createInsurerOwner(insuranceOwner_name, insuranceOwner_id);
                 for (Expert e : expertList) {
                     insurerOwner.addExpert(e);
-                    e.setInsurerOwner(insurerOwner);
                 }
                 for (Insurance insurance : insuranceList) {
                     insurerOwner.addInsurance(insurance);
@@ -132,7 +130,6 @@ public class InsurerBean {
         var insurerOwner = new InsurerOwner(name, id);
         return insurerOwner;
     }
-
     public Insurance createInsurance(int id, String name, InsuranceType insuranceType) {
         var insurance = new Insurance(id, name,insuranceType);
         return insurance;
@@ -152,7 +149,6 @@ public class InsurerBean {
                 return OccurrenceType.OTHERS;
         }
     }
-
     private InsuranceType setJsonToInsurerType(String type) {
         switch (type) {
             case "AUTO":
@@ -171,7 +167,6 @@ public class InsurerBean {
                 return null;
         }
     }
-
     public void initializeHashMap() {
         for (InsurerOwner i : insurerOwnerList) {
             insurerOwnerHashMap.put(i.getId(), i);

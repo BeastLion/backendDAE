@@ -14,8 +14,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class Technician extends User implements Serializable {
-    @Transient
-    private RepairServices repairServices;
 
     public Technician() {
         super();
@@ -23,6 +21,5 @@ public class Technician extends User implements Serializable {
 
     public Technician(String username,String name, String lastName, String phoneNumber, String password, String email) {
         super(username,name, lastName, phoneNumber,  password, email);
-        this.repairServices = null;
     }
 }

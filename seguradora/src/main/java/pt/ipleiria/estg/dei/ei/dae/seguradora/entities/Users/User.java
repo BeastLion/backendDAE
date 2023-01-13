@@ -40,6 +40,7 @@ public class User implements Serializable {
     private String email;
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
     private List<Occurrence> occurrences;
+
     @Version
     private int version;
 

@@ -2,28 +2,20 @@ package pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs;
 
 import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityNotFoundException;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceStatus;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Client;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Expert;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.User;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Stateless
 public class OccurrenceBean {
@@ -32,17 +24,26 @@ public class OccurrenceBean {
     @PersistenceContext
     EntityManager em;
 
-    public Occurrence create(long policyNumber, String description, String location, OccurrenceType type, String item, String userName) throws MyEntityNotFoundException {
-        var policy = policyBean.find(policyNumber);
+    public Long create(long policyNumber, String description, String location, OccurrenceType type, String item, String userName) throws MyEntityNotFoundException {
+        Occurrence occurrence;
         var client = findOrFailClient(userName);
-        var occurrence = new Occurrence(policy, description, location, type, item);
-        client.addOccurrence(occurrence);
-        occurrence.addUser(client);
-        em.persist(occurrence);
-        return occurrence;
+        System.out.println("OLA");
+        if (policyBean.valid(policyNumber, userName)) {
+            System.out.println("aqui");
+            System.out.println("aqui");
+            System.out.println("aqui");
+            occurrence = new Occurrence(policyNumber,description, location, type, item);
+            client.addOccurrence(occurrence);
+            occurrence.addUser(client);
+            em.persist(occurrence);
+            System.out.println(occurrence.getId());
+            policyBean.addOccurence(occurrence.getPolicyNumber(),occurrence.getId());
+            return occurrence.getId();
+        }
+        return -1l;
     }
 
-    public void update(Long id, String description, String location, OccurrenceType type, String item, List<User> users) throws MyEntityNotFoundException {
+    public void update(Long id, String description, String location, OccurrenceType type, String item) throws MyEntityNotFoundException {
         var occurrence = findOrFailOccurrence(id);
         em.lock(occurrence, LockModeType.OPTIMISTIC); //Enquanto user estiver fazer update mais ninguem pode mexer naquela ocorrencia
         occurrence.setDescription(description);
@@ -117,7 +118,7 @@ public class OccurrenceBean {
     }
 
 
-    public Occurrence findOrFailOccurrenceForDelete(Long id){
+    public Occurrence findOrFailOccurrenceForDelete(Long id) {
         var occurrence = em.find(Occurrence.class, id);
         return occurrence;
     }

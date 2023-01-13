@@ -34,6 +34,7 @@ public class PolicyBean {
     private List<Policy> policyList;
 
     private Map<Long, Policy> policyHashMap = new HashMap<>();
+    private Map<Long, Policy> occurenceHashMap = new HashMap<>();
     public void getAll() {
         policyList = new ArrayList<>();
         try {
@@ -66,15 +67,6 @@ public class PolicyBean {
     public void create(long policyCode, Insurance insurance, Client client, long price, LocalDate subscriptionDate, long loyaltyPeriod, long coverAmount, String securedGood){
         Policy policy = new Policy(policyCode,insurance,client,price,subscriptionDate,loyaltyPeriod,coverAmount,securedGood);
         policy.getInsurance().addPolicy(policy);
-        System.out.println("---------------------------");
-        System.out.println("---------------------------");
-        System.out.println("---------------------------");
-        System.out.println("---------------------------");
-        System.out.println("---------------------------");
-        System.out.println("---------------------------");
-        System.out.println("---------------------------");
-        System.out.println("---------------------------");
-        System.out.println("---------------------------");
         System.out.println("Policy:"+policy.getClient().getFinancialNumber());
         policyList.add(policy);
     }
@@ -99,5 +91,17 @@ public class PolicyBean {
             }
         }
         return aux;
+    }
+
+    public boolean valid(long policyNumber, String username) {
+        Policy policy = policyHashMap.get(policyNumber);
+        if (!policy.getClient().getUsername().equals(username)){
+            return false;
+        }
+        return true;
+    }
+
+    public void addOccurence(long policyNumber, Long id) {
+        occurenceHashMap.put(id,find(policyNumber));
     }
 }

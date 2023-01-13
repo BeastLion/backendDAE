@@ -3,7 +3,9 @@ package pt.ipleiria.estg.dei.ei.dae.seguradora.webservices;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.DTOs.OccurrenceDTO;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.OccurrenceBean;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.User;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.security.Authenticated;
 
 import javax.ejb.EJB;
@@ -25,11 +27,14 @@ public class OccurrenceService {
     @EJB
     private OccurrenceBean occurrenceBean;
 
+    @EJB
+    private UserBean userBean;
+
     @POST
     @Path("/")
     public Response createNewOccurrence(OccurrenceDTO occurrenceDTO) throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
-        occurrenceBean.create(
+        Long id = occurrenceBean.create(
                 occurrenceDTO.getPolicyNumber(),
                 occurrenceDTO.getDescription(),
                 occurrenceDTO.getLocation(),
@@ -38,16 +43,16 @@ public class OccurrenceService {
                 username
         );
         //TODO nao esquecer lazy loads !!
-        //var occurrence = occurrenceBean.findOrFailOccurrence(occurrenceDTO.getId());
-        //return Response.status(Response.Status.CREATED).entity(OccurrenceDTO.toDTO(occurrence)).build();
-        return Response.status(Response.Status.CREATED).entity("Occurrence Created").build();
+        var occurrence = occurrenceBean.findOrFailOccurrence(id);
+        return Response.status(Response.Status.CREATED).entity(OccurrenceDTO.toDTO(occurrence)).build();
+        //return Response.status(Response.Status.CREATED).entity("Occurrence Created").build();
     }
 
     @PUT
     @Path("/{id}")
     public Response updateOccurrence(@PathParam("id") Long id, OccurrenceDTO occurrenceDTO) throws MyEntityNotFoundException {
 
-        occurrenceBean.update(id, occurrenceDTO.getDescription(), occurrenceDTO.getLocation(), occurrenceDTO.getType(), occurrenceDTO.getItem(), occurrenceDTO.getUsers());
+        occurrenceBean.update(id, occurrenceDTO.getDescription(), occurrenceDTO.getLocation(), occurrenceDTO.getType(), occurrenceDTO.getItem());
 
         //TODO temos de validar se o USER tem essa ocurrencia ou seja logo tem que se mudar ocurrencia de sitio, list<Occurrrencia> vai para user
 
