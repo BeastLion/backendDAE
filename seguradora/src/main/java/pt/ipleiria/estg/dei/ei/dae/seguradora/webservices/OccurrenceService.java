@@ -104,4 +104,26 @@ public class OccurrenceService {
         }
         return Response.status(Response.Status.OK).entity(OccurrenceDTO.toDTOs(occurrences)).build();
     }
+
+    @POST
+    @Path("/enroll/{id}")
+    public Response EnrollExpertOccurrence(@PathParam("id") Long id) throws MyEntityNotFoundException {
+        var username = securityContext.getUserPrincipal().getName();
+        occurrenceBean.enrollExpertOccurrence(username,id);
+
+        //falta verificar se ele ficou la
+
+        return Response.status(Response.Status.OK).entity("Expert add to occurrence with success").build();
+    }
+
+    @POST
+    @Path("/unroll/{id}")
+    public Response UnrollExpertOccurrence(@PathParam("id") Long id) throws MyEntityNotFoundException {
+        var username = securityContext.getUserPrincipal().getName();
+        occurrenceBean.unrollExpertOccurrence(username,id);
+
+        //falta verificar se ele ficou la
+
+        return Response.status(Response.Status.OK).entity("Expert unrolled to occurrence with success").build();
+    }
 }

@@ -69,22 +69,32 @@ public class OccurrenceBean {
         var expert = findOrFailExpert(username);
         var occurrence = findOrFailOccurrence(id);
 
+        /*insurece number para expert
+        insure number do occurrence
 
         //TODO VALIDAR SE ELES TEM MESMO INSURER NUMBER
         if (expert.equals(occurrence)) {
             expert.addOccurrence(occurrence);
             occurrence.addUser(expert);
-        }
+        }*/
+        expert.addOccurrence(occurrence);
+        occurrence.addUser(expert);
     }
 
     public void unrollExpertOccurrence(String username, Long id) throws MyEntityNotFoundException {
         var expert = findOrFailExpert(username);
         var occurrence = findOrFailOccurrence(id);
+
+        /*insurece number para expert
+        insure number do occurrence
         //TODO VALIDAR SE ELES TEM MESMO INSURER NUMBER
             if (expert.equals(occurrence)) {
                 expert.removeOccurrence(occurrence);
                 occurrence.removeUser(expert);
-            }
+            }*/
+
+        expert.removeOccurrence(occurrence);
+        occurrence.removeUser(expert);
     }
 
     public List<Occurrence> findOccurrenceByUsername(String username) throws MyEntityNotFoundException {

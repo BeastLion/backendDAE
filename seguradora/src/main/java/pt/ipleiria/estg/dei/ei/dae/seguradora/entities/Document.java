@@ -11,11 +11,6 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Table(name = "documents")
-/*
-@NamedQuery(
-        name = "getStudentDocuments",
-        query = "SELECT doc FROM Document doc WHERE doc.user.username = :username"
-)*/
 @Entity
 @Getter
 @Setter
