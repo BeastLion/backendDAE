@@ -13,8 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 public class Insurance {
     @NotNull
     private int id;

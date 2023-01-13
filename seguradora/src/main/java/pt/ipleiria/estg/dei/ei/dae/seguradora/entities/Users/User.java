@@ -21,8 +21,6 @@ import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Policy;
 @Table(name = "users")
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 public class User implements Serializable {
     @Id
     private String username;

@@ -19,8 +19,6 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 public class Document implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id

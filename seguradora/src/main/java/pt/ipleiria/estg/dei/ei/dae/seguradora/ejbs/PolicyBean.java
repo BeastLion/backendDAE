@@ -45,9 +45,9 @@ public class PolicyBean {
             JsonArray array = jsonReader.readArray();
             for (int i = 0; i < array.size(); i++) {
                 JsonObject object = array.getJsonObject(i);
+                Client client = clientBean.findOrFail(object.getString("username"));
                 long policyCode = Long.parseLong(object.getString("policyCode"));
                 Insurance insurance = insurerBean.getbyInsuranceForPolicy(Integer.parseInt(object.getString("InsurerOwner")),Integer.parseInt(object.getString("InsuranceID")));
-                Client client = clientBean.findByNif(Integer.parseInt(object.getString("financialNumber")));
                 long price = Long.parseLong(object.getString("price"));
                 LocalDate subscriptionDate = LocalDate.parse(object.getString("subscriptionDate"));
                 long loyaltyPeriod = Long.parseLong(object.getString("loyaltyPeriod"));
@@ -66,7 +66,16 @@ public class PolicyBean {
     public void create(long policyCode, Insurance insurance, Client client, long price, LocalDate subscriptionDate, long loyaltyPeriod, long coverAmount, String securedGood){
         Policy policy = new Policy(policyCode,insurance,client,price,subscriptionDate,loyaltyPeriod,coverAmount,securedGood);
         policy.getInsurance().addPolicy(policy);
-        policy.getClient().addPolicy(policy);
+        System.out.println("---------------------------");
+        System.out.println("---------------------------");
+        System.out.println("---------------------------");
+        System.out.println("---------------------------");
+        System.out.println("---------------------------");
+        System.out.println("---------------------------");
+        System.out.println("---------------------------");
+        System.out.println("---------------------------");
+        System.out.println("---------------------------");
+        System.out.println("Policy:"+policy.getClient().getFinancialNumber());
         policyList.add(policy);
     }
 
@@ -80,5 +89,15 @@ public class PolicyBean {
     public Policy find(long policyCode) {
         // Look up the Policy object with the given code in the HashMap
         return policyHashMap.get(policyCode);
+    }
+
+    public List<Policy> getPolicyByUsername(String username){
+        List<Policy> aux = new ArrayList<>();
+        for(Policy p :policyList){
+            if(p.getClient().getUsername().equals(username)){
+                aux.add(p);
+            }
+        }
+        return aux;
     }
 }

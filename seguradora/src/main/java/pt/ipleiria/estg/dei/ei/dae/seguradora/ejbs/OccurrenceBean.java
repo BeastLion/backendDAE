@@ -1,5 +1,6 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs;
 
+import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceStatus;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
@@ -94,6 +95,7 @@ public class OccurrenceBean {
         if (client == null) {
             throw new MyEntityNotFoundException("Client not found with name: " + username);
         }
+        Hibernate.initialize(client);
         return client;
     }
 
@@ -110,6 +112,7 @@ public class OccurrenceBean {
         if (occurrence == null) {
             throw new MyEntityNotFoundException("Occurrence not found with id: " + id);
         }
+        Hibernate.initialize(occurrence);
         return occurrence;
     }
 

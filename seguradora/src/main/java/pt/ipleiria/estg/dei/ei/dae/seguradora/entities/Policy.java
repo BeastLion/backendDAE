@@ -11,8 +11,6 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 public class Policy {
     @NotNull
     private long policyCode;

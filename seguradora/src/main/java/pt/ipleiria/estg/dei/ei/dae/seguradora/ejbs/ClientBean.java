@@ -1,7 +1,9 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs;
 
+import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Client;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.ClientType;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.User;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.security.Hasher;
 
 import javax.ejb.Stateless;
@@ -49,6 +51,12 @@ public class ClientBean {
         TypedQuery<Client> query = em.createQuery("SELECT c FROM Client c WHERE c.financialNumber = :financialNumber", Client.class);
         query.setParameter("financialNumber", financialNumber);
         return query.getResultList().stream().findFirst().orElse(null);
+    }
+
+    public Client findOrFail(String username) {
+        var client = em.getReference(Client.class, username);
+        Hibernate.initialize(client);
+        return client;
     }
 
 }

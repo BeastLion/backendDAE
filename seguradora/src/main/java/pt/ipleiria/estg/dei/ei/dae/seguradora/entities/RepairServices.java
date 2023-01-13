@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 public class RepairServices {
     @NotNull
     private Long id;

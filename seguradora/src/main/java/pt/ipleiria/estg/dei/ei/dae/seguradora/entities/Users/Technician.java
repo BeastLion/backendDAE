@@ -1,9 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.RepairServices;
 
 import javax.persistence.DiscriminatorValue;
@@ -15,8 +13,6 @@ import java.io.Serializable;
 @DiscriminatorValue("Technician")
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 public class Technician extends User implements Serializable {
     @Transient
     private RepairServices repairServices;

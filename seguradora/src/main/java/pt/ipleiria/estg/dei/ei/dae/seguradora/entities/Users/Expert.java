@@ -13,8 +13,6 @@ import java.io.Serializable;
 @DiscriminatorValue("Expert")
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 public class Expert extends User implements Serializable {
     @Transient
     private InsurerOwner insurerOwner;

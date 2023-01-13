@@ -18,15 +18,12 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 public class Occurrence implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     //Ensurer ensurer
     @Transient
-    @NotNull
     private Policy policy;
     @NotNull
     private String description;

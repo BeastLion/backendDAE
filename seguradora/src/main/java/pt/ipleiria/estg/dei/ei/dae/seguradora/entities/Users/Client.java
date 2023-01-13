@@ -17,8 +17,6 @@ import java.util.List;
 @DiscriminatorValue("Client")
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 public class Client extends User {
     @Column(unique = true)
     @NotNull
@@ -29,12 +27,10 @@ public class Client extends User {
     LocalDate birthDate;
     @NotNull
     private String address;
-    @Transient
-    private List<Policy> policies;
+
 
     public Client() {
         super();
-        this.policies = new ArrayList<>();
     }
 
     public Client(String username,String name, String lastName, LocalDate birthDate, String address, String phoneNumber, int financialNumber,  String password, String email, ClientType clientType) {
@@ -43,13 +39,5 @@ public class Client extends User {
         this.address = address;
         this.financialNumber = financialNumber;
         this.clientType = clientType;
-        this.policies = new ArrayList<>();
-    }
-    public void addPolicy(Policy policy) {
-        this.policies.add(policy);
-    }
-
-    public void removePolicy(Policy policy) {
-        this.policies.remove(policy);
     }
 }
