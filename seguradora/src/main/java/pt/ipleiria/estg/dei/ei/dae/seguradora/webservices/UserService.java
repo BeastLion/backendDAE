@@ -1,6 +1,8 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.webservices;
 
 import pt.ipleiria.estg.dei.ei.dae.seguradora.DTOs.PolicyDTO;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.DTOs.UserDetailDTO;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.ClientBean;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.PolicyBean;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.UserBean;
@@ -34,19 +36,11 @@ public class UserService {
     private SecurityContext securityContext;
 
     @GET
-    @Authenticated
-    @Path("/client")
-    public Response getUser() {
-
+    @Path("/")
+    public Response getUserDetail() throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
-        List<PolicyDTO> policyList = PolicyDTO.toDTOs(policyBean.getPolicyByUsername(username));
-
-        if (policyList.isEmpty()) {
-            return Response.noContent().build();
-        }
-
-        return Response.ok(policyList).build();
-
+        var user = UserDetailDTO.toDTO(userBean.findOrFail(username));
+        return Response.ok(user).build();
     }
 
 }

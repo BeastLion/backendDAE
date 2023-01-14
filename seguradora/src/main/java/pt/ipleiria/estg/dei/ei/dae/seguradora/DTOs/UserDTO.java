@@ -14,7 +14,6 @@ public class UserDTO {
     private String username;
     private String userType;
 
-    private List<Policy> policyList;
 
     public UserDTO() {
     }
