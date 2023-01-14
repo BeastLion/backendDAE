@@ -7,10 +7,7 @@ import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.security.Authenticated;
 
 import javax.ejb.EJB;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -42,6 +39,17 @@ public class PolicyService {
         }
 
         return Response.ok(policyList).build();
+
+    }
+
+    @GET
+    @Authenticated
+    @Path("/client/{id}")
+    public Response getPolicyByAuthenticatedById(@PathParam("id") Long id) {
+        var username = securityContext.getUserPrincipal().getName();
+        PolicyDTO policyDTO = PolicyDTO.toDTO(policyBean.getPolicyByUsernameDetail(username,id));
+
+        return Response.ok(policyDTO).build();
 
     }
 }

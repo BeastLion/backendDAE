@@ -95,6 +95,15 @@ public class PolicyBean {
         return aux;
     }
 
+    public Policy getPolicyByUsernameDetail(String username, long policycode){
+        List<Policy> aux = getPolicyByUsername(username);
+        for (Policy policy : aux){
+            if (policy.getPolicyCode() == policycode)
+                return policy;
+        }
+        return null;
+    }
+
     public boolean valid(long policyNumber, String username) {
         Policy policy = policyHashMap.get(policyNumber);
         return policy.getClient().getUsername().equals(username);
