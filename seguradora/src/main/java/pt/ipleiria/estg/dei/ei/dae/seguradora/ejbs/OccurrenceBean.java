@@ -161,5 +161,4 @@ public class OccurrenceBean {
         }
         return false;
     }
-
 }

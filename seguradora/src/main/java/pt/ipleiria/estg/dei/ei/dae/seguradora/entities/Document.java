@@ -16,8 +16,8 @@ import java.io.Serializable;
 @Setter
 /*
 @NamedQuery(
-        name = "getStudentDocuments",
-        query = "SELECT doc FROM Document doc WHERE doc.username = :username"
+        name = "getOccurrenceDocuments",
+        query = "SELECT doc FROM Document doc WHERE doc.occurrence = occurrence"
 )
 */
 public class Document implements Serializable {

@@ -69,7 +69,6 @@ public class DocumentService {
         }
     }
 
-    /*
     @GET
     @Path("download/{id}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
@@ -79,7 +78,6 @@ public class DocumentService {
         if (document == null)
             throw new MyEntityNotFoundException("Document not found");
 
-        // TODO: Can I download this? - Security Breach here! How do you fix it?
         var response = Response.ok(new File(document.getFilepath()));
         response.header("Content-Disposition", "attachment;filename=" + document.getFilename());
         return response.build();
@@ -89,7 +87,6 @@ public class DocumentService {
         @Path("{id}")
         @Produces(MediaType.APPLICATION_JSON)
         public Response getDocuments(@PathParam("id") Long id) throws MyEntityNotFoundException {
-            var username = securityContext.getUserPrincipal().getName();
             var documents = documentBean.getOccurenceDocuments(id);
             return Response.ok(DocumentDTO.from(documents)).build();
         }
@@ -98,16 +95,15 @@ public class DocumentService {
     @GET
     @Path("exists/{id}")
     public Response hasDocuments(@PathParam("id") Long id) throws MyEntityNotFoundException {
-        Principal principal = securityContext.getUserPrincipal();
-        var username = securityContext.getUserPrincipal().getName();
-        if (student == null)
-            throw new MyEntityNotFoundException("Student not found");
+        var occurrence = occurrenceBean.findOrFailOccurrence(id);
+        if (occurrence == null)
+            throw new MyEntityNotFoundException("occurrence not found");
 
         return Response.status(Response.Status.OK)
-                .entity(!student.getDocuments().isEmpty())
+                .entity(!occurrence.getDocuments().isEmpty())
                 .build();
     }
- */
+
     DocumentDTO toDTO(Document document) {
         return new DocumentDTO(
                 document.getId(),
