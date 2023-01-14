@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Stateless
 public class OccurrenceBean {
@@ -139,6 +140,26 @@ public class OccurrenceBean {
             }
         }
         return available;
+    }
+
+    public boolean changeStatus(Long id, String username) throws MyEntityNotFoundException {
+
+        var occurrence = findOrFailOccurrence(id);
+        var user = userBean.findOrFail(username);
+
+        if (Objects.equals(user.getUserType(), "Expert")) {
+            if (occurrence.getStatus() == OccurrenceStatus.WAITING) {
+                occurrence.setStatus(OccurrenceStatus.WAITINGFORCLIENT);
+                return true;
+            }
+        }
+        if (Objects.equals(user.getUserType(), "Client")) {
+            if (occurrence.getStatus() == OccurrenceStatus.WAITINGFORCLIENT) {
+                occurrence.setStatus(OccurrenceStatus.DONE);
+                return true;
+            }
+        }
+        return false;
     }
 
 }

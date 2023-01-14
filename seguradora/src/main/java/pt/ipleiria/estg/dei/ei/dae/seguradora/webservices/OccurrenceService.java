@@ -143,4 +143,17 @@ public class OccurrenceService {
 
         return Response.status(Response.Status.OK).entity("Expert  username:" + username + "unrolled to occurrence id"  + id + " with success").build();
     }
+
+    @POST
+    @Path("/status/{id}")
+    public Response changeStatus(@PathParam("id") Long id) throws MyEntityNotFoundException {
+        var username = securityContext.getUserPrincipal().getName();
+        boolean isChanged = false;
+        isChanged = occurrenceBean.changeStatus(id, username);
+
+        if(!isChanged){
+            return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+        }
+        return Response.status(Response.Status.OK).build();
+    }
 }
