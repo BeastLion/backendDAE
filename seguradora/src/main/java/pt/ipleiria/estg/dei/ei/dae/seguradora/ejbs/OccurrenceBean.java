@@ -80,14 +80,7 @@ public class OccurrenceBean {
         if (occurrence.getHasExpert()){
             throw new RuntimeException("This occurrence has already an expert");
         }
-        /*insurece number para expert
-        insure number do occurrence
 
-        //TODO VALIDAR SE ELES TEM MESMO INSURER NUMBER
-        if (expert.equals(occurrence)) {
-            expert.addOccurrence(occurrence);
-            occurrence.addUser(expert);
-        }*/
         expert.addOccurrence(occurrence);
         occurrence.addUser(expert);
         occurrence.setHasExpert(true);
@@ -101,17 +94,18 @@ public class OccurrenceBean {
             throw new RuntimeException("This occurrence doesn't have an expert");
         }
 
-        /*insurece number para expert
-        insure number do occurrence
-        //TODO VALIDAR SE ELES TEM MESMO INSURER NUMBER
-            if (expert.equals(occurrence)) {
+        boolean aux = false;
+        for(Occurrence o :expert.getOccurrences()){
+            if (o.getId().equals(id)){
+                aux = true;
                 expert.removeOccurrence(occurrence);
                 occurrence.removeUser(expert);
-            }*/
-
-        expert.removeOccurrence(occurrence);
-        occurrence.removeUser(expert);
-        occurrence.setHasExpert(false);
+                occurrence.setHasExpert(false);
+            }
+        }
+        if (aux == false) {
+            throw new RuntimeException("This Expert can't remove other expert");
+        }
     }
 
     public Occurrence findOrFailOccurrence(Long id) throws MyEntityNotFoundException {
