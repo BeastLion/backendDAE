@@ -9,6 +9,7 @@ import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Policy;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.security.Authenticated;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -36,6 +37,7 @@ public class UserService {
     private SecurityContext securityContext;
 
     @GET
+    @RolesAllowed({"Client", "Expert", "Technician"})
     @Path("/")
     public Response getUserDetail() throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();

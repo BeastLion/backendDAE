@@ -8,6 +8,7 @@ import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.security.Authenticated;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -20,6 +21,7 @@ import java.util.List;
 @Path("occurrences") // relative url web path for this service
 @Produces({MediaType.APPLICATION_JSON}) // injects header “Content-Type: application/json”
 @Consumes({MediaType.APPLICATION_JSON}) // injects header “Accept: application/json”
+
 public class OccurrenceService {
 
     @Context
@@ -31,6 +33,7 @@ public class OccurrenceService {
     private UserBean userBean;
 
     @POST
+    @RolesAllowed({"Client"})
     @Path("/")
     public Response createNewOccurrence(OccurrenceDTO occurrenceDTO) throws MyEntityNotFoundException, MyEntityExistsException.MyConstraintViolationException {
         var username = securityContext.getUserPrincipal().getName();
@@ -48,6 +51,7 @@ public class OccurrenceService {
     }
 
     @PUT
+    @RolesAllowed({"Client", "Expert"})
     @Path("/{id}")
     public Response updateOccurrence(@PathParam("id") Long id, OccurrenceDTO occurrenceDTO) throws MyEntityNotFoundException {
         if(occurrenceBean.findOccurrenceisDeleted(id)){
@@ -65,6 +69,7 @@ public class OccurrenceService {
     }
 
     @GET
+    @RolesAllowed({"Client", "Expert"})
     @Path("/{id}")
     public Response getOccurrenceDetails(@PathParam("id") Long id) throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
@@ -79,6 +84,7 @@ public class OccurrenceService {
     }
 
     @DELETE
+    @RolesAllowed({"Client", "Expert"})
     @Path("/{id}")
     public Response removeOccurrence(@PathParam("id") Long id) throws MyEntityNotFoundException {
         occurrenceBean.remove(id);
@@ -91,6 +97,7 @@ public class OccurrenceService {
     }
 
     @GET
+    @RolesAllowed({"Client", "Expert"})
     @Path("/")
     public Response getAllOccurrences() throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
@@ -102,6 +109,7 @@ public class OccurrenceService {
     }
 
     @GET
+    @RolesAllowed({"Expert"})
     @Path("/expert")
     public Response getAllOccurrencesAvailable() throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
@@ -113,6 +121,7 @@ public class OccurrenceService {
     }
 
     @POST
+    @RolesAllowed({"Expert"})
     @Path("/enroll/{id}")
     public Response EnrollExpertOccurrence(@PathParam("id") Long id) throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
@@ -129,6 +138,7 @@ public class OccurrenceService {
     }
 
     @POST
+    @RolesAllowed({"Expert"})
     @Path("/unroll/{id}")
     public Response UnrollExpertOccurrence(@PathParam("id") Long id) throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
@@ -145,6 +155,7 @@ public class OccurrenceService {
     }
 
     @POST
+    @RolesAllowed({"Client", "Expert"})
     @Path("/status/{id}")
     public Response changeStatus(@PathParam("id") Long id) throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();

@@ -6,6 +6,7 @@ import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.PolicyBean;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.security.Authenticated;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -29,6 +30,7 @@ public class PolicyService {
 
     @GET
     @Authenticated
+    @RolesAllowed({"Client", "Expert"})
     @Path("/client")
     public Response getPolicyByAuthenticated() {
         var username = securityContext.getUserPrincipal().getName();
@@ -44,6 +46,7 @@ public class PolicyService {
 
     @GET
     @Authenticated
+    @RolesAllowed({"Client", "Expert"})
     @Path("/client/{id}")
     public Response getPolicyByAuthenticatedById(@PathParam("id") Long id) {
         var username = securityContext.getUserPrincipal().getName();

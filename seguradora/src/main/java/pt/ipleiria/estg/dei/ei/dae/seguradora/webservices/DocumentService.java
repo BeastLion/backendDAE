@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 
 @Path("documents")
 @Authenticated
+@RolesAllowed({"Client", "Expert", "Technician"})
 public class DocumentService {
     @EJB
     private OccurrenceBean occurrenceBean;
