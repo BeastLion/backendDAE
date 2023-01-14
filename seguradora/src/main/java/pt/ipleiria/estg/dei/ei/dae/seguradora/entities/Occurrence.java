@@ -48,6 +48,8 @@ public class Occurrence implements Serializable {
 
     private Boolean isDeleted;
 
+    private Boolean hasExpert;
+
     @NotNull
     @ManyToMany
     @JoinTable(name = "userOccurrences",
@@ -73,6 +75,7 @@ public class Occurrence implements Serializable {
         this.item = item;
         this.status = OccurrenceStatus.WAITING;
         this.isDeleted = false;
+        this.hasExpert = false;
     }
 
     public void addUser(User user) {

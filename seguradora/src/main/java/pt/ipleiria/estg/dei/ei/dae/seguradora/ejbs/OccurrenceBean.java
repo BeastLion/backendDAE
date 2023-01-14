@@ -77,7 +77,9 @@ public class OccurrenceBean {
     public void enrollExpertOccurrence(String username, Long id) throws MyEntityNotFoundException {
         var expert = expertBean.findOrFail(username);
         var occurrence = findOrFailOccurrence(id);
-
+        if (occurrence.getHasExpert()){
+            throw new RuntimeException("This occurrence has already an expert");
+        }
         /*insurece number para expert
         insure number do occurrence
 
@@ -88,11 +90,16 @@ public class OccurrenceBean {
         }*/
         expert.addOccurrence(occurrence);
         occurrence.addUser(expert);
+        occurrence.setHasExpert(true);
     }
 
     public void unrollExpertOccurrence(String username, Long id) throws MyEntityNotFoundException {
         var expert = expertBean.findOrFail(username);
         var occurrence = findOrFailOccurrence(id);
+
+        if (!occurrence.getHasExpert()){
+            throw new RuntimeException("This occurrence doesn't have an expert");
+        }
 
         /*insurece number para expert
         insure number do occurrence
@@ -104,6 +111,7 @@ public class OccurrenceBean {
 
         expert.removeOccurrence(occurrence);
         occurrence.removeUser(expert);
+        occurrence.setHasExpert(false);
     }
 
     public Occurrence findOrFailOccurrence(Long id) throws MyEntityNotFoundException {
@@ -128,7 +136,7 @@ public class OccurrenceBean {
         List<Occurrence> all = getAll();
         List<Occurrence> available = new ArrayList<>();
         for (Occurrence o : all) {
-            if (!o.getIsDeleted()) {
+            if (!o.getIsDeleted() && !o.getHasExpert()) {
                 if (o.getStatus() == OccurrenceStatus.WAITING) {
                     if (insurerOwnerID == policyBean.getInsuranceOwnerID(o.getPolicyNumber())) {
                         available.add(o);
