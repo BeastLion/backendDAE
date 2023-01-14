@@ -48,4 +48,12 @@ public class TechnicianBean {
         }
         return technician;
     }
+
+    public Technician find(String username) {
+        var technician = em.find(Technician.class, username);
+        if (technician == null) {
+            return null;
+        }
+        return technician;
+    }
 }

@@ -218,8 +218,8 @@ public class InsurerBean {
         return null;
     }
 
-    public int getIdfromExpert(String username) throws MyEntityNotFoundException {
-        var expert = expertBean.findOrFail(username);
+    public int getIdfromExpert(String username) {
+        var expert = expertBean.find(username);
         for (InsurerOwner i : insurerOwnerList) {
             for (Expert e : i.getExperts()) {
                 if (e.getUsername().equals(expert.getUsername())) {

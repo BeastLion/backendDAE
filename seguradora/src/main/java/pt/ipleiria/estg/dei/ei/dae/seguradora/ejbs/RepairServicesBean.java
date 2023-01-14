@@ -13,8 +13,8 @@ public class RepairServicesBean {
     @EJB
     private TechnicianBean technicianBean;
 
-    public RepairServices create(Long id, String name, String location, InsuranceType insuranceType,String username) throws MyEntityNotFoundException {
-        var technician = technicianBean.findOrFail(username);
+    public RepairServices create(Long id, String name, String location, InsuranceType insuranceType,String username) {
+        var technician = technicianBean.find(username);
         var services = new RepairServices(id,name,location,insuranceType,technician);
         return services;
     }

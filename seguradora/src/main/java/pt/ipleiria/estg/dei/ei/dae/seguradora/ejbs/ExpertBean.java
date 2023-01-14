@@ -55,4 +55,13 @@ public class ExpertBean {
         return expert;
     }
 
+    public Expert find(String username) {
+        var expert = em.getReference(Expert.class, username);
+        if (expert == null) {
+            return null;
+        }
+        Hibernate.initialize(expert);
+        return expert;
+    }
+
 }
