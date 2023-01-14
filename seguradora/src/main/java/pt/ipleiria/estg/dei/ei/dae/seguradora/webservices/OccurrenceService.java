@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.webservices;
 
 import pt.ipleiria.estg.dei.ei.dae.seguradora.DTOs.OccurrenceDTO;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.OccurrenceBean;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.UserBean;
@@ -31,7 +32,7 @@ public class OccurrenceService {
 
     @POST
     @Path("/")
-    public Response createNewOccurrence(OccurrenceDTO occurrenceDTO) throws MyEntityNotFoundException {
+    public Response createNewOccurrence(OccurrenceDTO occurrenceDTO) throws MyEntityNotFoundException, MyEntityExistsException.MyConstraintViolationException {
         var username = securityContext.getUserPrincipal().getName();
         Long id = occurrenceBean.create(
                 occurrenceDTO.getPolicyNumber(),
@@ -49,6 +50,9 @@ public class OccurrenceService {
     @PUT
     @Path("/{id}")
     public Response updateOccurrence(@PathParam("id") Long id, OccurrenceDTO occurrenceDTO) throws MyEntityNotFoundException {
+        if(occurrenceBean.findOccurrenceisDeleted(id)){
+            return Response.status(Response.Status.NO_CONTENT).entity("Occurrence is deleted").build();
+        }
 
         occurrenceBean.update(id, occurrenceDTO.getDescription(), occurrenceDTO.getLocation(), occurrenceDTO.getType(), occurrenceDTO.getItem());
 
@@ -64,28 +68,22 @@ public class OccurrenceService {
     @Path("/{id}")
     public Response getOccurrenceDetails(@PathParam("id") Long id) throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
-        var client = occurrenceBean.findOrFailUser(username);
+        var client = userBean.findOrFail(username);
 
-        //TODO temos de validar se o USER tem essa ocurrencia ou seja logo tem que se mudar ocurrencia de sitio, list<Occurrrencia> vai para user
-
-        /*
-        if(!idDaOccurenciaDoUser.equals(id)) {
-            return Response.status(Response.Status.FORBIDDEN).build();
+        if(occurrenceBean.findOccurrenceisDeleted(id)){
+            return Response.status(Response.Status.NO_CONTENT).entity("Occurrence is deleted").build();
         }
-        */
 
-        //TODO nao esquecer lazy loads !!
         var occurrence = occurrenceBean.findOrFailOccurrence(id);
         return Response.status(Response.Status.OK).entity(OccurrenceDTO.toDTO(occurrence)).build();
     }
 
     @DELETE
     @Path("/{id}")
-    public Response removeOccurrency(@PathParam("id") Long id) throws MyEntityNotFoundException {
-
+    public Response removeOccurrence(@PathParam("id") Long id) throws MyEntityNotFoundException {
         occurrenceBean.remove(id);
 
-        if (occurrenceBean.findOrFailOccurrenceForDelete(id) != null) {
+        if (!occurrenceBean.findOccurrenceisDeleted(id)) {
             return Response.status(Response.Status.NOT_MODIFIED).entity("Occurrence not deleted").build();
         }
 
@@ -118,6 +116,11 @@ public class OccurrenceService {
     @Path("/enroll/{id}")
     public Response EnrollExpertOccurrence(@PathParam("id") Long id) throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
+
+        if(occurrenceBean.findOccurrenceisDeleted(id)){
+            return Response.status(Response.Status.NO_CONTENT).entity("Occurrence is deleted").build();
+        }
+
         occurrenceBean.enrollExpertOccurrence(username,id);
 
         //falta verificar se ele ficou la
@@ -129,6 +132,11 @@ public class OccurrenceService {
     @Path("/unroll/{id}")
     public Response UnrollExpertOccurrence(@PathParam("id") Long id) throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
+
+        if(occurrenceBean.findOccurrenceisDeleted(id)){
+            return Response.status(Response.Status.NO_CONTENT).entity("Occurrence is deleted").build();
+        }
+
         occurrenceBean.unrollExpertOccurrence(username,id);
 
         //falta verificar se ele ficou la

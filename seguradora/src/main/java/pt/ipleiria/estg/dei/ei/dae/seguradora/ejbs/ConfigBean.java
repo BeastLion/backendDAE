@@ -8,6 +8,7 @@ import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import java.time.LocalDate;
+import java.util.logging.Logger;
 
 @Startup
 @Singleton
@@ -25,27 +26,32 @@ public class ConfigBean {
     @EJB
     private OccurrenceBean occurrenceBean;
 
+    private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");
+
     @PostConstruct
     public void populateDB() throws MyEntityNotFoundException {
+        try {
+            System.out.println("Hello Java EE!");
 
-        System.out.println("Hello Java EE!");
+            clientBean.create("ola", "ola", "ola", LocalDate.parse("1979-12-28"),
+                    "ola", "910202022", 5000000,
+                    "ola", "ola@ola.pt");
 
-        clientBean.create("ola", "ola","ola", LocalDate.parse("1979-12-28"),
-                "ola", "910202022", 5000000,
-                "ola", "ola@ola.pt");
+            expertBean.create("expert1", "Expert", "1", "912345678", "expert1", "expert1@mail.pt");
+            expertBean.create("expert2", "Expert", "2", "912345672", "expert2", "expert2@mail.pt");
 
-        expertBean.create("expert1","Expert","1","912345678","expert1","expert1@mail.pt");
-        expertBean.create("expert2","Expert","2","912345672","expert2","expert2@mail.pt");
-
-        technicianBean.create("tech1","Tech","1","912345633","tech1","tech1@mail.pt");
-        technicianBean.create("tech2","Tech","2","912345634","tech2","tech2@mail.pt");
+            technicianBean.create("tech1", "Tech", "1", "912345633", "tech1", "tech1@mail.pt");
+            technicianBean.create("tech2", "Tech", "2", "912345634", "tech2", "tech2@mail.pt");
 
 
-        //Api get data
-        insurerBean.getAll();
-        policyBean.getAll();
+            //Api get data
+            insurerBean.getAll();
+            policyBean.getAll();
 
-        occurrenceBean.create(1l,"Aparelho dentario","Rua Bar la fiesta", OccurrenceType.OTHERS,"Aparelho","ola");
-        occurrenceBean.create(1l,"Aparelho dentario","Rua Bar la fiesta", OccurrenceType.OTHERS,"Aparelho","ola");
+            occurrenceBean.create(1l, "Aparelho dentario", "Rua Bar la fiesta", OccurrenceType.OTHERS, "Aparelho", "ola");
+            occurrenceBean.create(1l, "Aparelho dentario", "Rua Bar la fiesta", OccurrenceType.OTHERS, "Aparelho", "ola");
+        } catch (Exception e) {
+            logger.severe(e.getMessage());
+        }
     }
 }

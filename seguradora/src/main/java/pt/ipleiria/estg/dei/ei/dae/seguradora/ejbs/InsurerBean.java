@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs;
 
 import lombok.Getter;
 import lombok.Setter;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.InsuranceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Insurer.Insurance;
@@ -57,7 +58,7 @@ public class InsurerBean {
                 List<Expert> expertList = new ArrayList<>();
                 for (int j = 0; j < insuranceOwner_Experts.size(); j++) {
                     JsonObject objectExperts = insuranceOwner_Experts.getJsonObject(j);
-                    expertList.add(expertBean.find(objectExperts.getString("username")));
+                    expertList.add(expertBean.findOrFail(objectExperts.getString("username")));
                 }
 
                 JsonArray insuranceOwner_insurances = objectOwner.getJsonArray("Insurances");
@@ -94,7 +95,7 @@ public class InsurerBean {
                     List<Technician> technicianList = new ArrayList<>();
                     for (int m = 0; m < service_technicians.size(); m++) {
                         JsonObject objectTechnician = service_technicians.getJsonObject(m);
-                        technicianList.add(technicianBean.find(objectTechnician.getString("username")));
+                        technicianList.add(technicianBean.findOrFail(objectTechnician.getString("username")));
                     }
 
                     RepairServices repairServices = repairServicesBean.create(service_id, service_name, service_location, service_insurertype);
@@ -184,8 +185,8 @@ public class InsurerBean {
         return null;
     }
 
-    public int getIdfromExpert(String username) {
-        var expert = expertBean.find(username);
+    public int getIdfromExpert(String username) throws MyEntityNotFoundException {
+        var expert = expertBean.findOrFail(username);
         for (InsurerOwner i:insurerOwnerList) {
             for (Expert e:i.getExperts()){
                 if (e.getUsername().equals(expert.getUsername())){

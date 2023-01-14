@@ -1,20 +1,18 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs;
 
 import org.hibernate.Hibernate;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceStatus;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Client;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Expert;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.User;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +24,8 @@ public class OccurrenceBean {
     @EJB
     private InsurerBean insurerBean;
 
+    @EJB
+    private ExpertBean expertBean;
 
     @EJB
     private UserBean userBean;
@@ -33,28 +33,27 @@ public class OccurrenceBean {
     @PersistenceContext
     EntityManager em;
 
-    public Long create(long policyNumber, String description, String location, OccurrenceType type, String item, String userName) throws MyEntityNotFoundException {
+    public Long create(long policyNumber, String description, String location, OccurrenceType type, String item, String userName) throws MyEntityNotFoundException, MyEntityExistsException.MyConstraintViolationException {
         Occurrence occurrence;
-        var user = findOrFailUser(userName);
-        System.out.println("OLA");
-        if (policyBean.valid(policyNumber, userName)) {
-            System.out.println("aqui");
-            System.out.println("aqui");
-            System.out.println("aqui");
-            occurrence = new Occurrence(policyNumber, description, location, type, item);
-            user.addOccurrence(occurrence);
-            occurrence.addUser(user);
-            em.persist(occurrence);
-            System.out.println(occurrence.getId());
-            policyBean.addOccurence(occurrence.getPolicyNumber(), occurrence.getId());
-            return occurrence.getId();
+        var user = userBean.findOrFail(userName);
+        try {
+            if (policyBean.valid(policyNumber, userName)) {
+                occurrence = new Occurrence(policyNumber, description, location, type, item);
+                user.addOccurrence(occurrence);
+                occurrence.addUser(user);
+                em.persist(occurrence);
+                policyBean.addOccurence(occurrence.getPolicyNumber(), occurrence.getId());
+                return occurrence.getId();
+            }
+        } catch (ConstraintViolationException e) {
+            throw new MyEntityExistsException.MyConstraintViolationException(e);
         }
         return -1l;
     }
 
     public void update(Long id, String description, String location, OccurrenceType type, String item) throws MyEntityNotFoundException {
         var occurrence = findOrFailOccurrence(id);
-        if (occurrence.getStatus() == OccurrenceStatus.WAITING) {
+        if (occurrence.getStatus() == OccurrenceStatus.WAITING && occurrence.getIsDeleted()) {
             em.lock(occurrence, LockModeType.OPTIMISTIC); //Enquanto user estiver fazer update mais ninguem pode mexer naquela ocorrencia
             occurrence.setDescription(description);
             occurrence.setLocation(location);
@@ -70,12 +69,13 @@ public class OccurrenceBean {
     public void remove(Long id) throws MyEntityNotFoundException {
         var occurrence = findOrFailOccurrence(id);
         if (occurrence.getStatus() == OccurrenceStatus.WAITING) {
-            em.remove(occurrence);
+            occurrence.setIsDeleted(true);
+            occurrence.setStatus(OccurrenceStatus.CANCELED);
         }
     }
 
     public void enrollExpertOccurrence(String username, Long id) throws MyEntityNotFoundException {
-        var expert = findOrFailExpert(username);
+        var expert = expertBean.findOrFail(username);
         var occurrence = findOrFailOccurrence(id);
 
         /*insurece number para expert
@@ -91,7 +91,7 @@ public class OccurrenceBean {
     }
 
     public void unrollExpertOccurrence(String username, Long id) throws MyEntityNotFoundException {
-        var expert = findOrFailExpert(username);
+        var expert = expertBean.findOrFail(username);
         var occurrence = findOrFailOccurrence(id);
 
         /*insurece number para expert
@@ -106,46 +106,33 @@ public class OccurrenceBean {
         occurrence.removeUser(expert);
     }
 
-    public User findOrFailUser(String username) throws MyEntityNotFoundException {
-        var user = em.find(User.class, username);
-        if (user == null) {
-            throw new MyEntityNotFoundException("Client not found with name: " + username);
-        }
-        Hibernate.initialize(user);
-        return user;
-    }
-
-    public Expert findOrFailExpert(String username) throws MyEntityNotFoundException {
-        var expert = em.find(Expert.class, username);
-        if (expert == null) {
-            throw new MyEntityNotFoundException("Expert not found with name: " + username);
-        }
-        return expert;
-    }
-
     public Occurrence findOrFailOccurrence(Long id) throws MyEntityNotFoundException {
         var occurrence = em.find(Occurrence.class, id);
-        if (occurrence == null) {
+        if (occurrence == null || occurrence.getIsDeleted()) {
             throw new MyEntityNotFoundException("Occurrence not found with id: " + id);
         }
         Hibernate.initialize(occurrence);
         return occurrence;
     }
 
-    public Occurrence findOrFailOccurrenceForDelete(Long id) {
+    public Boolean findOccurrenceisDeleted(Long id) throws MyEntityNotFoundException {
         var occurrence = em.find(Occurrence.class, id);
-        return occurrence;
+        if (occurrence == null)
+            throw new MyEntityNotFoundException("Occurrence not found with id: " + id);
+        return occurrence.getIsDeleted();
     }
 
-    public List<Occurrence> findAvailableForExpert(String username) {
+    public List<Occurrence> findAvailableForExpert(String username) throws MyEntityNotFoundException {
         //get id from expert get the ensurer where he works
         int insurerOwnerID = insurerBean.getIdfromExpert(username);
         List<Occurrence> all = getAll();
         List<Occurrence> available = new ArrayList<>();
         for (Occurrence o : all) {
-            if (o.getStatus() == OccurrenceStatus.WAITING) {
-                if (insurerOwnerID == policyBean.getInsuranceOwnerID(o.getPolicyNumber())) {
-                    available.add(o);
+            if (!o.getIsDeleted()) {
+                if (o.getStatus() == OccurrenceStatus.WAITING) {
+                    if (insurerOwnerID == policyBean.getInsuranceOwnerID(o.getPolicyNumber())) {
+                        available.add(o);
+                    }
                 }
             }
         }

@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs;
 
 import org.hibernate.Hibernate;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Client;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Expert;
@@ -12,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
@@ -27,8 +29,11 @@ public class UserBean {
         return em.find(User.class, username);
     }
 
-    public User findOrFail(String username) {
+    public User findOrFail(String username) throws MyEntityNotFoundException {
         var user = em.getReference(User.class, username);
+        if (user == null) {
+            throw new MyEntityNotFoundException("User not found with name: " + username);
+        }
         Hibernate.initialize(user);
         return user;
     }
@@ -47,8 +52,14 @@ public class UserBean {
         return true;
     }
 
-    public List<Occurrence> getOcccurrenceByUser(String username) {
+    public List<Occurrence> getOcccurrenceByUser(String username) throws MyEntityNotFoundException {
         var user = findOrFail(username);
-        return user.getOccurrences();
+        List<Occurrence> occurrenceList = user.getOccurrences();
+        for(Occurrence o :user.getOccurrences()){
+            if (o.getIsDeleted()){
+                occurrenceList.remove(o);
+            }
+        }
+        return occurrenceList;
     }
 }

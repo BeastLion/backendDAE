@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.seguradora.webservices;
 
 import pt.ipleiria.estg.dei.ei.dae.seguradora.DTOs.AuthDTO;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.DTOs.UserDTO;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.security.Authenticated;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.security.TokenIssuer;
@@ -42,7 +43,7 @@ public class AuthService {
     @GET
     @Authenticated
     @Path("/user")
-    public Response getAuthenticatedUser() {
+    public Response getAuthenticatedUser() throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
         var user = userBean.findOrFail(username);
         return Response.ok(UserDTO.from(user)).build();
@@ -51,7 +52,7 @@ public class AuthService {
     @GET
     @Authenticated
     @Path("/userType")
-    public Response getUserType(){
+    public Response getUserType() throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
         var user = userBean.findOrFail(username);
         return Response.ok(user.getUserType()).build();

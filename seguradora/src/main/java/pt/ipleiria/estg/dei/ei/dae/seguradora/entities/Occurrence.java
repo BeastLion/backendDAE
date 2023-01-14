@@ -21,7 +21,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = "getAllOccurences",
-                query = "SELECT s FROM Occurrence s ORDER BY s.id" // JPQL
+                query = "SELECT s FROM Occurrence s where s.isDeleted <> true ORDER BY s.id" // JPQL
         )
 })
 public class Occurrence implements Serializable {
@@ -45,6 +45,8 @@ public class Occurrence implements Serializable {
     @NotNull
     @OneToMany(mappedBy = "occurrence")
     private List<Document> documents;
+
+    private Boolean isDeleted;
 
     @NotNull
     @ManyToMany
@@ -70,6 +72,7 @@ public class Occurrence implements Serializable {
         this.type = type;
         this.item = item;
         this.status = OccurrenceStatus.WAITING;
+        this.isDeleted = false;
     }
 
     public void addUser(User user) {
