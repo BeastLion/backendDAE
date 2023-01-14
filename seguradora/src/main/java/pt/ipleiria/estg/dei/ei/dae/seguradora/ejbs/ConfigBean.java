@@ -59,7 +59,7 @@ public class ConfigBean {
             policyBean.getAll();
 
             occurrenceBean.create(1l, "Aparelho dentario", "Rua Bar la fiesta", OccurrenceType.DENTIST, "Aparelho", "client1");
-            occurrenceBean.create(2l, "Aparelho dentario", "Rua Bar la fiesta", OccurrenceType.DENTIST, "Aparelho", "client2");
+            occurrenceBean.create(2l, "Aparelho dentario", "Rua Bar la fiesta", OccurrenceType.THEFT, "Aparelho", "client2");
         } catch (Exception e) {
             logger.severe(e.getMessage());
         }

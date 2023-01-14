@@ -3,6 +3,7 @@ package pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs;
 import lombok.Getter;
 import lombok.Setter;
 
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Insurer.Insurance;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Policy;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Client;
@@ -105,11 +106,16 @@ public class PolicyBean {
         return null;
     }
 
-    public boolean valid(long policyNumber, String username) {
+    public boolean valid(long policyNumber, String username, OccurrenceType type) {
         Policy policy = policyHashMap.get(policyNumber);
         if (policy.getIsExpired())
             throw new RuntimeException("Policy is expired");
-        return policy.getClient().getUsername().equals(username);
+        for(OccurrenceType o:policy.getInsurance().getOccurrenceTypes()){
+            if (o == type){
+                return policy.getClient().getUsername().equals(username);
+            }
+        }
+        throw new RuntimeException("This Policy doesn't insure this type of occurence");
     }
 
     public void addOccurence(long policyNumber, Long id) {

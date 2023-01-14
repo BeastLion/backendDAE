@@ -14,8 +14,8 @@
     {
         "username": "client1",
         "financialNumber": "5000000",
-        "InsurerOwner": "2",
-        "InsuranceID": "1",
+        "InsurerOwner": "1",
+        "InsuranceID": "2",
         "price": "300",
         "subscriptionDate": "2022-12-28",
         "loyaltyPeriod": "48",
@@ -26,8 +26,8 @@
     {
         "username": "client2",
         "financialNumber": "2000000",
-        "InsurerOwner": "1",
-        "InsuranceID": "2",
+        "InsurerOwner": "2",
+        "InsuranceID": "1",
         "price": "300",
         "subscriptionDate": "2022-12-29",
         "loyaltyPeriod": "6",

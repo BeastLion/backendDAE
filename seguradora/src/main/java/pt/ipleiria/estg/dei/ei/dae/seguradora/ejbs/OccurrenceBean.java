@@ -38,7 +38,7 @@ public class OccurrenceBean {
         Occurrence occurrence;
         var user = userBean.findOrFail(userName);
         try {
-            if (policyBean.valid(policyNumber, userName)) {
+            if (policyBean.valid(policyNumber, userName,type)) {
                 occurrence = new Occurrence(policyNumber, description, location, type, item);
                 user.addOccurrence(occurrence);
                 occurrence.addUser(user);
