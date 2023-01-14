@@ -9,7 +9,6 @@ import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityNotFoundExcepti
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.DocumentBean;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.OccurrenceBean;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Document;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.User;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.security.Authenticated;
 
 import javax.annotation.security.RolesAllowed;
@@ -36,11 +35,12 @@ public class DocumentService {
     @Context
     private SecurityContext securityContext;
 
+
     @POST
-    @Path("")
+    @Path("/{id}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response upload(MultipartFormDataInput input, Long id) throws IOException, MyEntityNotFoundException {
+    public Response upload(MultipartFormDataInput input, @PathParam("id") Long id) throws IOException, MyEntityNotFoundException {
         Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
         var username = securityContext.getUserPrincipal().getName();
         List<InputPart> inputParts = uploadForm.get("file");
@@ -61,6 +61,7 @@ public class DocumentService {
         }
         return Response.ok(DocumentDTO.from(documents)).build();
     }
+
 
     private void mkdirIfNotExists(String path) {
         File file = new File(path);
@@ -83,13 +84,13 @@ public class DocumentService {
         return response.build();
     }
 
-        @GET
-        @Path("{id}")
-        @Produces(MediaType.APPLICATION_JSON)
-        public Response getDocuments(@PathParam("id") Long id) throws MyEntityNotFoundException {
-            var documents = documentBean.getOccurenceDocuments(id);
-            return Response.ok(DocumentDTO.from(documents)).build();
-        }
+    @GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDocuments(@PathParam("id") Long id) throws MyEntityNotFoundException {
+        var documents = documentBean.getOccurenceDocuments(id);
+        return Response.ok(DocumentDTO.from(documents)).build();
+    }
 
 
     @GET
@@ -126,6 +127,7 @@ public class DocumentService {
         }
         return "unknown";
     }
+
 
     private void writeFile(byte[] content, String filename) throws IOException {
         var file = new File(filename);

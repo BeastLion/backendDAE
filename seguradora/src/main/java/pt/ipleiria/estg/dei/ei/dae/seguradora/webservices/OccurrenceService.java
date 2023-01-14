@@ -54,9 +54,6 @@ public class OccurrenceService {
     @RolesAllowed({"Client", "Expert"})
     @Path("/{id}")
     public Response updateOccurrence(@PathParam("id") Long id, OccurrenceDTO occurrenceDTO) throws MyEntityNotFoundException {
-        if(occurrenceBean.findOccurrenceisDeleted(id)){
-            return Response.status(Response.Status.NO_CONTENT).entity("Occurrence is deleted").build();
-        }
 
         occurrenceBean.update(id, occurrenceDTO.getDescription(), occurrenceDTO.getLocation(), occurrenceDTO.getType(), occurrenceDTO.getItem());
 
@@ -69,15 +66,11 @@ public class OccurrenceService {
     }
 
     @GET
-    @RolesAllowed({"Client", "Expert"})
+    @RolesAllowed({"Client", "Expert","Technician"})
     @Path("/{id}")
     public Response getOccurrenceDetails(@PathParam("id") Long id) throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
         var client = userBean.findOrFail(username);
-
-        if(occurrenceBean.findOccurrenceisDeleted(id)){
-            return Response.status(Response.Status.NO_CONTENT).entity("Occurrence is deleted").build();
-        }
 
         var occurrence = occurrenceBean.findOrFailOccurrence(id);
         return Response.status(Response.Status.OK).entity(OccurrenceDTO.toDTO(occurrence)).build();

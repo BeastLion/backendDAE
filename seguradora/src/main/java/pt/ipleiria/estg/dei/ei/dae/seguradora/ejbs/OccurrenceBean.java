@@ -89,6 +89,7 @@ public class OccurrenceBean {
     public void enrollExpertOccurrence(String username, Long id) throws MyEntityNotFoundException {
         var expert = expertBean.findOrFail(username);
         var occurrence = findOrFailOccurrence(id);
+
         if (occurrence.getHasExpert()){
             throw new RuntimeException("This occurrence has already an expert");
         }

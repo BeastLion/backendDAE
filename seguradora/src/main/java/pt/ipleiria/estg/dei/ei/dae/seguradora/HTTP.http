@@ -4,6 +4,28 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "username": "ola",
-  "password": "ola"
+  "username": "client1",
+  "password": "client1"
 }
+
+### REQUEST JWT TOKEN
+GET http://localhost:8080/seguradora/api/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnQxIiwiaWF0IjoxNjczNzM1NzA4LCJleHAiOjE2NzM3MzkzMDh9._B4xQ7a9oIgzoX2zfRB-Se4i-Dosd6ZS4ooaJLjRgK0
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "client1",
+  "password": "client1"
+}
+
+#################################################
+
+POST http://localhost:8080/seguradora/api/documents/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbGllbnQxIiwiaWF0IjoxNjczNzM1NzA4LCJleHAiOjE2NzM3MzkzMDh9._B4xQ7a9oIgzoX2zfRB-Se4i-Dosd6ZS4ooaJLjRgK0
+Content-Type: multipart/form-data; boundary=boundary
+Content-Disposition: form-data; name="file"; filename="teste.txt"
+
+###
+GET http://localhost:8080/seguradora/api//documents/download/1 HTTP/1.1
+Content-Type: application/x-www-form-urlencoded

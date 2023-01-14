@@ -14,12 +14,10 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-/*
 @NamedQuery(
         name = "getOccurrenceDocuments",
         query = "SELECT doc FROM Document doc WHERE doc.occurrence = occurrence"
 )
-*/
 public class Document implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
