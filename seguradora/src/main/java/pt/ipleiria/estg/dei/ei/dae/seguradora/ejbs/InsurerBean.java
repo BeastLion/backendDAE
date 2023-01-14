@@ -185,10 +185,10 @@ public class InsurerBean {
     }
 
     public int getIdfromExpert(String username) {
-        Expert expert = expertBean.find(username);
+        var expert = expertBean.find(username);
         for (InsurerOwner i:insurerOwnerList) {
             for (Expert e:i.getExperts()){
-                if (e.equals(expert)){
+                if (e.getUsername().equals(expert.getUsername())){
                     return i.getId();
                 }
             }

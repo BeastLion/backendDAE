@@ -5,7 +5,6 @@ import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityNotFoundExcepti
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.OccurrenceBean;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.UserBean;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.User;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.security.Authenticated;
 
 import javax.ejb.EJB;
@@ -45,7 +44,6 @@ public class OccurrenceService {
         //TODO nao esquecer lazy loads !!
         var occurrence = occurrenceBean.findOrFailOccurrence(id);
         return Response.status(Response.Status.CREATED).entity(OccurrenceDTO.toDTO(occurrence)).build();
-        //return Response.status(Response.Status.CREATED).entity("Occurrence Created").build();
     }
 
     @PUT
@@ -109,7 +107,6 @@ public class OccurrenceService {
     @Path("/expert")
     public Response getAllOccurrencesAvailable() throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
-
         List<Occurrence> occurrences = occurrenceBean.findAvailableForExpert(username);
         if(occurrences == null){
             return Response.status(Response.Status.NO_CONTENT).entity("Theres no list of occurrences available").build();
@@ -125,7 +122,7 @@ public class OccurrenceService {
 
         //falta verificar se ele ficou la
 
-        return Response.status(Response.Status.OK).entity("Expert add to occurrence with success").build();
+        return Response.status(Response.Status.OK).entity("Expert with username:" + username + " add to occurrence id " + id + " with success").build();
     }
 
     @POST
@@ -136,6 +133,6 @@ public class OccurrenceService {
 
         //falta verificar se ele ficou la
 
-        return Response.status(Response.Status.OK).entity("Expert unrolled to occurrence with success").build();
+        return Response.status(Response.Status.OK).entity("Expert  username:" + username + "unrolled to occurrence id"  + id + " with success").build();
     }
 }

@@ -138,6 +138,7 @@ public class OccurrenceBean {
     }
 
     public List<Occurrence> findAvailableForExpert(String username) {
+        //get id from expert get the ensurer where he works
         int insurerOwnerID = insurerBean.getIdfromExpert(username);
         List<Occurrence> all = getAll();
         List<Occurrence> available = new ArrayList<>();
@@ -148,7 +149,6 @@ public class OccurrenceBean {
                 }
             }
         }
-
         return available;
     }
 
