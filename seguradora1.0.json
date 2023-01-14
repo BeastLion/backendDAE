@@ -35,7 +35,7 @@
         "name": "Carrito",
         "location": "South Gate",
         "Id": "1",
-        "specialty": "Auto",
+        "specialty": "auto",
         "technician": [
           {
             "username": "tech1"
@@ -46,7 +46,7 @@
         "name": "Hospital Leiria",
         "location": "Leiria",
         "Id": "5",
-        "specialty": "Health",
+        "specialty": "health",
         "technician": [
           {
             "username": "tech2"
@@ -102,7 +102,7 @@
         "name": "Tomas e Filhos",
         "location": "Cedar Hill",
         "Id": "4",
-        "specialty": "Housing",
+        "specialty": "housing",
         "technician": [
           {
             "username": "tech4"

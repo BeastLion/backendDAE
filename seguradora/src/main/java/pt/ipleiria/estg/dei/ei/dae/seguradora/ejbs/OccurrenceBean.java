@@ -54,7 +54,7 @@ public class OccurrenceBean {
 
     public void update(Long id, String description, String location, OccurrenceType type, String item) throws MyEntityNotFoundException {
         var occurrence = findOrFailOccurrence(id);
-        if (occurrence.getStatus() == OccurrenceStatus.WAITING && occurrence.getIsDeleted()) {
+        if (occurrence.getStatus() == OccurrenceStatus.WAITING) {
             em.lock(occurrence, LockModeType.OPTIMISTIC); //Enquanto user estiver fazer update mais ninguem pode mexer naquela ocorrencia
             occurrence.setDescription(description);
             occurrence.setLocation(location);
@@ -143,18 +143,26 @@ public class OccurrenceBean {
     }
 
     public boolean changeStatus(Long id, String username) throws MyEntityNotFoundException {
-
         var occurrence = findOrFailOccurrence(id);
         var user = userBean.findOrFail(username);
 
         if (Objects.equals(user.getUserType(), "Expert")) {
             if (occurrence.getStatus() == OccurrenceStatus.WAITING) {
+                em.lock(occurrence, LockModeType.OPTIMISTIC);
                 occurrence.setStatus(OccurrenceStatus.WAITINGFORCLIENT);
                 return true;
             }
         }
         if (Objects.equals(user.getUserType(), "Client")) {
             if (occurrence.getStatus() == OccurrenceStatus.WAITINGFORCLIENT) {
+                em.lock(occurrence, LockModeType.OPTIMISTIC);
+                occurrence.setStatus(OccurrenceStatus.WAITINGFORDONE);
+                return true;
+            }
+        }
+        if (Objects.equals(user.getUserType(), "Technician")) {
+            if (occurrence.getStatus() == OccurrenceStatus.WAITINGFORCLIENT) {
+                em.lock(occurrence, LockModeType.OPTIMISTIC);
                 occurrence.setStatus(OccurrenceStatus.DONE);
                 return true;
             }

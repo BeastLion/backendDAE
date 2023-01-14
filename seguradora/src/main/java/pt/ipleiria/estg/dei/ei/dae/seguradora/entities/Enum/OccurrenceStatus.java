@@ -6,5 +6,6 @@ public enum OccurrenceStatus {
     CANCELED,
     WAITING,
     WAITINGFORCLIENT,
+    WAITINGFORDONE,
 
 }

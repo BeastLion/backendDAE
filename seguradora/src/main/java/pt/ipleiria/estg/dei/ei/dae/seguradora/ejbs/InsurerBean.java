@@ -7,6 +7,7 @@ import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.InsuranceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Insurer.Insurance;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Insurer.InsurerOwner;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Policy;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.RepairServices;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Expert;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Technician;
@@ -236,5 +237,19 @@ public class InsurerBean {
             }
         }
         return -1;
+    }
+
+    public List<RepairServices> getRepaiServicesByInsurerOwner(int insurerOwner, String type) {
+        InsuranceType insuranceType  = setJsonToInsurerType(type);
+        InsurerOwner insurerOwnerAUX = insurerOwnerHashMap.get(insurerOwner);
+        List<RepairServices> repairServicesList = new ArrayList<>();
+        for (RepairServices r : insurerOwnerAUX.getRepairServices()){
+            System.out.println(r.getInsuranceType());
+            System.out.println(insuranceType);
+            if (r.getInsuranceType() == insuranceType){
+                repairServicesList.add(r);
+            }
+        }
+        return repairServicesList;
     }
 }

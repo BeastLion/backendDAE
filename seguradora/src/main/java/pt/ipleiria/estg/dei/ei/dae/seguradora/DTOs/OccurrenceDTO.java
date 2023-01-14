@@ -49,7 +49,7 @@ public class OccurrenceDTO implements Serializable {
         this.location = location;
         this.type = type;
         this.item = item;
-        this.status = OccurrenceStatus.WAITING;
+        this.status = status;
     }
 
     public static OccurrenceDTO toDTO(Occurrence occurrence){

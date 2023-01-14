@@ -109,13 +109,13 @@ public class PolicyBean {
     public boolean valid(long policyNumber, String username, OccurrenceType type) {
         Policy policy = policyHashMap.get(policyNumber);
         if (policy.getIsExpired())
-            throw new RuntimeException("Policy is expired");
+            return false;
         for(OccurrenceType o:policy.getInsurance().getOccurrenceTypes()){
             if (o == type){
                 return policy.getClient().getUsername().equals(username);
             }
         }
-        throw new RuntimeException("This Policy doesn't insure this type of occurence");
+        return false;
     }
 
     public void addOccurence(long policyNumber, Long id) {

@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.webservices;
 
 import pt.ipleiria.estg.dei.ei.dae.seguradora.DTOs.OccurrenceDTO;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.DTOs.UserDTO;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityNotFoundException;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs.OccurrenceBean;
@@ -125,6 +126,7 @@ public class OccurrenceService {
     @Path("/enroll/{id}")
     public Response EnrollExpertOccurrence(@PathParam("id") Long id) throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
+        var user = UserDTO.from(userBean.findOrFail(username));
 
         if(occurrenceBean.findOccurrenceisDeleted(id)){
             return Response.status(Response.Status.NO_CONTENT).entity("Occurrence is deleted").build();
@@ -134,7 +136,7 @@ public class OccurrenceService {
 
         //falta verificar se ele ficou la
 
-        return Response.status(Response.Status.OK).entity("Expert with username:" + username + " add to occurrence id " + id + " with success").build();
+        return Response.status(Response.Status.OK).entity(user).build();
     }
 
     @POST
@@ -154,13 +156,37 @@ public class OccurrenceService {
         return Response.status(Response.Status.OK).entity("Expert  username:" + username + "unrolled to occurrence id"  + id + " with success").build();
     }
 
-    @POST
-    @RolesAllowed({"Client", "Expert"})
+    @PUT
+    @RolesAllowed({"Client", "Expert","Technician"})
     @Path("/status/{id}")
     public Response changeStatus(@PathParam("id") Long id) throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
-        boolean isChanged = false;
-        isChanged = occurrenceBean.changeStatus(id, username);
+
+        if(occurrenceBean.findOccurrenceisDeleted(id)){
+            return Response.status(Response.Status.NO_CONTENT).entity("Occurrence is deleted").build();
+        }
+
+        boolean isChanged = occurrenceBean.changeStatus(id, username);
+
+        if(!isChanged){
+            return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+        }
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @PUT
+    @RolesAllowed({"Client"})
+    @Path("/technician/{id}")
+    public Response assignTechnician(@PathParam("id") Long id) throws MyEntityNotFoundException {
+        var username = securityContext.getUserPrincipal().getName();
+
+        if(occurrenceBean.findOccurrenceisDeleted(id)){
+            return Response.status(Response.Status.NO_CONTENT).entity("Occurrence is deleted").build();
+        }
+
+
+
+        boolean isChanged = occurrenceBean.changeStatus(id, username);
 
         if(!isChanged){
             return Response.status(Response.Status.NOT_IMPLEMENTED).build();
