@@ -98,9 +98,21 @@ public class OccurrenceService {
     @Path("/")
     public Response getAllOccurrences() throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
-        List<Occurrence> occurrences = occurrenceBean.findOccurrenceByUsername(username);
+        List<Occurrence> occurrences = userBean.getOcccurrenceByUser(username);
         if(occurrences == null){
           return Response.status(Response.Status.NO_CONTENT).entity("Theres no list of occurrences available").build();
+        }
+        return Response.status(Response.Status.OK).entity(OccurrenceDTO.toDTOs(occurrences)).build();
+    }
+
+    @GET
+    @Path("/expert")
+    public Response getAllOccurrencesAvailable() throws MyEntityNotFoundException {
+        var username = securityContext.getUserPrincipal().getName();
+
+        List<Occurrence> occurrences = occurrenceBean.findAvailableForExpert(username);
+        if(occurrences == null){
+            return Response.status(Response.Status.NO_CONTENT).entity("Theres no list of occurrences available").build();
         }
         return Response.status(Response.Status.OK).entity(OccurrenceDTO.toDTOs(occurrences)).build();
     }

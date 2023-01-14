@@ -1,9 +1,11 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs;
 
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Insurer.InsurerOwner;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Policy;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Expert;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.security.Hasher;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -13,6 +15,9 @@ import javax.persistence.PersistenceContext;
 public class ExpertBean {
     @PersistenceContext
     private EntityManager em;
+
+    @EJB
+    private InsurerBean insurerBean;
 
     @Inject // import javax.inject.Inject;
     private Hasher hasher;
@@ -28,4 +33,5 @@ public class ExpertBean {
             return expert;
         return null;
     }
+
 }

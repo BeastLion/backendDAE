@@ -1,12 +1,18 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs;
+
 import org.hibernate.Hibernate;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Client;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Expert;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.User;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.security.Hasher;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Stateless
 public class UserBean {
@@ -15,6 +21,7 @@ public class UserBean {
     private EntityManager em;
     @Inject
     private Hasher hasher;
+
 
     public User find(String username) {
         return em.find(User.class, username);
@@ -40,4 +47,8 @@ public class UserBean {
         return true;
     }
 
+    public List<Occurrence> getOcccurrenceByUser(String username) {
+        var user = findOrFail(username);
+        return user.getOccurrences();
+    }
 }

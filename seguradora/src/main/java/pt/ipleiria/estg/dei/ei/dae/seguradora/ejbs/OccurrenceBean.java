@@ -2,6 +2,7 @@ package pt.ipleiria.estg.dei.ei.dae.seguradora.ejbs;
 
 import org.hibernate.Hibernate;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityNotFoundException;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceStatus;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Occurrence;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Client;
@@ -25,6 +26,10 @@ public class OccurrenceBean {
     @EJB
     private InsurerBean insurerBean;
 
+
+    @EJB
+    private UserBean userBean;
+
     @PersistenceContext
     EntityManager em;
 
@@ -36,12 +41,12 @@ public class OccurrenceBean {
             System.out.println("aqui");
             System.out.println("aqui");
             System.out.println("aqui");
-            occurrence = new Occurrence(policyNumber,description, location, type, item);
+            occurrence = new Occurrence(policyNumber, description, location, type, item);
             user.addOccurrence(occurrence);
             occurrence.addUser(user);
             em.persist(occurrence);
             System.out.println(occurrence.getId());
-            policyBean.addOccurence(occurrence.getPolicyNumber(),occurrence.getId());
+            policyBean.addOccurence(occurrence.getPolicyNumber(), occurrence.getId());
             return occurrence.getId();
         }
         return -1l;
@@ -49,11 +54,13 @@ public class OccurrenceBean {
 
     public void update(Long id, String description, String location, OccurrenceType type, String item) throws MyEntityNotFoundException {
         var occurrence = findOrFailOccurrence(id);
-        em.lock(occurrence, LockModeType.OPTIMISTIC); //Enquanto user estiver fazer update mais ninguem pode mexer naquela ocorrencia
-        occurrence.setDescription(description);
-        occurrence.setLocation(location);
-        occurrence.setType(type);
-        occurrence.setItem(item);
+        if (occurrence.getStatus() == OccurrenceStatus.WAITING) {
+            em.lock(occurrence, LockModeType.OPTIMISTIC); //Enquanto user estiver fazer update mais ninguem pode mexer naquela ocorrencia
+            occurrence.setDescription(description);
+            occurrence.setLocation(location);
+            occurrence.setType(type);
+            occurrence.setItem(item);
+        }
     }
 
     public List<Occurrence> getAll() {
@@ -62,7 +69,9 @@ public class OccurrenceBean {
 
     public void remove(Long id) throws MyEntityNotFoundException {
         var occurrence = findOrFailOccurrence(id);
-        em.remove(occurrence);
+        if (occurrence.getStatus() == OccurrenceStatus.WAITING) {
+            em.remove(occurrence);
+        }
     }
 
     public void enrollExpertOccurrence(String username, Long id) throws MyEntityNotFoundException {
@@ -97,13 +106,6 @@ public class OccurrenceBean {
         occurrence.removeUser(expert);
     }
 
-    public List<Occurrence> findOccurrenceByUsername(String username) throws MyEntityNotFoundException {
-        var user = findOrFailUser(username);
-        TypedQuery<Occurrence> query = em.createQuery("SELECT o FROM Occurrence o WHERE o.user = :user", Occurrence.class);
-        query.setParameter("user", user);
-        return new ArrayList<>(query.getResultList());
-    }
-
     public User findOrFailUser(String username) throws MyEntityNotFoundException {
         var user = em.find(User.class, username);
         if (user == null) {
@@ -134,4 +136,20 @@ public class OccurrenceBean {
         var occurrence = em.find(Occurrence.class, id);
         return occurrence;
     }
-}    //return null if has been deleted that means OK or return occurrence if its not deleted
+
+    public List<Occurrence> findAvailableForExpert(String username) {
+        int insurerOwnerID = insurerBean.getIdfromExpert(username);
+        List<Occurrence> all = getAll();
+        List<Occurrence> available = new ArrayList<>();
+        for (Occurrence o : all) {
+            if (o.getStatus() == OccurrenceStatus.WAITING) {
+                if (insurerOwnerID == policyBean.getInsuranceOwnerID(o.getPolicyNumber())) {
+                    available.add(o);
+                }
+            }
+        }
+
+        return available;
+    }
+
+}

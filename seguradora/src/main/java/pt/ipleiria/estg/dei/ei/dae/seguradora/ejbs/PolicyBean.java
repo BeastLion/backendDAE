@@ -103,4 +103,9 @@ public class PolicyBean {
     public void addOccurence(long policyNumber, Long id) {
         occurenceHashMap.put(id,find(policyNumber));
     }
+
+    public int getInsuranceOwnerID(long policyNumber){
+        Policy policy = policyHashMap.get(policyNumber);
+        return policy.getInsurance().getInsurerOwner_id();
+    }
 }

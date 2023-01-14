@@ -18,6 +18,12 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NamedQueries({
+        @NamedQuery(
+                name = "getAllOccurences",
+                query = "SELECT s FROM Occurrence s ORDER BY s.id" // JPQL
+        )
+})
 public class Occurrence implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
