@@ -31,6 +31,9 @@ public class OccurrenceBean {
     @EJB
     private UserBean userBean;
 
+    @EJB
+    private TechnicianBean technicianBean;
+
     @PersistenceContext
     EntityManager em;
 
@@ -73,6 +76,14 @@ public class OccurrenceBean {
             occurrence.setIsDeleted(true);
             occurrence.setStatus(OccurrenceStatus.CANCELED);
         }
+    }
+
+    public void enrollTechinicianOccurrence(String username, Occurrence occurrence) throws MyEntityNotFoundException {
+        var technician = technicianBean.findOrFail(username);
+        technician.addOccurrence(occurrence);
+        occurrence.addUser(technician);
+        occurrence.setHasTechnician(true);
+
     }
 
     public void enrollExpertOccurrence(String username, Long id) throws MyEntityNotFoundException {
@@ -155,7 +166,7 @@ public class OccurrenceBean {
         }
 
         if (Objects.equals(user.getUserType(), "Technician")) {
-            if (occurrence.getStatus() == OccurrenceStatus.WAITINGFORCLIENT) {
+            if (occurrence.getStatus() == OccurrenceStatus.WAITINGFORDONE) {
                 em.lock(occurrence, LockModeType.OPTIMISTIC);
                 occurrence.setStatus(OccurrenceStatus.DONE);
                 return true;
@@ -165,19 +176,19 @@ public class OccurrenceBean {
     }
     public boolean assignTechnician(Long id, String username,Long idRepairServices) throws MyEntityNotFoundException {
         var occurrence = findOrFailOccurrence(id);
+        if (occurrence.getHasTechnician()){
+            throw new RuntimeException("This occurrence has already an technician");
+        }
         var user = userBean.findOrFail(username);
-
         if (Objects.equals(user.getUserType(), "Client")) {
             if (occurrence.getStatus() == OccurrenceStatus.WAITINGFORCLIENT) {
                 em.lock(occurrence, LockModeType.OPTIMISTIC);
+                System.out.println(insurerBean.getRepaiServicesById(idRepairServices).getTechnician().getUsername());
+                enrollTechinicianOccurrence(insurerBean.getRepaiServicesById(idRepairServices).getTechnician().getUsername(),occurrence);
                 occurrence.setStatus(OccurrenceStatus.WAITINGFORDONE);
-                var technician = insurerBean.getRepaiServicesById(idRepairServices).getTechnician();
-                em.lock(technician,LockModeType.OPTIMISTIC);
-                technician.addOccurrence(occurrence);
                 return true;
             }
         }
-
         return false;
     }
 }

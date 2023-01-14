@@ -30,7 +30,6 @@ public class OccurrenceService {
     private SecurityContext securityContext;
     @EJB
     private OccurrenceBean occurrenceBean;
-
     @EJB
     private UserBean userBean;
 
@@ -47,7 +46,6 @@ public class OccurrenceService {
                 occurrenceDTO.getItem(),
                 username
         );
-        //TODO nao esquecer lazy loads !!
         var occurrence = occurrenceBean.findOrFailOccurrence(id);
         return Response.status(Response.Status.CREATED).entity(OccurrenceDTO.toDTO(occurrence)).build();
     }
@@ -99,7 +97,7 @@ public class OccurrenceService {
     }
 
     @GET
-    @RolesAllowed({"Client", "Expert"})
+    @RolesAllowed({"Client", "Expert","Technician"})
     @Path("/")
     public Response getAllOccurrences() throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
@@ -175,11 +173,10 @@ public class OccurrenceService {
         return Response.status(Response.Status.OK).build();
     }
 
-
     @PUT
     @RolesAllowed({"Client"})
     @Path("/status/{id}/technician/{idRepaiService}")
-    public Response assignTechnician(@PathParam("id") Long id,@PathParam("id") Long idRepaiService) throws MyEntityNotFoundException {
+    public Response assignTechnician(@PathParam("id") Long id,@PathParam("idRepaiService") Long idRepaiService) throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
 
         if(occurrenceBean.findOccurrenceisDeleted(id)){

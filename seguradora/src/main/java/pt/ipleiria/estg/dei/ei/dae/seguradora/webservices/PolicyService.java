@@ -36,9 +36,7 @@ public class PolicyService {
         if (policyList.isEmpty()) {
             return Response.noContent().build();
         }
-
         return Response.ok(policyList).build();
-
     }
 
     @GET
@@ -49,6 +47,5 @@ public class PolicyService {
         PolicyDTO policyDTO = PolicyDTO.toDTO(policyBean.getPolicyByUsernameDetail(username,id));
 
         return Response.ok(policyDTO).build();
-
     }
 }
