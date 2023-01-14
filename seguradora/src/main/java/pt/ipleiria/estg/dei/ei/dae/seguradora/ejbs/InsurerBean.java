@@ -39,6 +39,7 @@ public class InsurerBean {
     private List<InsurerOwner> insurerOwnerList;
 
     private Map<Integer, InsurerOwner> insurerOwnerHashMap = new HashMap<>();
+
     public void getAll() {
         insurerOwnerList = new ArrayList<>();
         try {
@@ -72,10 +73,10 @@ public class InsurerBean {
                     JsonArray cover = objectInsurances.getJsonArray("covers");
                     List<OccurrenceType> occurrenceTypeList = new ArrayList<>();
                     for (int l = 0; l < cover.size(); l++) {
-                        occurrenceTypeList.add(setJsonToOccurrenceType(cover.getString(l)));
+                        occurrenceTypeList.add(setJsonToOccurrenceType(cover.getString(l), insrance_type));
                     }
 
-                    Insurance insurance = createInsurance(insurace_id, insurace_name, insrance_type,insurerOwner_id,insurerOwner_name);
+                    Insurance insurance = createInsurance(insurace_id, insurace_name, insrance_type, insurerOwner_id, insurerOwner_name);
                     for (OccurrenceType o : occurrenceTypeList) {
                         insurance.addOccurrenceType(o);
                     }
@@ -126,28 +127,67 @@ public class InsurerBean {
     }
 
     public InsurerOwner createInsurerOwner(String name, int id) {
-        var insurerOwner = new InsurerOwner(name, id);
+        var insurerOwner = new InsurerOwner(id, name);
         return insurerOwner;
     }
-    public Insurance createInsurance(int id, String name, InsuranceType insuranceType,int insurerOwner,String insurerName) {
-        Insurance insurance = new Insurance(id, name,insuranceType,insurerOwner,insurerName);
+
+    public Insurance createInsurance(int id, String name, InsuranceType insuranceType, int insurerOwner, String insurerName) {
+        Insurance insurance = new Insurance(id, name, insuranceType, insurerOwner, insurerName);
         return insurance;
     }
-    private OccurrenceType setJsonToOccurrenceType(String type) {
-        switch (type) {
-            case "ACCIDENT":
-            case "accident":
-                return OccurrenceType.ACCIDENT;
-            case "THEFT":
-            case "theft":
-                return OccurrenceType.THEFT;
-            case "NATURAL_DISASTER":
-            case "natural_disaster":
-                return OccurrenceType.NATURAL_DISASTER;
+
+    private OccurrenceType setJsonToOccurrenceType(String type, InsuranceType insuranceType) {
+        switch (insuranceType) {
+            case AUTO:
+                switch (type){
+                    case "BREAKING_GLASS":
+                        return OccurrenceType.BREAKING_GLASS;
+                    case "ACCIDENT":
+                        return OccurrenceType.ACCIDENT;
+                    case "THEFT":
+                        return OccurrenceType.THEFT;
+                    case "NATURAL_DISASTER":
+                        return OccurrenceType.NATURAL_DISASTER;
+                    default:
+                        throw new RuntimeException("Bad AUTO occurrenceTYPE");
+                }
+            case HOUSING:
+                switch (type){
+                    case "THEFT":
+                        return OccurrenceType.THEFT;
+                    case "NATURAL_DISASTER":
+                        return OccurrenceType.NATURAL_DISASTER;
+                    default:
+                        throw new RuntimeException("Bad HOUSING occurrenceTYPE");
+                }
+            case HEALTH:
+                switch (type){
+                    case "DENTIST":
+                        return OccurrenceType.DENTIST;
+                    case "MEDICAL_APPOINTMENT":
+                        return OccurrenceType.MEDICAL_APPOINTMENT;
+                    case "OPERATION":
+                        return OccurrenceType.OPERATION;
+                    default:
+                        throw new RuntimeException("Bad HEALTH occurrenceTYPE");
+                }
+            case TECH:
+                switch (type){
+                    case "BROKEN_SCREEN":
+                        return OccurrenceType.BROKEN_SCREEN;
+                    case "FAILURE":
+                        return OccurrenceType.FAILURE;
+                    case "THEFT":
+                        return OccurrenceType.THEFT;
+                    default:
+                        throw new RuntimeException("Bad HEALTH occurrenceTYPE");
+                }
             default:
-                return OccurrenceType.OTHERS;
+                throw new RuntimeException("Bad insuranceType");
+
         }
     }
+
     private InsuranceType setJsonToInsurerType(String type) {
         switch (type) {
             case "AUTO":
@@ -166,6 +206,7 @@ public class InsurerBean {
                 return null;
         }
     }
+
     public void initializeHashMap() {
         for (InsurerOwner i : insurerOwnerList) {
             insurerOwnerHashMap.put(i.getId(), i);
@@ -177,8 +218,8 @@ public class InsurerBean {
         if (insurerOwnerAUX == null) {
             return null;
         }
-        for (Insurance insurance:insurerOwnerAUX.getInsuranceList()) {
-            if (insurance.getId() == insuranceID){
+        for (Insurance insurance : insurerOwnerAUX.getInsuranceList()) {
+            if (insurance.getId() == insuranceID) {
                 return insurance;
             }
         }
@@ -187,9 +228,9 @@ public class InsurerBean {
 
     public int getIdfromExpert(String username) throws MyEntityNotFoundException {
         var expert = expertBean.findOrFail(username);
-        for (InsurerOwner i:insurerOwnerList) {
-            for (Expert e:i.getExperts()){
-                if (e.getUsername().equals(expert.getUsername())){
+        for (InsurerOwner i : insurerOwnerList) {
+            for (Expert e : i.getExperts()) {
+                if (e.getUsername().equals(expert.getUsername())) {
                     return i.getId();
                 }
             }

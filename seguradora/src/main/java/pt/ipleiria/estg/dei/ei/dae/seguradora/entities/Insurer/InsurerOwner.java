@@ -28,7 +28,7 @@ public class InsurerOwner {
         this.repairServices = new ArrayList<>();
     }
 
-    public InsurerOwner(String name, int id) {
+    public InsurerOwner(int id, String name) {
         this();
         this.id = id;
         this.name = name;

@@ -15,9 +15,8 @@
         "id": "1",
         "policyName": "SaudePlus",
         "covers": [
-          "accident",
-          "dentist",
-          "medicine"
+          "DENTIST",
+          "MEDICAL_APPOINTMENT"
         ],
         "type": "health"
       },
@@ -25,8 +24,8 @@
         "id": "2",
         "policyName": "AutoPlus",
         "covers": [
-          "accident",
-          "theft"
+          "ACCIDENT",
+          "THEFT"
         ],
         "type": "auto"
       }
@@ -44,10 +43,10 @@
         ]
       },
       {
-        "name": "Tomas e Filhos",
-        "location": "Cedar Hill",
+        "name": "Hospital Leiria",
+        "location": "Leiria",
         "Id": "5",
-        "specialty": "Housing",
+        "specialty": "Health",
         "technician": [
           {
             "username": "tech2"
@@ -58,47 +57,55 @@
   },
   {
     "id": "2",
-    "Insurer": "Fidelidade",
+    "Insurer": "NovoBanco",
     "Expert": [
       {
-        "username": "expert1"
+        "username": "expert3"
       },
       {
-        "username": "expert2"
+        "username": "expert4"
       }
     ],
     "Insurances": [
       {
         "id": "1",
-        "policyName": "SaudePlus",
+        "policyName": "NBasic",
         "covers": [
-          "accident",
-          "dentist",
-          "medicine"
+          "NATURAL_DISASTER",
+          "THEFT"
         ],
-        "type": "health"
+        "type": "housing"
+      },
+      {
+        "id": "2",
+        "policyName": "NBTech",
+        "covers": [
+          "BROKEN_SCREEN",
+          "THEFT"
+        ],
+        "type": "tech"
       }
     ],
     "Services": [
       {
-        "name": "Carrito",
-        "location": "South Gate",
-        "Id": "1",
-        "specialty": "Auto",
+        "name": "Worten",
+        "location": "Leiria",
+        "Id": "3",
+        "specialty": "tech",
         "technician": [
           {
-            "username": "tech1"
+            "username": "tech3"
           }
         ]
       },
       {
         "name": "Tomas e Filhos",
         "location": "Cedar Hill",
-        "Id": "5",
+        "Id": "4",
         "specialty": "Housing",
         "technician": [
           {
-            "username": "tech2"
+            "username": "tech4"
           }
         ]
       }

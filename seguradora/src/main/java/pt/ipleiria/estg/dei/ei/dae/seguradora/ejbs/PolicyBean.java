@@ -67,8 +67,9 @@ public class PolicyBean {
     }
 
     public void create(long policyCode, Insurance insurance, Client client, long price, LocalDate subscriptionDate, long loyaltyPeriod, long coverAmount, String securedGood){
-        Policy policy = new Policy(policyCode, insurance, client,price,subscriptionDate,loyaltyPeriod,coverAmount,securedGood);
-        //policy.getInsurance().addPolicy(policy);
+        LocalDate subscriptionEndDate = subscriptionDate.plusMonths(loyaltyPeriod);
+        Boolean isExpired = subscriptionEndDate.compareTo(LocalDate.now()) < 0;
+        Policy policy = new Policy(policyCode, insurance, client,price,subscriptionDate,loyaltyPeriod,coverAmount,securedGood,isExpired,subscriptionEndDate);
         System.out.println("Policy:"+policy.getClient().getFinancialNumber());
         policyList.add(policy);
     }
@@ -106,6 +107,8 @@ public class PolicyBean {
 
     public boolean valid(long policyNumber, String username) {
         Policy policy = policyHashMap.get(policyNumber);
+        if (policy.getIsExpired())
+            throw new RuntimeException("Policy is expired");
         return policy.getClient().getUsername().equals(username);
     }
 

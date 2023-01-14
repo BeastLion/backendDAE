@@ -5,6 +5,11 @@ public enum OccurrenceType {
     ACCIDENT,
     THEFT,
     NATURAL_DISASTER,
-    OTHERS,
+    BREAKING_GLASS,
+    DENTIST,
+    OPERATION,
+    MEDICAL_APPOINTMENT,
+    BROKEN_SCREEN,
+    FAILURE
 
 }

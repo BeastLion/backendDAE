@@ -21,18 +21,23 @@ public class PolicyDTO {
     private long coverAmount;
     private String securedGood;
 
+    private String subscriptionEndDate;
+    private Boolean isExpired;
     private Insurance insurance;
 
     public PolicyDTO() {
     }
 
-    public PolicyDTO(long policyCode, long price, String subscriptionDate, long loyaltyPeriod, long coverAmount, String securedGood, Insurance insurance) {
+    public PolicyDTO(long policyCode, long price, String subscriptionDate, long loyaltyPeriod, long coverAmount, String securedGood, String subscriptionEndDate, Boolean isExpired, Insurance insurance) {
+        this();
         this.policyCode = policyCode;
         this.price = price;
         this.subscriptionDate = subscriptionDate;
         this.loyaltyPeriod = loyaltyPeriod;
         this.coverAmount = coverAmount;
         this.securedGood = securedGood;
+        this.subscriptionEndDate = subscriptionEndDate;
+        this.isExpired = isExpired;
         this.insurance = insurance;
     }
 
@@ -44,6 +49,8 @@ public class PolicyDTO {
                 policy.getLoyaltyPeriod(),
                 policy.getCoverAmount(),
                 policy.getSecuredGood(),
+                policy.getSubscriptionEndDate().toString(),
+                policy.getIsExpired(),
                 policy.getInsurance()
         );
     }
