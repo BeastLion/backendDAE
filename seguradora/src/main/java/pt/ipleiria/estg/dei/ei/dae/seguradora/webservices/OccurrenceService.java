@@ -1,6 +1,7 @@
 package pt.ipleiria.estg.dei.ei.dae.seguradora.webservices;
 
 import pt.ipleiria.estg.dei.ei.dae.seguradora.DTOs.OccurrenceDTO;
+import pt.ipleiria.estg.dei.ei.dae.seguradora.DTOs.RepairServiceDTO;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.DTOs.UserDTO;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityExistsException;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.Exceptions.MyEntityNotFoundException;
@@ -157,7 +158,7 @@ public class OccurrenceService {
     }
 
     @PUT
-    @RolesAllowed({"Client", "Expert","Technician"})
+    @RolesAllowed({"Expert","Technician"})
     @Path("/status/{id}")
     public Response changeStatus(@PathParam("id") Long id) throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
@@ -174,19 +175,18 @@ public class OccurrenceService {
         return Response.status(Response.Status.OK).build();
     }
 
+
     @PUT
     @RolesAllowed({"Client"})
-    @Path("/technician/{id}")
-    public Response assignTechnician(@PathParam("id") Long id) throws MyEntityNotFoundException {
+    @Path("/status/{id}/technician/{idRepaiService}")
+    public Response assignTechnician(@PathParam("id") Long id,@PathParam("id") Long idRepaiService) throws MyEntityNotFoundException {
         var username = securityContext.getUserPrincipal().getName();
 
         if(occurrenceBean.findOccurrenceisDeleted(id)){
             return Response.status(Response.Status.NO_CONTENT).entity("Occurrence is deleted").build();
         }
 
-
-
-        boolean isChanged = occurrenceBean.changeStatus(id, username);
+        boolean isChanged = occurrenceBean.assignTechnician(id, username,idRepaiService);
 
         if(!isChanged){
             return Response.status(Response.Status.NOT_IMPLEMENTED).build();

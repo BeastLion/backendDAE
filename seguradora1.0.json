@@ -36,22 +36,15 @@
         "location": "South Gate",
         "Id": "1",
         "specialty": "auto",
-        "technician": [
-          {
-            "username": "tech1"
-          }
-        ]
+        "technician": "tech1"
       },
       {
         "name": "Hospital Leiria",
         "location": "Leiria",
         "Id": "5",
         "specialty": "health",
-        "technician": [
-          {
-            "username": "tech2"
-          }
-        ]
+        "technician": "tech2"
+
       }
     ]
   },
@@ -92,22 +85,15 @@
         "location": "Leiria",
         "Id": "3",
         "specialty": "tech",
-        "technician": [
-          {
-            "username": "tech3"
-          }
-        ]
+        "technician": "tech3"
+          
       },
       {
         "name": "Tomas e Filhos",
         "location": "Cedar Hill",
         "Id": "4",
         "specialty": "housing",
-        "technician": [
-          {
-            "username": "tech4"
-          }
-        ]
+        "technician": "tech4" 
       }
     ]
   }

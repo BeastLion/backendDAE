@@ -7,10 +7,8 @@ import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.InsuranceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.OccurrenceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Insurer.Insurance;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Insurer.InsurerOwner;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Policy;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.RepairServices;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Expert;
-import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Technician;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -93,17 +91,10 @@ public class InsurerBean {
                     String service_location = objectServices.getString("location");
                     InsuranceType service_insurertype = setJsonToInsurerType(objectServices.getString("specialty"));
 
-                    JsonArray service_technicians = objectServices.getJsonArray("technician");
-                    List<Technician> technicianList = new ArrayList<>();
-                    for (int m = 0; m < service_technicians.size(); m++) {
-                        JsonObject objectTechnician = service_technicians.getJsonObject(m);
-                        technicianList.add(technicianBean.findOrFail(objectTechnician.getString("username")));
-                    }
+                    String service_technicians = objectServices.getString("technician");
 
-                    RepairServices repairServices = repairServicesBean.create(service_id, service_name, service_location, service_insurertype);
-                    for (Technician t : technicianList) {
-                        repairServices.addRepairTechnician(t);
-                    }
+
+                    RepairServices repairServices = repairServicesBean.create(service_id, service_name, service_location, service_insurertype,service_technicians);
                     repairServicesList.add(repairServices);
                 }
 
@@ -251,5 +242,16 @@ public class InsurerBean {
             }
         }
         return repairServicesList;
+    }
+
+    public RepairServices getRepaiServicesById(long id) {
+        for (InsurerOwner i : insurerOwnerList){
+            for(RepairServices r: i.getRepairServices()){
+                if (r.getId()==id){
+                    return r;
+                }
+            }
+        }
+        return null;
     }
 }

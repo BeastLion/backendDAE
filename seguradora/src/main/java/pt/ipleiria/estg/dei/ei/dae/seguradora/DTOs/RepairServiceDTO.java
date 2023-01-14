@@ -5,7 +5,6 @@ import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Enum.InsuranceType;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.RepairServices;
 import pt.ipleiria.estg.dei.ei.dae.seguradora.entities.Users.Technician;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,18 +19,19 @@ public class RepairServiceDTO {
     private String location;
 
     private InsuranceType insuranceType;
-    private List<Technician> technicians;
+    private String technician_username;
 
     public RepairServiceDTO() {
-        this.technicians = new ArrayList<>();
+
     }
 
-    public RepairServiceDTO(Long id, String name, String location, InsuranceType insuranceType) {
+    public RepairServiceDTO(Long id, String name, String location, InsuranceType insuranceType,String technician_username) {
         this();
         this.id = id;
         this.name = name;
         this.location = location;
         this.insuranceType = insuranceType;
+        this.technician_username = technician_username;
     }
 
     public static RepairServiceDTO toDTO(RepairServices repairServices) {
@@ -39,7 +39,8 @@ public class RepairServiceDTO {
                 repairServices.getId(),
                 repairServices.getName(),
                 repairServices.getLocation(),
-                repairServices.getInsuranceType()
+                repairServices.getInsuranceType(),
+                repairServices.getTechnician().getUsername()
         );
     }
 

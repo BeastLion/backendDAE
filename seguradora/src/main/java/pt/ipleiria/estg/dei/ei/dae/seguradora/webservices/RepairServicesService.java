@@ -40,6 +40,5 @@ public class RepairServicesService {
             return Response.noContent().build();
         }
         return Response.ok(repairServicesList).build();
-
     }
 }

@@ -153,13 +153,7 @@ public class OccurrenceBean {
                 return true;
             }
         }
-        if (Objects.equals(user.getUserType(), "Client")) {
-            if (occurrence.getStatus() == OccurrenceStatus.WAITINGFORCLIENT) {
-                em.lock(occurrence, LockModeType.OPTIMISTIC);
-                occurrence.setStatus(OccurrenceStatus.WAITINGFORDONE);
-                return true;
-            }
-        }
+
         if (Objects.equals(user.getUserType(), "Technician")) {
             if (occurrence.getStatus() == OccurrenceStatus.WAITINGFORCLIENT) {
                 em.lock(occurrence, LockModeType.OPTIMISTIC);
@@ -167,6 +161,23 @@ public class OccurrenceBean {
                 return true;
             }
         }
+        return false;
+    }
+    public boolean assignTechnician(Long id, String username,Long idRepairServices) throws MyEntityNotFoundException {
+        var occurrence = findOrFailOccurrence(id);
+        var user = userBean.findOrFail(username);
+
+        if (Objects.equals(user.getUserType(), "Client")) {
+            if (occurrence.getStatus() == OccurrenceStatus.WAITINGFORCLIENT) {
+                em.lock(occurrence, LockModeType.OPTIMISTIC);
+                occurrence.setStatus(OccurrenceStatus.WAITINGFORDONE);
+                var technician = insurerBean.getRepaiServicesById(idRepairServices).getTechnician();
+                em.lock(technician,LockModeType.OPTIMISTIC);
+                technician.addOccurrence(occurrence);
+                return true;
+            }
+        }
+
         return false;
     }
 }
